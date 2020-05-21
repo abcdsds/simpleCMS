@@ -1,4 +1,4 @@
-package book.modules.category;
+package book.modules.board;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(of = "id")
 @Entity
-public class Category {
+public class Board {
 	
 	@Id @GeneratedValue
 	private Long id;
