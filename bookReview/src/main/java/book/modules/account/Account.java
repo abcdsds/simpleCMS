@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import book.modules.base.BaseTimeEntity;
+import book.modules.comment.Comment;
 import book.modules.post.Post;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -46,6 +47,7 @@ public class Account extends BaseTimeEntity{
 	@OneToMany(mappedBy = "createdBy")
 	private List<Post> posts;
 	
-	
+	@OneToMany(mappedBy = "createdBy")
+	private List<Comment> comments;
 	
 }
