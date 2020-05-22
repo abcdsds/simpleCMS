@@ -27,10 +27,13 @@ public class Account extends BaseTimeEntity{
 	private Long id;
 	
 	@Column(unique = true, nullable = false)
-	private String nickname;
-	
+	private String loginId;
+		
 	@Column(unique = true, nullable = false)
 	private String email;
+	
+	@Column(nullable = false)
+	private String nickname;
 	
 	private boolean ban;
 	
