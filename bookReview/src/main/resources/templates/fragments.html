@@ -5,9 +5,7 @@
 		<link rel="stylesheet" href="https://demos.buddyboss.com/onesocial/wp-content/mu-plugins/buddyboss-demo-toolbar/assets/css/font.css" type="text/css" media="all" >
 		<link rel="stylesheet" href="https://demos.buddyboss.com/onesocial/wp-includes/css/dashicons.min.css?ver=5.4.1" type="text/css" media="all" >
 		<style type="text/css">
-			.container {
-				border : 1px;
-			}
+
 			@font-face {
 				font-family : socialfonts;
 				src: url(../fonts/onesocial.woff) format('woff')
@@ -32,6 +30,44 @@
 				display:inline-block;
 				text-align:center;
 			}
+			.divider-text {
+			    position: relative;
+			    text-align: center;
+			    margin-top: 15px;
+			    margin-bottom: 15px;
+			}
+			.divider-text span {
+			    padding: 7px;
+			    font-size: 12px;
+			    position: relative;   
+			    z-index: 2;
+			}
+			.divider-text:after {
+			    content: "";
+			    position: absolute;
+			    width: 100%;
+			    border-bottom: 1px solid #ddd;
+			    top: 55%;
+			    left: 0;
+			    z-index: 1;
+			}
+			
+			.btn-facebook {
+			    background-color: #405D9D;
+			    color: #fff;
+			}
+			.btn-twitter {
+			    background-color: #42AEEC;
+			    color: #fff;
+			}
+			
+			.mr-sm-2, .mx-sm-2 {
+			    margin-right: .0rem!important;
+			}
+			
+			.col-form-label requiredField{
+				font-size: 10px;
+			}
 
 		</style>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -39,8 +75,6 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	</head>
 	
-	
-
 
 	<header th:fragment="main-nav">
 			<div class="header-wrapper">
@@ -94,42 +128,41 @@
 			</div>
 
 			
-		</header>
+	</header>
 		
-		<header th:fragment="sub-nav">
-			<div class="header-inner">
-				<div class="container">
-					<div id="logo">
-						<a class="logo" data-src-dark="logo.png" href="/">
-								<img alt="Logo" src="logo.png">
-						</a>
+	<header th:fragment="sub-nav">
+		<div class="header-inner">
+			<div class="container">
+				<div id="logo">
+					<a class="logo" data-src-dark="logo.png" href="/">
+						<img alt="Logo" src="logo.png">
+					</a>
+				</div>
+				<div class="menu-center" id="mainMenu">
+					<div class="container">
+						<nav>
+							<ul>
+								<li class="menuItem">
+									<a href="/series/top/30/">랭킹</a>
+								</li>
+								<li class="menuItem">
+									<a href="/series/comments/">리뷰</a>
+								</li>
+								<li class="menuItem">
+									<a href="/recommendations/series/">추천</a>
+								</li>
+								<li class="menuItem">
+									<a href="/series/">웹소설 찾기</a>
+								</li>
+								<li class="menuItem">
+									<a href="/forums/">커뮤니티</a>
+								</li>
+							</ul>
+						</nav>
 					</div>
-					<div class="menu-center" id="mainMenu">
-						<div class="container">
-							<nav>
-								<ul>
-									<li class="menuItem">
-										<a href="/series/top/30/">랭킹</a>
-									</li>
-									<li class="menuItem">
-										<a href="/series/comments/">리뷰</a>
-									</li>
-									<li class="menuItem">
-										<a href="/recommendations/series/">추천</a>
-									</li>
-									<li class="menuItem">
-										<a href="/series/">웹소설 찾기</a>
-									</li>
-									<li class="menuItem">
-										<a href="/forums/">커뮤니티</a>
-									</li>
-								</ul>
-							</nav>
-						</div>
-					</div>
-				
 				</div>
 			</div>
-		</header>
+		</div>
+	</header>
 		
 		

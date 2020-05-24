@@ -23,7 +23,7 @@ public class AccountService {
 
 		Account account = Account.builder().accountGender(form.getAccountGender()).accountType(AccountType.none)
 				.ban(false).birthYear(form.getBirthYear()).email(form.getEmail()).loginId(form.getLoginId())
-				.nickname(form.getNickname()).password(form.getPassword()).role(new SimpleGrantedAuthority("ROLE_USER"))
+				.nickname(form.getNickname()).password(form.getPassword()).role("ROLE_USER")
 				.build();
 
 		return accountRepository.save(account);
@@ -32,7 +32,7 @@ public class AccountService {
 	public void login(Account account) {
 		// TODO Auto-generated method stub
 		List<SimpleGrantedAuthority> list = new ArrayList<SimpleGrantedAuthority>();
-		list.add(account.getRole());
+		list.add(new SimpleGrantedAuthority(account.getRole()));
 
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(new UserAccount(account),
 				account.getPassword(), list);

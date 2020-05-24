@@ -14,7 +14,7 @@ public class AccountForm {
 	@Pattern(regexp = "^[A-Za-z0-9_-]{6,12}$")
 	private String loginId;
 	
-	@Pattern(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$")
+	@Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}")
 	private String email;
 	
 	@Length(min = 2 , max = 12)

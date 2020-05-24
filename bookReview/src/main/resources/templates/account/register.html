@@ -10,12 +10,108 @@
 		<div th:replace="fragments.html :: sub-nav"></div>
 
 		<div class="container">
-			<div class="py-5 text-center">
-	            <p class="lead">소설 리뷰 사이트</p>
-	            <p class="lead">부라불라 불라불라 불라불라 불라</p>
-	            <p class="lead">부라불라 불라불라 불라불라 불라 부라불라 불라불라 불라불라 불라</p>
-	            <a class="btn btn-facebook" href="/sign-up" role="button">회원 가입</a>
-	        </div>  
+			<div class="bg-light">
+				<article class="card-body mx-auto" style="max-width: 400px;">
+					<h4 class="card-title mt-3 text-center">Create Account</h4>
+					<p class="text-center">Get started with your free account</p>
+					<p>
+						<a href="" class="btn btn-block btn-twitter"> <i class="fab fa-twitter"></i>   Login via Twitter</a>
+						<a href="" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i>   Login via facebook</a>
+					</p>
+					<p class="divider-text">
+				        <span class="bg-light">OR</span>
+				    </p>
+					<form th:action="@{/account/register}" th:object="${accountForm}" method="post">
+						<div class="form-group input-group">
+							<div class="input-group">
+								<label class="col-form-label requiredField" for="loginId"><small>아이디<span class="asteriskField">*</span></small>
+								</label>
+							</div>
+							<div class="input-group-prepend">
+							    <span class="input-group-text"> <i class="fa fa-user" style="font-size: 0.8em"></i> </span>
+							</div>
+					        <input id="loginId" type="text" th:field="*{loginId}" class="form-control"
+                           		placeholder="아이디" aria-describedby="loginIdHelp" required minlength="3" maxlength="20">
+                   			<small id="loginIdHelp" class="form-text text-muted"></small>
+                   			<small class="invalid-feedback">아이디를 입력하세요.</small>
+                   			<small class="form-text text-danger" th:if="${#fields.hasErrors('loginId')}" th:errors="*{loginId}">아이디 오류</small>
+					    </div> <!-- form-group// -->
+						<div class="form-group input-group">
+							<div class="input-group">
+								<label class="col-form-label requiredField" for="nickname"><small>닉네임<span class="asteriskField">*</span></small></label>
+							</div>
+							<div class="input-group-prepend">
+							    <span class="input-group-text"> <i class="fa fa-user" style="font-size: 0.8em"></i> </span>
+							 </div>
+					        <input id="nickname" type="text" th:field="*{nickname}" class="form-control"
+                           		placeholder="닉네임" aria-describedby="loginIdHelp" required minlength="3" maxlength="20" >
+                   			 <small id="nicknameHelp" class="form-text text-muted"></small>
+                   			 <small class="invalid-feedback">닉네임을 입력하세요.</small>
+                   			 <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">닉네임 오류</small>
+					    </div> <!-- form-group// -->
+					    <div class="form-group input-group">
+					    	<div class="input-group">
+								<label class="col-form-label requiredField" for="email"><small>이메일<span class="asteriskField">*</span></small></label>
+							</div>
+					    	<div class="input-group-prepend">
+							    <span class="input-group-text"> <i class="fa fa-envelope" style="font-size: 0.8em"></i> </span>
+							</div>
+					        <input id="email" type="email" th:field="*{email}" class="form-control"
+		                           placeholder="your@email.com" aria-describedby="emailHelp" required>
+		                    <small id="emailHelp" class="form-text text-muted"></small>
+		                    <small class="invalid-feedback">이메일을 입력하세요.</small>
+                    		<small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</small>
+					    </div> <!-- form-group// -->
+					    
+					    <div class="form-group input-group">
+					     	<div class="input-group">
+								<label class="col-form-label requiredField" for="birthYear"><small>태어난 해<span class="asteriskField">*</span></small></label>
+							</div>
+					    	<div class="input-group-prepend">
+							    <span class="input-group-text"> <i class="fa fa-envelope" style="font-size: 0.8em"></i> </span>
+							 </div>
+					        <input id="birthYear" type="text" th:field="*{birthYear}" class="form-control"
+                           		placeholder="태어난 해" aria-describedby="birthYearHelp" required minlength="4" maxlength="4">
+                   			<small id="birthYearHelp" class="form-text text-muted"></small>
+                   			<small class="invalid-feedback">생년을 입력하세요.</small>
+                   			<small class="form-text text-danger" th:if="${#fields.hasErrors('birthYear')}" th:errors="*{birthYear}">태어난 해 오류</small>
+					    </div> <!-- form-group// -->
+					    
+					    <div class="form-group input-group">
+					    	<div class="input-group">
+								<label class="col-form-label requiredField" for="accountGender"><small>성별<span class="asteriskField">*</span></small></label>
+							</div>
+					    	<div class="input-group-prepend">
+							    <span class="input-group-text"> <i class="fa fa-user-secret" style="font-size: 0.9em"></i> </span>
+							</div>
+							<select th:field="*{accountGender}"  class="custom-select mr-sm-2" id="accountGender" aria-describedby="accountGenderHelp" >
+			                    <option th:value="male">남자</option>
+			                    <option th:value="female">여자</option>
+			                </select>
+						</div> <!-- form-group end.// -->
+					    <div class="form-group input-group">
+					    	<div class="input-group">
+								<label class="col-form-label requiredField" for="password"><small>비밀번호<span class="asteriskField">*</span></small></label>
+							</div>
+					    	<div class="input-group-prepend">
+							    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+							</div>
+					        <input id="password" type="password" th:field="*{password}" class="form-control"
+                           aria-describedby="passwordHelp" required minlength="8" maxlength="50">
+                           	<small class="invalid-feedback">패스워드를 입력하세요.</small>
+                    		<small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</small>
+                    		
+                     
+					    </div> <!-- form-group// -->                                 
+					    <div class="form-group">
+					        <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
+					    </div> <!-- form-group// -->      
+					    <p class="text-center">Have an account? <a href="">Log In</a> </p>                                                                 
+					</form>
+				
+				</article>
+			</div> <!-- card.// -->
+
 	    </div>
 	
 	

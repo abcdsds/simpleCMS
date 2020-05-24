@@ -39,7 +39,7 @@ public class Account extends BaseTimeEntity{
 	
 	private int birthYear;
 	
-	private SimpleGrantedAuthority role;
+	private String role;
 	
 	private AccountType accountType;
 	

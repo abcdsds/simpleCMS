@@ -1,10 +1,14 @@
 package book.modules.account;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import book.modules.account.form.AccountForm;
@@ -25,10 +29,23 @@ public class AccountController {
 	}
 	
 	@GetMapping("/register")
-	public String signUpForm(Model model) {
+	public String registerForm(Model model) {
 		
 		model.addAttribute(new AccountForm());
 		return "account/register";
+	}
+	
+	@PostMapping("/register")
+	public String registerSubmit(@Valid AccountForm accountForm, Errors errors) {
+		
+		if (errors.hasErrors()) {
+			return "account/register";
+		}
+		
+		Account newAccount = accountService.newAccount(accountForm);
+		accountService.login(newAccount);
+		
+		return "redirect:/";
 	}
 	
 }
