@@ -34,7 +34,7 @@ public class AccountFormValidator implements Validator{
 		}
 		
 		if (accountRepository.existsByEmail(form.getEmail()) ) {
-			errors.rejectValue("loginid", "loginid-reduplication " , "아이디가 중복입니다.");
+			errors.rejectValue("email", "email-reduplication " , "이메일이 중복입니다.");
 		}
 		
 	}
