@@ -11,10 +11,17 @@ import javax.persistence.OneToMany;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import book.modules.account.AccountGender;
+import book.modules.account.AccountType;
+import book.modules.comment.Comment;
+import book.modules.post.Post;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(of = "id")
-@Entity
+@Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board {
 	
 	@Id @GeneratedValue

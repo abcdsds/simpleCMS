@@ -11,13 +11,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import book.modules.account.AccountGender;
+import book.modules.account.AccountType;
 import book.modules.base.BaseEntity;
 import book.modules.board.Board;
 import book.modules.comment.Comment;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(of = "id" , callSuper = true)
-@Entity
+@Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
 	@Id @GeneratedValue

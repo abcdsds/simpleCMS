@@ -1,6 +1,9 @@
 package book.modules.account;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,18 +11,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import book.modules.base.BaseTimeEntity;
 import book.modules.comment.Comment;
 import book.modules.post.Post;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 
 @EqualsAndHashCode(of = "id" , callSuper = true)
 @Getter @Builder
-@Entity
+@Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Account extends BaseTimeEntity{
 
 	@Id @GeneratedValue
@@ -48,9 +53,10 @@ public class Account extends BaseTimeEntity{
 	private String password;
 	
 	@OneToMany(mappedBy = "createdBy")
-	private List<Post> posts;
+	private List<Post> posts = new ArrayList<Post>();
 	
 	@OneToMany(mappedBy = "createdBy")
-	private List<Comment> comments;
+	private List<Comment> comments = new ArrayList<Comment>();
+
 	
 }
