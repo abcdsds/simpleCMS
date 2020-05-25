@@ -13,10 +13,20 @@ public class mainController {
 	@GetMapping("/")
 	public String main(@CurrentAccount Account account, Model model) {
 		
-		if (account != null) {
-			model.addAttribute(account);
-		}
+//		if (account != null) {
+//			model.addAttribute(account);
+//		}
 		
 		return "index";
+	}
+	
+	@GetMapping("/login")
+	public String login(@CurrentAccount Account account , Model model) {
+		
+		if (account != null) {
+			return "redirect:/";
+		}
+		
+		return "login";
 	}
 }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+	<head>
+		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<!--Fontawesome CDN-->
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+		<!--Custom styles-->
+		<link rel="stylesheet" type="text/css" href="/css/login.css">	
+	</head>
+	
+	<body>
+	<div class="container">
+		<div th:if="${param.error}" class="alert alert-danger" role="alert">
+                <p>이메일(또는 닉네임)과 패스워드가 정확하지 않습니다.</p>
+                <p>또는 확인되지 않은 이메일을 사용했습니다. 이메일을 확인해 주세요.</p>
+                <p>
+                   	 확인 후 다시 입력하시거나, <a href="#" th:href="@{/find-passsword}">패스워드 찾기</a>를 이용하세요.
+                </p>
+        </div>
+		<div class="d-flex justify-content-center h-100">
+			<div class="card">
+				<div class="card-header">
+					<h3>Sign In</h3>
+					<div class="d-flex justify-content-end social_icon" style="padding-left:10px;">
+						<span><i class="fab fa-facebook-square" style="color:#4267B2;"></i></span>
+						<span><i class="fab fa-google-plus-square" style="color:#D95032;"></i></span>
+						<span><i class="fab fa-twitter-square" style="color:#38A1F3;"></i></span>
+						<span class="socialImg"><img src="/img/naver.png" width="45px"; /></span>
+						<span class="socialImg"><img src="/img/kakao.png" width="44px"; /></span>
+					</div>
+				</div>
+				<div class="card-body">
+					<form action="#" th:action="@{/login}" method="post" novalidate>
+						<div class="input-group form-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="fas fa-user"></i></span>
+							</div>
+							<input type="text" name="username" class="form-control"
+                           		placeholder="userid" required>
+                           	<small class="invalid-feedback">아이디를 입력하세요.</small>
+						</div>
+						<div class="input-group form-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="fas fa-key"></i></span>
+							</div>
+							<input id="password" type="password" name="password" class="form-control"
+		                           placeholder="password" required>
+		                    <small class="invalid-feedback">패스워드를 입력하세요.</small>
+						</div>
+						<div class="row align-items-center remember">
+							<input type="checkbox">로그인 유지
+						</div>
+						<div class="form-group">
+							<input type="submit" value="Login" class="btn float-right login_btn">
+						</div>
+					</form>
+				</div>
+				<div class="card-footer">
+					<div class="d-flex justify-content-center links">
+						아이디가 없으신가요? <a th:href="@{/register}">회원가입</a>
+					</div>
+					<div class="d-flex justify-content-center">
+						<a href="#">패스워드를 잊어버리셨나요?</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</body>
+
+</html>

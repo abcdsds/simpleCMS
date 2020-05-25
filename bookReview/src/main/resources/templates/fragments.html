@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="en" 
+		xmlns:th="http://www.thymeleaf.org" 
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+		
 	<head th:fragment="head">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" media="all">
 		<link rel="stylesheet" href="./css/font-onesocial/css/onesocial.css" type="text/css" media="all">
@@ -79,7 +84,7 @@
 	<header th:fragment="main-nav">
 			<div class="header-wrapper">
 				<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-				  <a class="navbar-brand" href="#">navbar</a>
+				  <a class="navbar-brand" href="#">소설리뷰</a>
 				  <!-- Navbar brand yo -->
 				  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTop" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 				    <span class="navbar-toggler-icon"></span>
@@ -87,38 +92,29 @@
 				
 				  <div class="collapse navbar-collapse" id="navbarTop">
 				    <ul class="navbar-nav mr-auto">
-				      <li class="nav-item"><a class="nav-link" href="#about">About</a> </li>
-				      <li class="nav-item"><a class="nav-link" href="#portfolio">Services</a> </li>
-				      <li class="nav-item"><a class="nav-link" href="#contact">Contact</a> </li>
-				      <li class="nav-item"><a class="nav-link" href="#social">Social Media</a> </li>
+				      <li class="nav-item"><a class="nav-link" href="#about">랭킹</a> </li>
+				      <li class="nav-item"><a class="nav-link" href="#portfolio">리뷰</a> </li>
+				      <li class="nav-item"><a class="nav-link" href="#contact">추천</a> </li>
+				      <li class="nav-item"><a class="nav-link" href="#social">커뮤니티</a> </li>
 				    </ul>
 				  </div>
 				  
 				  <div class="collapse navbar-collapse" id="navbar">
 				    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-				      <li class="nav-item active">
-				        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+				      <li class="nav-item">
+				        <a class="nav-link" th:href="@{/notifications}"><i class="bb bb-icon-messages-f" style="font-size: 1.5em;"></i></a>
 				      </li>
 				      <li class="nav-item">
-				        <a class="nav-link" href="#"><i class="bb bb-icon-messages-f" style="font-size: 1.5em;"></i></a>
+				        <a class="nav-link" th:href="@{/settings}"><i class="bb bb-icon-gear" style="font-size: 1.5em;"></i></a>
 				      </li>
 				      <li class="nav-item">
-				        <a class="nav-link" href="#"><i class="bb bb-icon-facebook" style="font-size: 1.5em;"></i></a>
+				        <a class="nav-link" th:href="@{/search}"><i class="bb bb-icon-search" style="font-size: 1.5em;"></i></a>
 				      </li>
-				      
-				      <li class="nav-item dropdown">
-				        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				          Dropdown
-				        </a>
-				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				          <a class="dropdown-item" href="#">Action</a>
-				          <a class="dropdown-item" href="#">Another action</a>
-				          <div class="dropdown-divider"></div>
-				          <a class="dropdown-item" href="#">Something else here</a>
-				        </div>
+				      <li class="nav-item" sec:authorize="!isAuthenticated()">
+				        <a class="nav-link" th:href="@{/login}"><i class="fa fa-sign-in" style="font-size: 1.5em;"></i></a>
 				      </li>
-				      <li class="nav-item">
-				        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+				      <li class="nav-item" sec:authorize="isAuthenticated()">
+				        <a class="nav-link" th:href="@{/profile}"><i class="fa fa-user" style="font-size: 1.5em;"></i></a>
 				      </li>
 				    </ul>
 				    
@@ -164,5 +160,36 @@
 			</div>
 		</div>
 	</header>
+	
+	<header th:fragment="profile-nav">
+		<div class="header-inner">
+			<div class="container">
+				<div class="menu-center" id="mainMenu">
+					<div class="container">
+						<nav>
+							<ul>
+								<li class="menuItem">
+									<a href="/series/top/30/">랭킹</a>
+								</li>
+								<li class="menuItem">
+									<a href="/series/comments/">리뷰</a>
+								</li>
+								<li class="menuItem">
+									<a href="/recommendations/series/">추천</a>
+								</li>
+								<li class="menuItem">
+									<a href="/series/">웹소설 찾기</a>
+								</li>
+								<li class="menuItem">
+									<a href="/forums/">커뮤니티</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
 		
-		
+
+</html>
