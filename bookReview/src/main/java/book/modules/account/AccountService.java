@@ -3,20 +3,25 @@ package book.modules.account;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
 import book.modules.account.form.AccountForm;
+import book.modules.account.form.NicknameForm;
 import book.modules.account.form.PasswordForm;
 import book.modules.account.form.ProfileForm;
 import lombok.RequiredArgsConstructor;
@@ -101,6 +106,31 @@ public class AccountService implements UserDetailsService {
 		account.changePassword(passwordEncoder.encode(form.getNewPassword()));
 		accountRepository.save(account);
 		
+	}
+
+	public void updateNickname(Account account, NicknameForm form) {
+		// TODO Auto-generated method stub
+		account.changeNickname(form.getNickname());
+		accountRepository.save(account);
+	}
+
+	public void deleteAccount(Account account) {
+		// TODO Auto-generated method stub
+		accountRepository.delete(account);
+	}
+
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(authentication != null) {
+			new SecurityContextLogoutHandler().logout(request, response, authentication);
+		}
+	}
+
+	public void updateProfileImage(Account account, String profileImage) {
+		// TODO Auto-generated method stub
+		account.changeProfileImage(profileImage);
+		accountRepository.save(account);
 	}
 	
 	

@@ -26,5 +26,11 @@ spring:
           timeout: 50000
           starttls:
               enable: true
+              
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+    
 app:
   host: http://localhost:8080

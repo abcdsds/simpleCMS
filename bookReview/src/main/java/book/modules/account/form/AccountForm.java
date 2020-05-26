@@ -33,7 +33,7 @@ public class AccountForm {
 	@NotNull
 	private int birthYear;
 	
-	@NotEmpty
+	@NotNull
 	private AccountGender accountGender;
 	
 }

@@ -1,5 +1,7 @@
 package book.modules.account;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -13,12 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import book.modules.account.form.AccountForm;
+import book.modules.account.form.NicknameForm;
 import book.modules.account.form.PasswordForm;
 import book.modules.account.form.ProfileForm;
 import book.modules.account.validator.AccountFormValidator;
 import book.modules.account.validator.PasswordFormValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class AccountController {
@@ -83,18 +88,7 @@ public class AccountController {
 		redirectAttributes.addFlashAttribute("message", "성공적으로 수정되었습니다.");
 		return "redirect:/account/profile";
 	}
-	
 		
-	@GetMapping("/account/profile/image")
-	public String profileImageForm(@CurrentAccount Account account, Model model) {
-		return "account/profile-image-form";
-	}
-	
-	@PostMapping("/account/profile/image")
-	public String profileImageSubmit(@CurrentAccount Account account, Model model) {
-		return "redirect:/account/profile/image";
-	}
-	
 	@GetMapping("/account/password")
 	public String passwordForm(@CurrentAccount Account account, Model model) {
 		
@@ -115,28 +109,86 @@ public class AccountController {
 		}
 		
 		accountService.updatepassword(account,form);
+		redirectAttributes.addFlashAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
 		
-		return "account/password-form";
+		return "redirect:/account/password";
 	}
 	
 	
 	@GetMapping("/account/nickname")
 	public String nicknameForm(@CurrentAccount Account account, Model model) {
-		return "account/nickname-form";
 		
+		NicknameForm nicknameForm = modelMapper.map(account, NicknameForm.class);
+		model.addAttribute(account);
+		model.addAttribute(nicknameForm);
+		
+		return "account/nickname-form";
 	}
 	
-	@GetMapping("/account/delete")
+	@PostMapping("/account/nickname")
+	public String nicknameSubmit(@CurrentAccount Account account, Model model,
+								 @Valid NicknameForm form , Errors errors,
+								 RedirectAttributes redirectAttributes) {
+		
+		if (errors.hasErrors()) {
+			model.addAttribute(account);
+			return "account/nickname-form";
+		}
+		
+		accountService.updateNickname(account, form);
+		redirectAttributes.addFlashAttribute("message", "닉네임이 성공적으로 변경되었습니다.");
+		
+		return "redirect:/account/nickname";
+	}
+	
+	@GetMapping("/account/leave")
 	public String accountDeleteForm(@CurrentAccount Account account, Model model) {
 		
+		model.addAttribute(account);
 		return "account/delete-form";
 	}
 	
-	@PostMapping("/account/delete")
-	public String accountDeleteSubmit(@CurrentAccount Account account, Model model) {
+	
+	@PostMapping("/account/leave")
+	public String accountDeleteSubmit(@CurrentAccount Account account, Model model,
+									  HttpServletRequest request, HttpServletResponse response) {
 		
-		return "account/delete-form";
+		accountService.deleteAccount(account);
+		accountService.logout(request, response);
+		return "redirect:/";
 	}
 	
+	
+	@GetMapping("/account/profile-image")
+	public String profileImageForm(@CurrentAccount Account account, Model model) {
+		
+		model.addAttribute(account);
+		
+		return "account/profile-image-form";
+	}
+	
+	@PostMapping("/account/profile-image")
+	public String profileImageSubmit(@CurrentAccount Account account, Model model, String profileImage,
+										RedirectAttributes redirectAttributes) {
+		
+		
+		log.info("null check {}" , profileImage == null);
+		
+		String message = "";
+		
+		if(profileImage.startsWith("data:image") && profileImage != null ) {
+			accountService.updateProfileImage(account, profileImage);
+			
+			message = "배너 이미지가 수정되었습니다.";
+		}else {
+			message = "배너 이미지 수정이 실패했습니다.";
+		}
+		
+		redirectAttributes.addFlashAttribute("message", message);
+		
+		return "redirect:/account/profile-image";
+	}
+	
+		
 	
 }

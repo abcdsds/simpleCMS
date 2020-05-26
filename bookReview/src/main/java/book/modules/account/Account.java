@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 import book.modules.base.BaseTimeEntity;
@@ -52,6 +53,9 @@ public class Account extends BaseTimeEntity{
 	
 	private String password;
 	
+	@Lob
+	private String profileImage;
+	
 	@OneToMany(mappedBy = "createdBy")
 	private List<Post> posts = new ArrayList<Post>();
 	
@@ -61,6 +65,16 @@ public class Account extends BaseTimeEntity{
 	public void changePassword(String encode) {
 		// TODO Auto-generated method stub
 		this.password = encode;
+	}
+
+	public void changeNickname(String nickname) {
+		// TODO Auto-generated method stub
+		this.nickname = nickname;
+	}
+
+	public void changeProfileImage(String profileImage) {
+		// TODO Auto-generated method stub
+		this.profileImage = profileImage;
 	}
 
 	
