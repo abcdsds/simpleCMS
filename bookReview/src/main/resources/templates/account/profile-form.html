@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+	<head th:replace="fragments.html :: head"></head>
+	
+	<body class="bg-light">
+	
+		<div th:replace="fragments.html :: main-nav"></div>
+		<div th:replace="fragments.html :: profile-nav"></div>
+		
+		<div class="container">
+			<div class="row mt-5 justify-content-center">
+				<div class="col-2">
+                	<div th:replace="fragments.html :: settings-menu(currentMenu='profile')"></div>
+            	</div>
+            	
+            	<div class="col-8">
+	                <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+	                    <span th:text="${message}">완료</span>
+	                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+	                </div>
+	                <div class="row">
+	                    <h2 class="col-6">정보 변경</h2>
+	                </div>
+	                <div class="row">
+	                    <form class="needs-validation col-12" th:object="${profileForm}" th:action="@{/account/profile}" method="post" novalidate>
+	                        <div class="form-group input-group">
+						    	<div class="input-group">
+									<label class="col-form-label requiredField" for="accountGender"><small>성별<span class="asteriskField">*</span></small></label>
+								</div>
+						    	<div class="input-group-prepend">
+								    <span class="input-group-text"> <i class="fa fa-user-secret" style="font-size: 0.9em"></i> </span>
+								</div>
+								<select th:field="*{accountGender}"  class="custom-select mr-sm-2" id="accountGender" aria-describedby="accountGenderHelp" >
+				                    <option th:value="male">남자</option>
+				                    <option th:value="female">여자</option>
+				                </select>
+							</div> <!-- form-group end.// -->
+	                        <div class="form-group input-group">
+						     	<div class="input-group">
+									<label class="col-form-label requiredField" for="birthYear"><small>태어난 해<span class="asteriskField">*</span></small></label>
+								</div>
+						    	<div class="input-group-prepend">
+								    <span class="input-group-text"> <i class="fa fa-envelope" style="font-size: 0.8em"></i> </span>
+								 </div>
+						        <input id="birthYear" type="text" th:field="*{birthYear}" class="form-control"
+	                           		placeholder="태어난 해" aria-describedby="birthYearHelp" required minlength="4" maxlength="4">
+	                   			<small id="birthYearHelp" class="form-text text-muted"></small>
+	                   			<small class="invalid-feedback">생년을 입력하세요.</small>
+	                   			<small class="form-text text-danger" th:if="${#fields.hasErrors('birthYear')}" th:errors="*{birthYear}">태어난 해 오류</small>
+						    </div> <!-- form-group// -->
+	                        <div class="form-group">
+	                            <button class="btn btn-outline-primary" type="submit" aria-describedby="submitHelp">변경하기</button>
+	                        </div>
+	                    </form>
+	                </div>
+	            </div>
+			</div>
+	    </div>
+	
+	
+	</body>
+
+</html>

@@ -144,7 +144,7 @@
 				      <li class="nav-item">
 				        <a class="nav-link" th:href="@{/notifications}"><i class="bb bb-icon-messages-f" style="font-size: 1.5em;"></i></a>
 				      </li>
-				      <li class="nav-item">
+				      <li class="nav-item" sec:authorize="isAuthenticated()">
 				        <a class="nav-link" th:href="@{/settings}"><i class="bb bb-icon-gear" style="font-size: 1.5em;"></i></a>
 				      </li>
 				      <li class="nav-item">
@@ -159,9 +159,9 @@
 				        </a>
 					    <div class="pop">
 						    <ul>
-						     <li class="nav-item profile"><a class="btn btn-primary" href="#" role="button">내 정보</a></li>
+						     <li class="nav-item profile"><a class="btn btn-primary" th:href="@{/account/profile}" role="button">내 정보</a></li>
 						     <li class="nav-item notification"><a class="btn btn-primary" href="#" role="button">알림</a></li>
-						     <li class="nav-item post"><a class="btn btn-primary" href="#" role="button">내 글</a></li>
+						     <li class="nav-item post"><a class="btn btn-primary" th:href="@{/account/profile}" role="button">내 글</a></li>
 						     <li class="nav-item comment"><a class="btn btn-primary" href="#" role="button">내 댓글</a></li>
 						     <li class="nav-item logout">
 						     	<form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
@@ -224,19 +224,13 @@
 						<nav>
 							<ul>
 								<li class="menuItem">
-									<a href="/series/top/30/">랭킹</a>
+									<a href="/series/top/30/">내 정보</a>
 								</li>
 								<li class="menuItem">
-									<a href="/series/comments/">리뷰</a>
+									<a href="/series/comments/">내 글</a>
 								</li>
 								<li class="menuItem">
-									<a href="/recommendations/series/">추천</a>
-								</li>
-								<li class="menuItem">
-									<a href="/series/">웹소설 찾기</a>
-								</li>
-								<li class="menuItem">
-									<a href="/forums/">커뮤니티</a>
+									<a href="/recommendations/series/">내 댓글</a>
 								</li>
 							</ul>
 						</nav>
@@ -245,6 +239,14 @@
 			</div>
 		</div>
 	</header>
+	
+	<div th:fragment="settings-menu (currentMenu)" class="list-group">
+	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{/account/profile}">정보 변경</a>
+	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" href="#" th:href="@{/account/password}">패스워드 변경</a>
+	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'alarm'}? active" href="#" th:href="@{/account/alarm}">프로필 이미지 변경</a>
+	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'tags'}? active" href="#" th:href="@{/settings/tags}">닉네임 변경</a>
+	    <a class="list-group-item list-group-item-action list-group-item-danger" th:classappend="${currentMenu == 'account'}? active" href="#" th:href="@{/settings/account}">회원탈퇴</a>
+	</div>
 		
 
 </html>

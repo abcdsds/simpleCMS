@@ -2,8 +2,11 @@ package book.modules.account;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,14 +17,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import book.modules.account.form.AccountForm;
+import book.modules.account.form.PasswordForm;
+import book.modules.account.form.ProfileForm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AccountService implements UserDetailsService {
 
 	private final AccountRepository accountRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final ModelMapper modelMapper;
 	
 	public Account accountCreate(AccountForm form) {
 
@@ -71,6 +80,27 @@ public class AccountService implements UserDetailsService {
 		}
 		
 		return new UserAccount(findByLoginId);
+	}
+
+	public void updateProfile(Account account, ProfileForm profileForm) {
+		// TODO Auto-generated method stub
+		log.info("Gender {} ", profileForm.getAccountGender());
+		log.info("Year {} ", profileForm.getBirthYear());
+		
+		modelMapper.map(profileForm, account);
+		
+		log.info("Account Gender {} ", account.getAccountGender());
+		log.info("Account Year {} ", account.getBirthYear());
+		
+		accountRepository.save(account);
+		
+	}
+
+	public void updatepassword(Account account, PasswordForm form) {
+		// TODO Auto-generated method stub
+		account.changePassword(passwordEncoder.encode(form.getNewPassword()));
+		accountRepository.save(account);
+		
 	}
 	
 	

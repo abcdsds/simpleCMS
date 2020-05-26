@@ -1,9 +1,7 @@
 package book.modules.account;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,10 +18,12 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @EqualsAndHashCode(of = "id" , callSuper = true)
-@Getter @Builder
+@Getter @Setter
+@Builder
 @Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Account extends BaseTimeEntity{
 
@@ -57,6 +57,11 @@ public class Account extends BaseTimeEntity{
 	
 	@OneToMany(mappedBy = "createdBy")
 	private List<Comment> comments = new ArrayList<Comment>();
+
+	public void changePassword(String encode) {
+		// TODO Auto-generated method stub
+		this.password = encode;
+	}
 
 	
 }
