@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://demos.buddyboss.com/onesocial/wp-content/mu-plugins/buddyboss-demo-toolbar/assets/css/font.css" type="text/css" media="all" >
 		<link rel="stylesheet" href="https://demos.buddyboss.com/onesocial/wp-includes/css/dashicons.min.css?ver=5.4.1" type="text/css" media="all" >
+		<link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
 		<style type="text/css">
 
 			.container {
@@ -112,10 +113,55 @@
 				color:white;
 			}
 			
-			
-			
 			.pop ul {
 				list-style:none;
+			}
+			
+			:root {
+				--teal-color: #24A9A7;
+				--purple-color: #9E41CC;
+			}
+			
+			body {
+			    background-color: #000;
+			    color: var(--teal-color);
+			}
+			
+			ul {
+			    padding: 0;
+			    list-style: none;
+			}
+			
+			.topics-table {
+			    margin-top: 1rem;
+			    padding: 8px;
+			    border: 2px solid var(--teal-color);
+			    border-radius: 10px;
+			}
+			
+			.topics-table a {
+			    /*color: var(--purple-color);*/
+			}
+			
+			ul.header-titles, li.topics-body, li.topics-body ul {
+			    overflow: hidden;
+			}
+			
+			li.topics-header, ul[class^='topic-item-'] {
+			    padding: 8px;
+			}
+			
+			ul[class^='topic-item-'] {
+			    border-top: 1px solid var(--teal-color);
+			}
+			
+			.header-titles li, ul[class^='topic-item-'] li {
+			    width: 25%;
+			    float: left;
+			}
+			
+			.badge {
+			    font-weight: normal;
 			}
 
 		</style>
@@ -250,6 +296,20 @@
 	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profileimage'}? active" href="#" th:href="@{/account/profile-image}">프로필 이미지 변경</a>
 	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'nickname'}? active" href="#" th:href="@{/account/nickname}">닉네임 변경</a>
 	    <a class="list-group-item list-group-item-action list-group-item-danger" th:classappend="${currentMenu == 'account'}? active" href="#" th:href="@{/account/leave}">회원탈퇴</a>
+	</div>
+	
+	<div th:fragment="editor-script">
+	    <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
+	    <script type="application/javascript">
+	        $(function () {
+	            $('.editor').summernote({
+	                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
+	                placeholder: '내용을 입력하세요.',
+	                tabsize: 2,
+	                height: 300
+	            });
+	        });
+	    </script>
 	</div>
 		
 

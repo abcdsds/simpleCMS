@@ -23,7 +23,7 @@ public abstract class BaseEntity extends BaseTimeEntity {
 
 	
 	@CreatedBy
-	@JoinColumn(name = "account_id")
+	@JoinColumn(name = "account_id" , updatable = false)
 	@ManyToOne
 	private Account createdBy;
 	

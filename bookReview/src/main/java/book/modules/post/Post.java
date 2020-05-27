@@ -8,20 +8,21 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import book.modules.account.AccountGender;
-import book.modules.account.AccountType;
 import book.modules.base.BaseEntity;
 import book.modules.board.Board;
 import book.modules.comment.Comment;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(of = "id" , callSuper = true)
+@Builder
 @Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
@@ -40,6 +41,11 @@ public class Post extends BaseEntity {
 	private boolean lock;
 
 	private boolean deleted;
+	
+	private String title;
+	
+	@Lob
+	private String content;
 	
 	@JoinColumn(name = "board_id")
 	@OneToOne(fetch = FetchType.LAZY)

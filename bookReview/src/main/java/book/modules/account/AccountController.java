@@ -236,5 +236,12 @@ public class AccountController {
 		return "redirect:/login";
 	}
 	
+	@GetMapping("/post/list")
+	public String PostList(@CurrentAccount Account account, Model model) {
+		
+		model.addAttribute(account);
+		return "post/list";
+	}
+	
 	
 }
