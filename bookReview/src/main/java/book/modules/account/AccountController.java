@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.sun.media.sound.InvalidDataException;
 
 import book.modules.account.form.AccountForm;
 import book.modules.account.form.NicknameForm;
@@ -189,6 +193,48 @@ public class AccountController {
 		return "redirect:/account/profile-image";
 	}
 	
+	@GetMapping("/find-password")
+	public String findPasswordForm(Model model) {
+		return "account/find-password";
+	}
 		
+	@PostMapping("/find-password")
+	public String findPasswordSubmit(Model model, String email, RedirectAttributes redirect) {
+		
+		Account account = accountService.checkId(email);
+		
+		if (account == null) {
+			model.addAttribute("message" , "일치하는 이메일이 존재하지 않습니다.");
+			return "account/find-password";
+		}
+		accountService.sendPasswordMail(account, email);
+		redirect.addFlashAttribute("message" , "메일이 발송되었습니다.");
+		
+		return "redirect:/find-password";
+	}
+	
+	@GetMapping("/check-email-token")
+	public String checkEmailToken(Model model ,@RequestParam(name = "token") String token , @RequestParam(name="email") String email) throws InvalidDataException {
+		
+		accountService.validToken(email, token);
+		model.addAttribute("token" , token);
+		model.addAttribute("email" , email);
+		model.addAttribute(new PasswordForm());
+		return "mail/changePassword";
+	}
+	
+	@PostMapping("/change-password")
+	public String changePasswordWithToken(Model model,@RequestParam(name = "token") String token , @RequestParam(name="email") String email, @Valid PasswordForm form , Errors errors,
+			 							  RedirectAttributes redirectAttributes) throws InvalidDataException {
+		if (errors.hasErrors()) {
+			model.addAttribute("message" , "수정에 실패했습니다.");
+			return "mail/changePassword";
+		}
+		
+		accountService.changePasswordWithToken(token,email,form);
+		
+		return "redirect:/login";
+	}
+	
 	
 }

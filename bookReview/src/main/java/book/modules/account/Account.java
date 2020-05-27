@@ -1,10 +1,14 @@
 package book.modules.account;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -53,7 +57,11 @@ public class Account extends BaseTimeEntity{
 	
 	private String password;
 	
-	@Lob
+	private String token;
+	
+	private LocalDateTime tokenGeneratedAt;
+	
+	@Lob @Basic(fetch = FetchType.LAZY)
 	private String profileImage;
 	
 	@OneToMany(mappedBy = "createdBy")
@@ -75,6 +83,12 @@ public class Account extends BaseTimeEntity{
 	public void changeProfileImage(String profileImage) {
 		// TODO Auto-generated method stub
 		this.profileImage = profileImage;
+	}
+	
+	public void generateEmailCheckToken() {
+		// TODO Auto-generated method stub
+		this.token = UUID.randomUUID().toString();
+		this.tokenGeneratedAt = LocalDateTime.now();
 	}
 
 	

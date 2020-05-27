@@ -3,6 +3,7 @@ package book.modules.account;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -19,7 +20,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import com.sun.media.sound.InvalidDataException;
+
+import book.config.AppProperties;
+import book.mail.Email;
+import book.mail.EmailService;
 import book.modules.account.form.AccountForm;
 import book.modules.account.form.NicknameForm;
 import book.modules.account.form.PasswordForm;
@@ -34,8 +42,12 @@ import lombok.extern.slf4j.Slf4j;
 public class AccountService implements UserDetailsService {
 
 	private final AccountRepository accountRepository;
+	private final EmailService emailService;
 	private final PasswordEncoder passwordEncoder;
 	private final ModelMapper modelMapper;
+	private final AppProperties appProperties;
+	private final TemplateEngine templateEngine;
+	private final EntityManager em;
 	
 	public Account accountCreate(AccountForm form) {
 
@@ -132,6 +144,64 @@ public class AccountService implements UserDetailsService {
 		account.changeProfileImage(profileImage);
 		accountRepository.save(account);
 	}
+
+	public Account checkId(String email) {
+		// TODO Auto-generated method stub
+		return accountRepository.findByEmail(email);
+	}
+
+	public void sendPasswordMail(Account account, String email) {
+		// TODO Auto-generated method stub
+		
+		account.generateEmailCheckToken();
+		
+		Context context = new Context();
+		context.setVariable("link", "/check-email-token?token="+account.getToken()+"&email="+account.getEmail());
+		context.setVariable("nickname", account.getNickname());
+		context.setVariable("linkName", "이메일 인증하기");
+		context.setVariable("message", "서비스를 사용하려면 링크를 클릭하세요.");
+		context.setVariable("host", appProperties.getHost());
+		
+		String message = templateEngine.process("mail/page", context);
+		
+		Email emailMessage = Email.builder()
+										.to(account.getEmail())
+										.subject("회원 가입 인증 메일")
+										.message(message)
+										.build();										
+		
+		emailService.sendEmail(emailMessage);
+		
+		accountRepository.save(account);
+	}
+
+	public Account validToken(String email, String token) throws InvalidDataException {
+		// TODO Auto-generated method stub
+		Account account = accountRepository.findByEmail(email);
+		
+		if (account == null) {
+			throw new UsernameNotFoundException("아이디가 존재하지 않습니다.");
+		}
+		
+		
+		if (!account.getToken().equals(token)) {
+			throw new InvalidDataException("토큰이 일치하지 않습니다.");
+		}
+		
+		return account;
+	}
+
+	public void changePasswordWithToken(String token, String email, PasswordForm form) throws InvalidDataException {
+		// TODO Auto-generated method stub
+		Account account = validToken(email,token);
+		account.changePassword(passwordEncoder.encode(form.getNewPassword()));
+		account.generateEmailCheckToken();
+	
+	}
+	
+	
+	
+	
 	
 	
 	
