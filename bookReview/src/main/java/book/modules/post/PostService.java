@@ -61,9 +61,9 @@ public class PostService {
 		return postRepository.findById(id).orElseThrow(null);
 	}
 
-	public Post getPostWithAccount(Long id, Account account) throws AccessDeniedException {
+	public Post getPostWithAccount(Long id, Account account,boolean deleted) throws AccessDeniedException {
 		// TODO Auto-generated method stub
-		Post findByIdAndAccount = postRepository.findByIdAndCreatedBy(id,account);
+		Post findByIdAndAccount = postRepository.findByIdAndCreatedByAndDeleted(id,account,deleted);
 		
 		if (findByIdAndAccount == null) {
 			throw new AccessDeniedException("잘못된 접근입니다.");
@@ -73,6 +73,11 @@ public class PostService {
 	public void updatePost(Post post, PostForm form) {
 		// TODO Auto-generated method stub
 		modelMapper.map(form, post);
+	}
+
+	public void UpdateDeleteStatus(Post post) {
+		// TODO Auto-generated method stub
+		post.updateDeleteStatus(true);
 	}
 	
 	

@@ -56,6 +56,11 @@ public class Post extends BaseEntity {
 
 	@OneToMany(mappedBy = "post")
 	private List<Comment> comments = new ArrayList<Comment>();
+
+	public void updateDeleteStatus(boolean b) {
+		// TODO Auto-generated method stub
+		this.deleted = b;
+	}
 	
 	
 	

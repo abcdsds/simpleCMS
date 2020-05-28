@@ -67,7 +67,7 @@ public class PostController {
 	@GetMapping("/update/{id}")
 	public String updateForm(@CurrentAccount Account account, Model model, @PathVariable Long id) throws AccessDeniedException {
 				
-		Post post = postService.getPostWithAccount(id,account);
+		Post post = postService.getPostWithAccount(id,account,false);
 		PostForm map = modelMapper.map(post, PostForm.class);
 		
 		model.addAttribute(map);
@@ -86,9 +86,18 @@ public class PostController {
 			return "redirect:/post/update/"+id;
 		}
 		
-		Post post = postService.getPostWithAccount(id,account);
+		Post post = postService.getPostWithAccount(id,account,false);
 		postService.updatePost(post , form);
 		
 		return "redirect:/post/view/"+id;
+	}
+	
+	@PostMapping("/update/delete/{id}")
+	public String deletePost(@CurrentAccount Account account, Model model, @PathVariable Long id) throws AccessDeniedException {
+		
+		Post post = postService.getPostWithAccount(id,account,false);
+		postService.UpdateDeleteStatus(post);
+		
+		return "redirect:/list";
 	}
 }
