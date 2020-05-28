@@ -13,7 +13,6 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import book.modules.account.Account;
 import book.modules.base.BaseEntity;
 import book.modules.board.Board;
 import book.modules.comment.Comment;
@@ -23,9 +22,10 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @EqualsAndHashCode(of = "id" , callSuper = true)
-@Builder @Getter
+@Builder @Getter @Setter
 @Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 

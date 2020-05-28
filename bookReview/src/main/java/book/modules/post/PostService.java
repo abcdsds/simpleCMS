@@ -1,7 +1,13 @@
 package book.modules.post;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
+import org.apache.catalina.mapper.Mapper;
+import org.modelmapper.ModelMapper;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +24,7 @@ public class PostService {
 
 	private final PostRepository postRepository;
 	private final AccountRepository accountRepository;
+	private final ModelMapper modelMapper;
 
 	public void add(Account account, PostForm form) {
 		// TODO Auto-generated method stub
@@ -52,6 +59,20 @@ public class PostService {
 	public Post getPost(Long id) {
 		// TODO Auto-generated method stub
 		return postRepository.findById(id).orElseThrow(null);
+	}
+
+	public Post getPostWithAccount(Long id, Account account) throws AccessDeniedException {
+		// TODO Auto-generated method stub
+		Post findByIdAndAccount = postRepository.findByIdAndCreatedBy(id,account);
+		
+		if (findByIdAndAccount == null) {
+			throw new AccessDeniedException("잘못된 접근입니다.");
+		}
+		return findByIdAndAccount;
+	}
+	public void updatePost(Post post, PostForm form) {
+		// TODO Auto-generated method stub
+		modelMapper.map(form, post);
 	}
 	
 	
