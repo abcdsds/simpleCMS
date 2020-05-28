@@ -48,6 +48,11 @@ public class PostService {
 		
 		
 	}
+
+	public Post getPost(Long id) {
+		// TODO Auto-generated method stub
+		return postRepository.findById(id).orElseThrow(null);
+	}
 	
 	
 }

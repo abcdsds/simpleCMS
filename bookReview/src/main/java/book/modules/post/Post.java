@@ -1,5 +1,6 @@
 package book.modules.post;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import book.modules.account.Account;
 import book.modules.base.BaseEntity;
 import book.modules.board.Board;
 import book.modules.comment.Comment;
@@ -19,10 +21,11 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(of = "id" , callSuper = true)
-@Builder
+@Builder @Getter
 @Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
@@ -49,9 +52,11 @@ public class Post extends BaseEntity {
 	
 	@JoinColumn(name = "board_id")
 	@OneToOne(fetch = FetchType.LAZY)
-	private Board category;
+	private Board category = null;
 
 	@OneToMany(mappedBy = "post")
-	private List<Comment> comments;
+	private List<Comment> comments = new ArrayList<Comment>();
+	
+	
 	
 }
