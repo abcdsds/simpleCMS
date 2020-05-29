@@ -108,6 +108,11 @@
 			<version>2.3.6</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
