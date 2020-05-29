@@ -5,6 +5,8 @@ import java.nio.file.AccessDeniedException;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -12,7 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import book.modules.account.Account;
 import book.modules.account.CurrentAccount;
@@ -28,6 +34,7 @@ public class PostController {
 	private final PostRepository postRepository;
 	private final PostService postService;
 	private final ModelMapper modelMapper;
+	private final ObjectMapper objectMapper;
 	
 	@GetMapping("/add")
 	public String postAddForm(@CurrentAccount Account account, Model model) {
@@ -66,29 +73,29 @@ public class PostController {
 	}
 	
 	@PostMapping("/view/{id}/up")
-	public String postUp(@CurrentAccount Account account, Model model, @PathVariable Long id) {
+	@ResponseBody
+	public ResponseEntity<String> postUp(@CurrentAccount Account account, Model model, @PathVariable Long id) throws JsonProcessingException {
 	
 		Post post = postService.getPost(id);
-		String up = postService.vote(account, post, VoteType.up);
+		String message = postService.vote(account, post, VoteType.up);
 		
 		model.addAttribute("post" , post);
 		model.addAttribute(account);
-		model.addAttribute("voteMessage" , up);
 		
-		return "post/view";
+		return new ResponseEntity<>(message , HttpStatus.OK);
 	}
 	
 	@PostMapping("/view/{id}/down")
-	public String postDown(@CurrentAccount Account account, Model model, @PathVariable Long id) {
+	@ResponseBody
+	public ResponseEntity<String> postDown(@CurrentAccount Account account, Model model, @PathVariable Long id) throws JsonProcessingException {
 	
 		Post post = postService.getPost(id);
-		String up = postService.vote(account, post, VoteType.down);
-		
+		String message = postService.vote(account, post, VoteType.down);
+				
 		model.addAttribute("post" , post);
 		model.addAttribute(account);
-		model.addAttribute("voteMessage" , up);
 		
-		return "post/view";
+		return new ResponseEntity<>(message , HttpStatus.OK);
 	}
 	
 	

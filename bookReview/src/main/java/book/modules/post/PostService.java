@@ -8,10 +8,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import book.modules.account.Account;
 import book.modules.account.AccountRepository;
 import book.modules.post.form.PostForm;
 import book.modules.post.vote.PostVote;
+import book.modules.post.vote.PostVoteForm;
 import book.modules.post.vote.PostVoteRepository;
 import book.modules.post.vote.VoteType;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +29,7 @@ public class PostService {
 	private final PostVoteRepository postVoteRepository; 
 	private final AccountRepository accountRepository;
 	private final ModelMapper modelMapper;
+	private final ObjectMapper objectMapper;
 
 	public void add(Account account, PostForm form) {
 		// TODO Auto-generated method stub
@@ -84,11 +89,15 @@ public class PostService {
 		return postVote;
 	}
 	
-	public String vote(Account account, Post post, VoteType voteType) {
+	public String vote(Account account, Post post, VoteType voteType) throws JsonProcessingException {
 		// TODO Auto-generated method stub
+		PostVoteForm form = new PostVoteForm();
+		
 		PostVote findByPostAndCreatedBy = postVoteRepository.findByPostAndCreatedBy(post, account);
 		if (findByPostAndCreatedBy != null) {
-			return "이미 추천하셨습니다.";
+			form.setMessage("이미 추천하셨습니다.");			
+			form.setVoteCount(voteType.equals(VoteType.up) ? post.getUp() : post.getDown());
+			return objectMapper.writeValueAsString(form);
 		}
 		
 		findByPostAndCreatedBy = createVote(post,voteType);
@@ -100,7 +109,12 @@ public class PostService {
 			post.voteDown();
 		}
 		
-		return "추천 되었습니다.";
+		form.setMessage("추천 되었습니다.");			
+		form.setVoteCount(voteType.equals(VoteType.up) ? post.getUp() : post.getDown());
+		
+		
+		
+		return objectMapper.writeValueAsString(form);
 	}
 	
 	
