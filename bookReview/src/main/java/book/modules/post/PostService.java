@@ -3,11 +3,7 @@ package book.modules.post;
 import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
-import javax.validation.Valid;
-
-import org.apache.catalina.mapper.Mapper;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import book.modules.account.Account;
 import book.modules.account.AccountRepository;
 import book.modules.post.form.PostForm;
+import book.modules.post.vote.PostVote;
+import book.modules.post.vote.PostVoteRepository;
+import book.modules.post.vote.VoteType;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class PostService {
 
 	private final PostRepository postRepository;
+	private final PostVoteRepository postVoteRepository; 
 	private final AccountRepository accountRepository;
 	private final ModelMapper modelMapper;
 
@@ -52,8 +52,7 @@ public class PostService {
 		Post save = postRepository.save(post);
 		
 		getAccount.getPosts().add(save);
-		
-		
+				
 	}
 
 	public Post getPost(Long id) {
@@ -78,6 +77,30 @@ public class PostService {
 	public void UpdateDeleteStatus(Post post) {
 		// TODO Auto-generated method stub
 		post.updateDeleteStatus(true);
+	}
+
+	public PostVote createVote(Post post, VoteType voteType) {
+		PostVote postVote = PostVote.builder().post(post).voteType(voteType).build();
+		return postVote;
+	}
+	
+	public String vote(Account account, Post post, VoteType voteType) {
+		// TODO Auto-generated method stub
+		PostVote findByPostAndCreatedBy = postVoteRepository.findByPostAndCreatedBy(post, account);
+		if (findByPostAndCreatedBy != null) {
+			return "이미 추천하셨습니다.";
+		}
+		
+		findByPostAndCreatedBy = createVote(post,voteType);
+		postVoteRepository.save(findByPostAndCreatedBy);
+		
+		if (voteType.equals(VoteType.up)) {
+			post.voteUp();
+		} else {
+			post.voteDown();
+		}
+		
+		return "추천 되었습니다.";
 	}
 	
 	

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import book.modules.account.Account;
 import book.modules.account.CurrentAccount;
 import book.modules.post.form.PostForm;
+import book.modules.post.vote.VoteType;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -63,6 +64,34 @@ public class PostController {
 		
 		return "post/view";
 	}
+	
+	@PostMapping("/view/{id}/up")
+	public String postUp(@CurrentAccount Account account, Model model, @PathVariable Long id) {
+	
+		Post post = postService.getPost(id);
+		String up = postService.vote(account, post, VoteType.up);
+		
+		model.addAttribute("post" , post);
+		model.addAttribute(account);
+		model.addAttribute("voteMessage" , up);
+		
+		return "post/view";
+	}
+	
+	@PostMapping("/view/{id}/down")
+	public String postDown(@CurrentAccount Account account, Model model, @PathVariable Long id) {
+	
+		Post post = postService.getPost(id);
+		String up = postService.vote(account, post, VoteType.down);
+		
+		model.addAttribute("post" , post);
+		model.addAttribute(account);
+		model.addAttribute("voteMessage" , up);
+		
+		return "post/view";
+	}
+	
+	
 	
 	@GetMapping("/update/{id}")
 	public String updateForm(@CurrentAccount Account account, Model model, @PathVariable Long id) throws AccessDeniedException {
