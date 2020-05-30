@@ -105,6 +105,7 @@
 			  						</div>
 			  						<div class="comment-item-sub" th:each="child: ${item.childList}">
 			  						   <div class="text" th:if="${child.id != item.id}">
+			  						   	   <div th:text="${child.parent.createdBy.nickname}">상위 닉네임</div>
 				  						   <div th:text="${child.content}">1</div>
 				  						   <span class="comment-reply" th:attr="data-comment-id=${child.id}">댓글</span>
 				  						   

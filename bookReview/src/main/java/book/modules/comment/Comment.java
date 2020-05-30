@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
@@ -23,6 +26,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+@NamedEntityGraph(
+        name = "Comment.withParentAndGroupAndChildList",
+        attributeNodes = {
+        		@NamedAttributeNode("parent"),
+                @NamedAttributeNode(value = "group", subgraph = "childList")
+        },
+        subgraphs = @NamedSubgraph(name = "childList", attributeNodes = @NamedAttributeNode("childList"))
+)
 
 @EqualsAndHashCode(of = "id" , callSuper = true)
 @Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)

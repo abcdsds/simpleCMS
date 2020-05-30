@@ -16,7 +16,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	@EntityGraph(attributePaths = {"parent","group","childList"})
 	List<Comment> findAllByPostAndDeletedOrderByIdAsc(Post post, boolean b);
 
-	@EntityGraph(attributePaths = {"parent","group","childList"})
+	@EntityGraph("Comment.withParentAndGroupAndChildList")
 	List<Comment> findAllByPostAndDeletedAndDepthOrderByIdAsc(Post post, boolean b, int i);
 
 }
