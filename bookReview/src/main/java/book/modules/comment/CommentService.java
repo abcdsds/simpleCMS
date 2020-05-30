@@ -1,5 +1,6 @@
 package book.modules.comment;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -44,9 +45,17 @@ public class CommentService {
 			
 			comment.updateParent(orElseComment);
 			orElseComment.updateChild(comment);
+			comment.updateGroup(orElseComment.getGroup());
+		} else {
+			comment.updateGroup(comment);
 		}
 	
 		commentRepository.save(comment);
+	}
+
+	public List<Comment> getCommentList(Post post) {
+		// TODO Auto-generated method stub		
+		return commentRepository.findAllByPostAndDeletedAndDepthOrderByIdAsc(post,false,0);
 	}
 
 }

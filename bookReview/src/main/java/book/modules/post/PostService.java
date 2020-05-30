@@ -18,6 +18,7 @@ import book.modules.post.vote.PostVote;
 import book.modules.post.vote.PostVoteForm;
 import book.modules.post.vote.PostVoteRepository;
 import book.modules.post.vote.VoteType;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -60,9 +61,9 @@ public class PostService {
 				
 	}
 
-	public Post getPost(Long id) {
+	public Post getPost(Long id) throws NotFoundException {
 		// TODO Auto-generated method stub
-		return postRepository.findById(id).orElseThrow(null);
+		return postRepository.findById(id).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
 	}
 
 	public Post getPostWithAccount(Long id, Account account,boolean deleted) throws AccessDeniedException {

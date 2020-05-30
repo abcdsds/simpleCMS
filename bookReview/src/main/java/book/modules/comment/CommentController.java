@@ -36,4 +36,21 @@ public class CommentController {
 		
 		return "redirect:/post/view/"+id;
 	}
+	
+	@PostMapping("/add/{postId}/{commentId}")
+	public String commentReplySubmit(@CurrentAccount Account account , Model model , 
+									 @Valid CommentForm form , Errors errors, @PathVariable Long postId,
+									 @PathVariable Long commentId ) throws NotFoundException {
+		
+		if (errors.hasErrors()) {
+			return "redirect:/post/view/"+form.getPostId();
+		}
+		
+		form.setPostId(postId);
+		form.setParentCommentId(commentId);
+		
+		commentService.addComment(account,form);
+		
+		return "redirect:/post/view/"+postId;
+	}
 }

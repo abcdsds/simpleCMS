@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+
+import org.springframework.core.annotation.Order;
 
 import book.modules.base.BaseEntity;
 import book.modules.post.Post;
@@ -50,7 +53,16 @@ public class Comment extends BaseEntity {
 	@JoinColumn(name = "parent_id")
 	private Comment parent;
 	
-	@OneToMany(mappedBy = "parent")
+	
+//	@OneToMany(mappedBy = "parent")
+//	private List<Comment> childList = new ArrayList<Comment>();
+	
+	@ManyToOne
+	@JoinColumn(name = "group_id")
+	private Comment group;
+	
+	@OrderBy("id")
+	@OneToMany(mappedBy = "group")
 	private List<Comment> childList = new ArrayList<Comment>();
 	
 	public void updateParent (Comment parent) {
@@ -59,5 +71,9 @@ public class Comment extends BaseEntity {
 	
 	public void updateChild (Comment child) {
 		this.childList.add(child);
+	}
+	
+	public void updateGroup(Comment group) {
+		this.group = group;
 	}
 }

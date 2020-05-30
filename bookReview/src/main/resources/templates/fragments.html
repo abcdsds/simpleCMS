@@ -27,6 +27,10 @@
 	        	border:1px solid;
 	        	border-radius: 3px;
 	        }
+	        	        
+	        .name p {
+	        	display:inline-block;
+	        }
 	        
 	        .submit_btn {
 	        	position: absolute;
@@ -37,22 +41,17 @@
 	        	
 	        }
 	        
-	        .comment-text{
-	        	padding-bottom:20px;
-	        	padding-top:20px;
-	        }
-	        
-	        .comment_vote_up {
+	        .comment-vote-up {
 	        	padding-right:10px;
 	        	float:right;
 	        }
 	        
-	        .comment_vote_down {
+	        .comment-vote-down {
 	        	padding-right:10px;
 	        	float:right;
 	        }
 	        
-	        .comment_reply{
+	        .comment-reply{
 	        	float:right;
 	        }
 	        
@@ -60,7 +59,7 @@
 	        	padding-bottom:30px;
 	        }
 	        .comment {
-	        	border-bottom:1px solid;
+	        	border-top:1px solid;
 	        	padding-top: 10px;
 	        }
 	        .post-item{
@@ -69,12 +68,17 @@
 	        	        
 	        .comment-count{
 	        	padding-top:10px;
-	        	border-bottom:1px solid;
 	        	padding-bottom:10px;
 	        }
 	        
 	        .comment-item {
 	        	padding-top:10px;
+	        	padding-bottom:20px;
+	        }
+	        
+	        .comment-reply:hover {
+	        	opacity:0.5;
+	        	cursor:pointer;
 	        }
 	        .vote {
 	        	text-align: center;
@@ -384,6 +388,18 @@
 	                height: 300
 	            });
 	        });
+	    </script>
+	</div>
+	
+	<div th:fragment="date-time">
+	    <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+	    <script type="application/javascript">
+	        $(function () {
+	            moment.locale('ko');
+	            $(".comment-date").text(function(index, dateTime) {
+	                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LLL');
+	            });
+	        })
 	    </script>
 	</div>
 		

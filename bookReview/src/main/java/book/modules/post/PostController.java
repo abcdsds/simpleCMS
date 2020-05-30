@@ -1,6 +1,7 @@
 package book.modules.post;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -22,8 +23,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import book.modules.account.Account;
 import book.modules.account.CurrentAccount;
+import book.modules.comment.Comment;
+import book.modules.comment.CommentService;
+import book.modules.comment.form.CommentForm;
 import book.modules.post.form.PostForm;
 import book.modules.post.vote.VoteType;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -33,6 +38,7 @@ public class PostController {
 
 	private final PostRepository postRepository;
 	private final PostService postService;
+	private final CommentService commentService;
 	private final ModelMapper modelMapper;
 	private final ObjectMapper objectMapper;
 	
@@ -62,11 +68,21 @@ public class PostController {
 	
 	
 	@GetMapping("/view/{id}")
-	public String view(@CurrentAccount Account account, Model model, @PathVariable Long id) {
+	public String view(@CurrentAccount Account account, Model model, @PathVariable Long id) throws NotFoundException {
 	
 		Post post = postService.getPost(id);
+		List<Comment> commentList = commentService.getCommentList(post);
+		
+		commentList.sort((a,b) -> a.getId().compareTo(b.getId())); //정렬 오름차순
+		
+		
+//		commentList.forEach(comment -> {
+//			System.out.println(comment.getId());
+//		});
 		
 		model.addAttribute("post" , post);
+		model.addAttribute(new CommentForm());
+		model.addAttribute("commentList", commentList);
 		model.addAttribute(account);
 		
 		return "post/view";
@@ -74,7 +90,7 @@ public class PostController {
 	
 	@PostMapping("/view/{id}/up")
 	@ResponseBody
-	public ResponseEntity<String> postUp(@CurrentAccount Account account, Model model, @PathVariable Long id) throws JsonProcessingException {
+	public ResponseEntity<String> postUp(@CurrentAccount Account account, Model model, @PathVariable Long id) throws JsonProcessingException, NotFoundException {
 	
 		Post post = postService.getPost(id);
 		String message = postService.vote(account, post, VoteType.up);
@@ -87,7 +103,7 @@ public class PostController {
 	
 	@PostMapping("/view/{id}/down")
 	@ResponseBody
-	public ResponseEntity<String> postDown(@CurrentAccount Account account, Model model, @PathVariable Long id) throws JsonProcessingException {
+	public ResponseEntity<String> postDown(@CurrentAccount Account account, Model model, @PathVariable Long id) throws JsonProcessingException, NotFoundException {
 	
 		Post post = postService.getPost(id);
 		String message = postService.vote(account, post, VoteType.down);

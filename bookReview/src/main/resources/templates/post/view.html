@@ -71,7 +71,7 @@
 		  				<label style="padding-top:10px;">댓글쓰기</label>
 		  				<form th:action="@{'/comment/add/' + ${post.id}}" th:object="${commentForm}" method="post" novalidate>
 		  					<div class="text">
-		  						<textarea></textarea>
+		  						<textarea th:field="*{content}"></textarea>
 		  					</div>
 		  					<input type="submit" class="btn btn-info submit_btn" value="등록">
 		  				</form>
@@ -86,69 +86,78 @@
 		  						댓글
 		  					<span>3</span>
 		  				</div>
-		  				<div class="comment-item">
-		  					<div class="comment" id="comment-10">
+		  				<div class="comment-item" th:each="item: ${commentList}">
+		  					<div class="comment" th:id="'comment-' + ${item.id}">
 		  						<div class="text">
 			  						<h5 class="name">
-			  							<i class="fa fa-user"></i> 닉네임1
+			  							<i class="fa fa-user"></i> <p th:text="${item.createdBy.nickname}">닉네임1</p>
 			  						</h5>
-			  						<span class="comment_date">date</span>
-			  						<span class="comment_reply">댓글</span>
-			  						<span class="comment_vote_down"><i class="fa fa-thumbs-down"></i>
-			  							<span class="comment_vote_down_count">1</span>
+			  						<span class="comment-date" th:text="${item.updatedAt}">date</span>
+			  						<span class="comment-reply" th:attr="data-comment-id=${item.id}">댓글</span>
+			  						<span class="comment-vote-down"><i class="fa fa-thumbs-down"></i>
+			  							<span class="comment-vote-down-count" th:text="${item.down}">1</span>
 			  						</span>
-			  						<span class="comment_vote_up"><i class="fa fa-thumbs-up"></i>
-			  							<span class="comment_vote_up_count">1</span>
+			  						<span class="comment-vote-up"><i class="fa fa-thumbs-up"></i>
+			  							<span class="comment-vote-up-count" th:text="${item.up}">1</span>
 			  						</span>
 			  						<div class="comment-text">
-			  							<p>가나다라마바사1</p>
+			  							<p th:text="${item.content}">가나다라마바사1</p>
+			  						</div>
+			  						<div class="comment-item-sub" th:each="child: ${item.childList}">
+			  						   <div class="text" th:if="${child.id != item.id}">
+				  						   <div th:text="${child.content}">1</div>
+				  						   <span class="comment-reply" th:attr="data-comment-id=${child.id}">댓글</span>
+				  						   
+				  						   <div th:id="'comment-form-' + ${child.id}" style="display:none; border-bottom:1px solid;">
+							  							<div class="row justify-content-center">
+												  			<div class="col-sm-12">
+												  				<label style="padding-top:10px;"><i class="fa fa-share fa-flip-vertical re"></i> 댓글쓰기</label>
+												  				<form th:action="@{'/comment/add/' + ${post.id} + '/' + ${child.id}}" th:object="${commentForm}" method="post" novalidate>
+												  					<input type="hidden" name="depth" th:value="${child.depth + 1}">
+												  					
+												  					<div class="text">
+												  						<textarea th:field="*{content}"></textarea>
+												  					</div>
+												  					<input type="submit" class="btn btn-info submit_btn" value="등록">
+												  				</form>
+												  			</div>
+												  		</div>
+							  				</div>
+						  				</div>
 			  						</div>
 		  						</div>
 		  					</div>
-		  					<div class="comment" id="comment-11">
-		  						<div class="text">
-			  						<h5 class=""name>
-			  							<i class="fa fa-user"></i> 닉네임2
-			  						</h5>
-			  						<span class="comment_date">date</span>
-			  						<span class="comment_reply">댓글</span>
-			  						<span class="comment_vote_down"><i class="fa fa-thumbs-down"></i>
-			  							<span class="comment_vote_down_count">1</span>
-			  						</span>
-			  						<span class="comment_vote_up"><i class="fa fa-thumbs-up"></i>
-			  							<span class="comment_vote_up_count">1</span>
-			  						</span>
-			  						<div class="comment-text">
-			  							<p>가나다라마바사2</p>
-			  						</div>
-		  						</div>
-		  					</div>
-		  					<div class="comment" id="comment-12">
-		  						<div class="text">
-			  						<h5 class=""name>
-			  							<i class="fa fa-user"></i> 닉네임3
-			  						</h5>
-			  						<span class="comment_date">date</span>
-			  						<span class="comment_reply">댓글</span>
-			  						<span class="comment_vote_down"><i class="fa fa-thumbs-down"></i>
-			  							<span class="comment_vote_down_count">1</span>
-			  						</span>
-			  						<span class="comment_vote_up"><i class="fa fa-thumbs-up"></i>
-			  							<span class="comment_vote_up_count">1</span>
-			  						</span>
-			  						<div class="comment-text">
-			  							<p>가나다라마바사3</p>
-			  						</div>
-		  						</div>
-		  					</div>
-
+		  					<div th:id="'comment-form-' + ${item.id}" style="display:none; border-bottom:1px solid;">
+			  							<div class="row justify-content-center">
+								  			<div class="col-sm-12">
+								  				<label style="padding-top:10px;"><i class="fa fa-share fa-flip-vertical re"></i> 댓글쓰기</label>
+								  				<form th:action="@{'/comment/add/' + ${post.id} + '/' + ${item.id}}" th:object="${commentForm}" method="post" novalidate>
+								  					<input type="hidden" name="depth" th:value="${item.depth + 1}">
+								  					
+								  					<div class="text">
+								  						<textarea th:field="*{content}"></textarea>
+								  					</div>
+								  					<input type="submit" class="btn btn-info submit_btn" value="등록">
+								  				</form>
+								  			</div>
+								  		</div>
+			  				</div>
 		  				</div>
 		  			</div>
 		  		</div>
 			</div>		    
 	    </div>
 		<script th:replace="fragments.html :: editor-script"></script>
-	
+		<div th:replace="fragments.html :: date-time"></div>
+		<script type="application/javascript">
+			$('.comment-reply').click(function () {
+				const commentId = $(this).data('comment-id');
+				console.log('clicked');
+				console.log(commentId);
+				$('#comment-form-'+ commentId).toggle();
+				
+			});
+		</script>
 	</body>
 
 </html>
