@@ -90,9 +90,19 @@ public class PostService {
 		return postVote;
 	}
 	
-	public String vote(Account account, Post post, VoteType voteType) throws JsonProcessingException {
+	public String vote(Account account, Long postId, VoteType voteType) throws JsonProcessingException {
 		// TODO Auto-generated method stub
 		PostVoteForm form = new PostVoteForm();
+		
+		Optional<Post> findById = postRepository.findById(postId);
+		
+		if (!findById.isPresent()) {
+			form.setMessage("글이 존재하지 않습니다.");
+			return objectMapper.writeValueAsString(form);
+		}
+		
+		Post post = findById.orElseThrow(null);
+		
 		
 		PostVote findByPostAndCreatedBy = postVoteRepository.findByPostAndCreatedBy(post, account);
 		if (findByPostAndCreatedBy != null) {

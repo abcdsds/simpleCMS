@@ -19,4 +19,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	@EntityGraph("Comment.withParentAndGroupAndChildList")
 	List<Comment> findAllByPostAndDeletedAndDepthOrderByIdAsc(Post post, boolean b, int i);
 
+	int countByPost(Post post);
+
 }

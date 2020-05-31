@@ -27,11 +27,11 @@
 			                	</span>
 			                	<span>
 			                		추천수
-									<b>1</b>
+									<b th:text="${post.up}">1</b>
 			                	</span>
 			                	<span>
 			                		댓글수
-									<b>1</b>
+									<b th:text="${commentTotalCount}">1</b>
 			                	</span>
 			                </div>
 		                </div>
@@ -42,20 +42,20 @@
 		                <div id="title" class="title" th:utext="${post.content}"></div>
 		                
 		                <div class="vote">
-		                	<a class="voteitem" href="/asdf">
+		                	<span class="vote-up" th:attr="data-post-id=${post.id}">
 			                	<b>
 			                		<i class="fa fa-thumbs-up" style="font-size:20px"></i>
-			                		<string id="">10</string>
+			                		<span class="post-vote-up-count" th:id="${'post-vote-up-count-' + post.id}" th:text="${post.up}">1</span>
 			                	</b>
 			                	<p>추천</p>
-		                	</a>
-		                	<a class="voteitem" href="/asdf">
+		                	</span>
+		                	<span class="vote-down" th:attr="data-post-id=${post.id}">
 			                	<b>
 			                		<i class="fa fa-thumbs-down" style="font-size:20px"></i>
-			                		<string id="">0</string>
+			                		<span class="post-vote-down-count" th:id="${'post-vote-down-count-' + post.id}" th:text="${post.down}">1</span>
 			                	</b>
 			                	<p>반대</p>
-		                	</a>
+		                	</span>
 		                </div>
 		                <div class="menu-bottom" style="text-align:center; padding-bottom:20px;">
 		                	<a class="btn btn-primary" href="/list" style="float:left;">리스트</a>
@@ -84,7 +84,7 @@
 		  			<div class="col-sm-10" style="border:1px solid; border-radius:7px;">
 		  				<div class="comment-count">
 		  						댓글
-		  					<span>3</span>
+		  					<span th:text="${commentTotalCount}">0</span>
 		  				</div>
 		  				<div class="comment-item" th:each="item: ${commentList}">
 		  					<div class="comment" th:id="'comment-' + ${item.id}">
@@ -94,11 +94,11 @@
 			  						</h5>
 			  						<span class="comment-date" th:text="${item.updatedAt}">date</span>
 			  						<span class="comment-reply" th:attr="data-comment-id=${item.id}">댓글</span>
-			  						<span class="comment-vote-down" th:attr="data-comment-id=${item.id}"><i class="fa fa-thumbs-down"></i>
-			  							<span class="comment-vote-down-count" th:text="${item.down}">1</span>
+			  						<span class="vote-down" th:attr="data-comment-id=${item.id}"><i class="fa fa-thumbs-down"></i>
+			  							<span class="vote-down-count" th:id="${'vote-down-count-' + item.id}" th:text="${item.down}">1</span>
 			  						</span>
-			  						<span class="comment-vote-up" th:attr="data-comment-id=${item.id}"><i class="fa fa-thumbs-up"></i>
-			  							<span class="comment-vote-up-count" th:text="${item.up}">1</span>
+			  						<span class="vote-up" th:attr="data-comment-id=${item.id}"><i class="fa fa-thumbs-up"></i>
+			  							<span class="vote-up-count" th:id="${'vote-up-count-' + item.id}" th:text="${item.up}">1</span>
 			  						</span>
 			  						<div class="comment-text">
 			  							<p th:text="${item.content}">가나다라마바사1</p>
@@ -110,11 +110,11 @@
 			  						   	  </h5> 
 			  						   	  <span class="comment-date" th:text="${child.updatedAt}">date</span>
 				  						  <span class="comment-reply" th:attr="data-comment-id=${child.id}">댓글</span>
-				  						  <span class="comment-vote-down" th:attr="data-comment-id=${child.id}"><i class="fa fa-thumbs-down"></i>
-				  							<span class="comment-vote-down-count" th:id="${'comment-vote-down-count-' + child.id}" th:text="${child.down}">1</span>
+				  						  <span class="vote-down" th:attr="data-comment-id=${child.id}"><i class="fa fa-thumbs-down"></i>
+				  							<span class="vote-down-count" th:id="${'vote-down-count-' + child.id}" th:text="${child.down}">1</span>
 				  						  </span>
-				  						  <span class="comment-vote-up" th:attr="data-comment-id=${child.id}"><i class="fa fa-thumbs-up"></i>
-					  							<span class="comment-vote-up-count" th:id="${'comment-vote-up-count-' + child.id}" th:text="${child.up}">1</span>
+				  						  <span class="vote-up" th:attr="data-comment-id=${child.id}"><i class="fa fa-thumbs-up"></i>
+					  							<span class="vote-up-count" th:id="${'vote-up-count-' + child.id}" th:text="${child.up}">1</span>
 					  					  </span>
 					  				      <div class="comment-text">
 					  				      	<div class="comment-text-parent-nickname" th:text="${child.parent.createdBy.nickname}"></div>
@@ -164,19 +164,30 @@
 		<div th:replace="fragments.html :: date-time"></div>
 		<script th:replace="fragments.html :: ajax-csrf-header"></script>
 		<script type="application/javascript" th:inline="javascript">
-			$('.comment-vote-down').click(function() {
-				const commentId = $(this).data('comment-id');
-				const postId = $(this).data('post-id');
+			$('.vote-down').click(function() {
+				let commentId = $(this).data('comment-id');
+				let postId = $(this).data('post-id');
+								
+				let voteUrl = "/comment/vote/down";
+				
+				if (commentId === undefined ) {
+					voteUrl = "/post/vote/down";
+				}
 				
 				$.ajax({
 					type: "POST",
-					url: "/comment/vote/down",
+					url: voteUrl,
 					data: {'commentId': commentId , 'postId' : postId },
 					dataType : "json",
 					success: function (response) {
 						console.log(response);
-						$('#comment-vote-down-count-' + commentId).text(response.voteDownCount);
-						$('#comment-vote-up-count-' + commentId).text(response.voteUpCount);
+						if (postId === undefined ) {
+							$('#vote-down-count-' + commentId).text(response.voteDownCount);
+							$('#vote-up-count-' + commentId).text(response.voteUpCount);
+						} else {
+							$('#post-vote-down-count-' + postId).text(response.voteDownCount);
+							$('#post-vote-up-count-' + postId).text(response.voteUpCount);
+						}
 					},
 					error: function (request, status ,error) {
 						//alert("로그인이 필요합니다. ")
@@ -185,19 +196,29 @@
 				
 			});
 			
-			$('.comment-vote-up').click(function() {
-				const commentId = $(this).data('comment-id');
-				const postId = $(this).data('post-id');
+			$('.vote-up').click(function() {
+				let commentId = $(this).data('comment-id');
+				let postId = $(this).data('post-id');
+				let voteUrl = "/comment/vote/up";
+				
+				if (commentId === undefined ) {
+					voteUrl = "/post/vote/up";
+				}										
 				
 				$.ajax({
 					type: "POST",
-					url: "/comment/vote/up",
+					url: voteUrl,
 					data: {'commentId': commentId , 'postId' : postId },
 					dataType : "json",
 					success: function (response) {
 						console.log(response);
-						$('#comment-vote-down-count-' + commentId).text(response.voteDownCount);
-						$('#comment-vote-up-count-' + commentId).text(response.voteUpCount);
+						if (postId === undefined ) {
+							$('#vote-down-count-' + commentId).text(response.voteDownCount);
+							$('#vote-up-count-' + commentId).text(response.voteUpCount);
+						} else {
+							$('#post-vote-down-count-' + postId).text(response.voteDownCount);
+							$('#post-vote-up-count-' + postId).text(response.voteUpCount);
+						}
 					},
 					error: function (request, status ,error) {
 						console.log(request);

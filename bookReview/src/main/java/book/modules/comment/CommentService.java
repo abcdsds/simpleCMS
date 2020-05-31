@@ -113,4 +113,9 @@ public class CommentService {
 		
 	}
 
+	public int getTotalCount(Post post) {
+		// TODO Auto-generated method stub
+		return commentRepository.countByPost(post);
+	}
+
 }

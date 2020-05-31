@@ -72,8 +72,9 @@ public class PostController {
 	
 		Post post = postService.getPost(id);
 		List<Comment> commentList = commentService.getCommentList(post);
+		System.out.println(commentList.size());
 		
-		commentList.sort((a,b) -> a.getId().compareTo(b.getId())); //정렬 오름차순
+		// commentList.sort((a,b) -> a.getId().compareTo(b.getId())); //정렬 오름차순
 		
 		
 //		commentList.forEach(comment -> {
@@ -83,37 +84,23 @@ public class PostController {
 		model.addAttribute("post" , post);
 		model.addAttribute(new CommentForm());
 		model.addAttribute("commentList", commentList);
+		model.addAttribute("commentTotalCount" , commentService.getTotalCount(post));
 		model.addAttribute(account);
 		
 		return "post/view";
 	}
 	
-	@PostMapping("/view/{id}/up")
+	@PostMapping("/vote/{type}")
 	@ResponseBody
-	public ResponseEntity<String> postUp(@CurrentAccount Account account, Model model, @PathVariable Long id) throws JsonProcessingException, NotFoundException {
+	public ResponseEntity<String> postUp(@CurrentAccount Account account, Model model, @PathVariable("type") VoteType type , Long postId) throws JsonProcessingException, NotFoundException {
 	
-		Post post = postService.getPost(id);
-		String message = postService.vote(account, post, VoteType.UP);
 		
-		model.addAttribute("post" , post);
-		model.addAttribute(account);
+		String message = postService.vote(account, postId, type);
+		
 		
 		return new ResponseEntity<>(message , HttpStatus.OK);
 	}
-	
-	@PostMapping("/view/{id}/down")
-	@ResponseBody
-	public ResponseEntity<String> postDown(@CurrentAccount Account account, Model model, @PathVariable Long id) throws JsonProcessingException, NotFoundException {
-	
-		Post post = postService.getPost(id);
-		String message = postService.vote(account, post, VoteType.DOWN);
-				
-		model.addAttribute("post" , post);
-		model.addAttribute(account);
 		
-		return new ResponseEntity<>(message , HttpStatus.OK);
-	}
-	
 	
 	
 	@GetMapping("/update/{id}")
