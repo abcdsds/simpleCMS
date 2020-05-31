@@ -89,6 +89,11 @@ public class Post extends BaseEntity {
 			deleted = true;
 		}
 	}
+
+	public void increaseView() {
+		// TODO Auto-generated method stub
+		this.views++;
+	}
 	
 	
 	

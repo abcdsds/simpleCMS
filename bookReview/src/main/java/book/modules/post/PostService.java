@@ -1,7 +1,12 @@
 package book.modules.post;
 
 import java.nio.file.AccessDeniedException;
+import java.util.Arrays;
 import java.util.Optional;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -46,7 +51,7 @@ public class PostService {
 
 		Post post = Post.builder()
 						 .best(false)
-						 .title(form.getContent())
+						 .title(form.getTitle())
 						 .content(form.getContent())
 						 .down(0)
 						 .up(0)
@@ -61,9 +66,40 @@ public class PostService {
 				
 	}
 
-	public Post getPost(Long id) throws NotFoundException {
+	public Post getPost(Long id,HttpServletResponse response,HttpServletRequest request) throws NotFoundException {
 		// TODO Auto-generated method stub
-		return postRepository.findById(id).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
+		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
+		
+		Cookie[] cookies = request.getCookies();
+		
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals("postViews")) {
+				if (cookie.getValue().contains(id.toString())) {
+					return post;
+				}
+			}
+		}
+		
+		Optional<Cookie> findFirst = Arrays.stream(cookies).filter(c -> c.getName().equals("postViews")).findFirst();
+		boolean anyMatchValue = Arrays.stream(cookies).anyMatch(c -> c.getName().equals("postViews") && c.getValue().indexOf("|"+id.toString()+'|') != -1);
+		
+		if (!findFirst.isPresent()) {
+			
+			Cookie myCookie = new Cookie("postViews" , "|" + id.toString() + "|");
+			myCookie.setMaxAge(24 * 60 * 60 * 7); //쿠키 유효기간 7일
+			post.increaseView();
+			response.addCookie(myCookie);
+		}
+		
+		if (findFirst.isPresent() && !anyMatchValue) {
+			Cookie newCookie = findFirst.get();
+			newCookie.setValue(findFirst.get().getValue() + id.toString() + "|");
+			newCookie.setMaxAge(24 * 60 * 60 * 7); //쿠키 유효기간 7일
+			post.increaseView();
+			response.addCookie(newCookie);
+		} 
+		
+		return post;
 	}
 
 	public Post getPostWithAccount(Long id, Account account,boolean deleted) throws AccessDeniedException {

@@ -3,6 +3,8 @@ package book.modules.post;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -68,9 +70,9 @@ public class PostController {
 	
 	
 	@GetMapping("/view/{id}")
-	public String view(@CurrentAccount Account account, Model model, @PathVariable Long id) throws NotFoundException {
+	public String view(@CurrentAccount Account account, Model model, @PathVariable Long id, HttpServletResponse response,HttpServletRequest request) throws NotFoundException {
 	
-		Post post = postService.getPost(id);
+		Post post = postService.getPost(id,response,request);
 		List<Comment> commentList = commentService.getCommentList(post);
 		System.out.println(commentList.size());
 		
