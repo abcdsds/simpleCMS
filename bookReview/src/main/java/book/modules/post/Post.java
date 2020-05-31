@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import book.modules.account.Account;
+import book.modules.account.UserAccount;
 import book.modules.base.BaseEntity;
 import book.modules.board.Board;
 import book.modules.comment.Comment;
@@ -93,6 +94,10 @@ public class Post extends BaseEntity {
 	public void increaseView() {
 		// TODO Auto-generated method stub
 		this.views++;
+	}
+	
+	public boolean isCreatedBy(UserAccount userAccount) {
+		return super.getCreatedBy() == userAccount.getAccount();
 	}
 	
 	

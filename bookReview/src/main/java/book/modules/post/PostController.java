@@ -78,11 +78,6 @@ public class PostController {
 		
 		// commentList.sort((a,b) -> a.getId().compareTo(b.getId())); //정렬 오름차순
 		
-		
-//		commentList.forEach(comment -> {
-//			System.out.println(comment.getId());
-//		});
-		
 		model.addAttribute("post" , post);
 		model.addAttribute(new CommentForm());
 		model.addAttribute("commentList", commentList);

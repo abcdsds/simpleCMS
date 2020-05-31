@@ -18,6 +18,7 @@ import javax.persistence.OrderBy;
 
 import org.springframework.core.annotation.Order;
 
+import book.modules.account.UserAccount;
 import book.modules.base.BaseEntity;
 import book.modules.post.Post;
 import book.modules.post.vote.PostVote;
@@ -98,5 +99,20 @@ public class Comment extends BaseEntity {
 	public void voteDown() {
 		// TODO Auto-generated method stub
 		this.down++;
+	}
+	
+	public boolean isCreatedBy(UserAccount userAccount) {
+		
+		return super.getCreatedBy().getId() == userAccount.getAccount().getId();
+	}
+
+	public void updateContent(String content) {
+		// TODO Auto-generated method stub
+		this.content = content;
+	}
+
+	public void updateDeleted(boolean deleted) {
+		// TODO Auto-generated method stub
+		this.deleted = deleted;
 	}
 }

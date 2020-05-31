@@ -65,9 +65,40 @@ public class CommentController {
 		return "redirect:/post/view/"+postId;
 	}
 	
+	@PostMapping("/update/{postId}/{commentId}")
+	public String commentUpdateSubmit(@CurrentAccount Account account , Model model , 
+									 @Valid CommentForm form , Errors errors, @PathVariable Long postId,
+									 @PathVariable Long commentId ) throws NotFoundException {
+		
+		if (errors.hasErrors()) {
+			return "redirect:/post/view/"+form.getPostId();
+		}
+		
+		form.setParentCommentId(commentId);
+		
+		commentService.updateComment(account,form);
+		
+		return "redirect:/post/view/"+postId;
+	}
+	
+	@PostMapping("/delete")
+	@ResponseBody
+	public ResponseEntity<String> commentDelete(@CurrentAccount Account account, Model model, Long commentId , Long postId) throws JsonProcessingException, NotFoundException {
+	
+		String message = commentService.delete(commentId,postId,account);
+
+		
+		if (message.indexOf("댓글이 존재하지 않습니다.") != -1 || message.indexOf("글이 존재하지 않습니다.") != -1 ) {
+			return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<>(message , HttpStatus.OK);
+	}
+	
+	
 	@PostMapping("/vote/{type}")
 	@ResponseBody
-	public ResponseEntity<String> postUpAndDown(@CurrentAccount Account account, Model model, @PathVariable("type") VoteType type , Long commentId , Long postId) throws JsonProcessingException, NotFoundException {
+	public ResponseEntity<String> commentUpAndDown(@CurrentAccount Account account, Model model, @PathVariable("type") VoteType type , Long commentId , Long postId) throws JsonProcessingException, NotFoundException {
 	
 		String message = commentService.vote(commentId,postId,account,type);
 

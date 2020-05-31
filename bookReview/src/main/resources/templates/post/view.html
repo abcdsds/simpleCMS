@@ -89,47 +89,80 @@
 		  				<div class="comment-item" th:each="item: ${commentList}">
 		  					<div class="comment" th:id="'comment-' + ${item.id}">
 		  						<div class="text">
-			  						<h5 class="name">
-			  							<i class="fa fa-user"></i> <p th:text="${item.createdBy.nickname}">닉네임1</p>
-			  						</h5>
-			  						<span class="comment-date" th:text="${item.updatedAt}">date</span>
-			  						<span class="comment-reply" th:attr="data-comment-id=${item.id}">댓글</span>
-			  						<span class="vote-down" th:attr="data-comment-id=${item.id}"><i class="fa fa-thumbs-down"></i>
-			  							<span class="vote-down-count" th:id="${'vote-down-count-' + item.id}" th:text="${item.down}">1</span>
-			  						</span>
-			  						<span class="vote-up" th:attr="data-comment-id=${item.id}"><i class="fa fa-thumbs-up"></i>
-			  							<span class="vote-up-count" th:id="${'vote-up-count-' + item.id}" th:text="${item.up}">1</span>
-			  						</span>
-			  						<div class="comment-text">
-			  							<p th:text="${item.content}">가나다라마바사1</p>
+		  							<div class="comment-item-section" th:if="${!item.deleted}">
+				  						<h5 class="name">
+				  							<i class="fa fa-user"></i> <p th:text="${item.createdBy.nickname}">닉네임1</p>
+				  						</h5>
+				  						<span class="comment-date" th:text="${item.updatedAt}">date</span>
+				  						<span class="comment-reply" th:attr="data-comment-id=${item.id}">댓글</span>
+				  						<span class="comment-delete" th:attr="data-comment-id=${item.id}" th:if="${item.isCreatedBy(#authentication.principal)}">삭제</span>
+				  						<span class="comment-update" th:if="${item.isCreatedBy(#authentication.principal)}">수정</span>
+				  						<span class="vote-down" th:attr="data-comment-id=${item.id}"><i class="fa fa-thumbs-down"></i>
+				  							<span class="vote-down-count" th:id="${'vote-down-count-' + item.id}" th:text="${item.down}">1</span>
+				  						</span>
+				  						<span class="vote-up" th:attr="data-comment-id=${item.id}"><i class="fa fa-thumbs-up"></i>
+				  							<span class="vote-up-count" th:id="${'vote-up-count-' + item.id}" th:text="${item.up}">1</span>
+				  						</span>
+				  						<div class="comment-text">
+				  							<p th:text="${item.content}">가나다라마바사1</p>
+				  						</div>
 			  						</div>
+			  						
+			  						<div class="comment-noitem-section" th:if="${item.deleted}">
+			  							<span class="no-comment">삭제된 댓글입니다.</span>
+			  						</div>
+			  						
+			  						<div th:id="'comment-form-' + ${item.id}" th:if="${!item.deleted}" style="display:none; border-bottom:1px solid;">
+					  					 <div class="row justify-content-center">
+										  		<div class="col-sm-12">
+										  			<label style="padding-top:10px;"><i class="fa fa-share fa-flip-vertical re"></i> 댓글쓰기</label>
+										  			<form th:id="'comment-form-id-' + ${item.id}" th:action="@{'/comment/add/' + ${post.id} + '/' + ${item.id}}" th:object="${commentForm}" method="post" novalidate>
+										  				<input type="hidden" name="depth" th:value="${item.depth + 1}">
+										  				
+										  				<div class="text">
+										  					<textarea th:field="*{content}"></textarea>
+										  				</div>
+										  				<input type="submit" class="btn btn-info submit_btn" value="등록">
+										  			</form>
+										  		</div>
+										  </div>
+					  				</div>
+					  				
 			  						<div class="comment-item-sub" th:each="child: ${item.childList}">
-			  						   <div class="text" th:if="${child.id != item.id}">
-			  						   	  <h5 class="name">
-			  						   	  	<i class="fa fa-user"></i> <p th:text="${child.parent.createdBy.nickname}">상위 닉네임</p>
-			  						   	  </h5> 
-			  						   	  <span class="comment-date" th:text="${child.updatedAt}">date</span>
-				  						  <span class="comment-reply" th:attr="data-comment-id=${child.id}">댓글</span>
-				  						  <span class="vote-down" th:attr="data-comment-id=${child.id}"><i class="fa fa-thumbs-down"></i>
-				  							<span class="vote-down-count" th:id="${'vote-down-count-' + child.id}" th:text="${child.down}">1</span>
-				  						  </span>
-				  						  <span class="vote-up" th:attr="data-comment-id=${child.id}"><i class="fa fa-thumbs-up"></i>
-					  							<span class="vote-up-count" th:id="${'vote-up-count-' + child.id}" th:text="${child.up}">1</span>
-					  					  </span>
-					  				      <div class="comment-text">
-					  				      	<div class="comment-text-parent-nickname" th:text="${child.parent.createdBy.nickname}"></div>
-					  						<p th:text="${child.content}">가나다라마바사1</p>
-					  					  </div>
-				  						   
-				  						   <div th:id="'comment-form-' + ${child.id}" style="display:none; border-bottom:1px solid;">
+			  						   <div class="sub-text" th:id="'comment-' + ${child.id}" th:if="${child.id != item.id}">
+			  						   	  <div class="comment-item-section" th:if="${!child.deleted}">
+				  						   	  <h5 class="name">
+				  						   	  	<i class="fa fa-user"></i> <p th:text="${child.parent.createdBy.nickname}">상위 닉네임</p>
+				  						   	  </h5> 
+				  						   	  <span class="comment-date" th:text="${child.updatedAt}">date</span>
+					  						  <span class="comment-reply" th:attr="data-comment-id=${child.id}">댓글</span>
+					  						  <span class="comment-delete" th:attr="data-comment-id=${child.id}" th:if="${item.isCreatedBy(#authentication.principal)}">삭제</span>
+				  							  <span class="comment-update" th:attr="data-comment-id=${child.id}" th:if="${item.isCreatedBy(#authentication.principal)}">수정</span>
+					  						  <span class="vote-down" th:attr="data-comment-id=${child.id}"><i class="fa fa-thumbs-down"></i>
+					  							<span class="vote-down-count" th:id="${'vote-down-count-' + child.id}" th:text="${child.down}">1</span>
+					  						  </span>
+					  						  <span class="vote-up" th:attr="data-comment-id=${child.id}"><i class="fa fa-thumbs-up"></i>
+						  							<span class="vote-up-count" th:id="${'vote-up-count-' + child.id}" th:text="${child.up}">1</span>
+						  					  </span>
+						  				      <div class="comment-text">
+						  				      	<div class="comment-text-parent-nickname" th:text="${child.parent.createdBy.nickname}"></div>
+						  						<p th:id="${'comment-content-' + child.id}" th:text="${child.content}">가나다라마바사1</p>
+						  					  </div>
+				  						  </div>
+				  						  
+				  						  <div class="comment-noitem-section" th:if="${child.deleted}">
+				  							<span class="no-comment">삭제된 댓글입니다.</span>
+				  						  </div>
+			  						
+				  						   <div th:id="${'comment-form-' + child.id}" th:if="${!child.deleted}" style="display:none; border-bottom:1px solid;">
 							  							<div class="row justify-content-center">
 												  			<div class="col-sm-12">
 												  				<label style="padding-top:10px;"><i class="fa fa-share fa-flip-vertical re"></i> 댓글쓰기</label>
-												  				<form th:action="@{'/comment/add/' + ${post.id} + '/' + ${child.id}}" th:object="${commentForm}" method="post" novalidate>
+												  				<form th:id="${'comment-form-id-' + child.id}" th:action="@{'/comment/add/' + ${post.id} + '/' + ${child.id}}" th:object="${commentForm}" method="post" novalidate>
 												  					<input type="hidden" name="depth" th:value="${child.depth + 1}">
 												  					
 												  					<div class="text">
-												  						<textarea th:field="*{content}"></textarea>
+												  						<textarea th:id="${'comment-textarea-' + child.id}" th:field="*{content}"></textarea>
 												  					</div>
 												  					<input type="submit" class="btn btn-info submit_btn" value="등록">
 												  				</form>
@@ -140,21 +173,6 @@
 			  						</div>
 		  						</div>
 		  					</div>
-		  					<div th:id="'comment-form-' + ${item.id}" style="display:none; border-bottom:1px solid;">
-			  							<div class="row justify-content-center">
-								  			<div class="col-sm-12">
-								  				<label style="padding-top:10px;"><i class="fa fa-share fa-flip-vertical re"></i> 댓글쓰기</label>
-								  				<form th:action="@{'/comment/add/' + ${post.id} + '/' + ${item.id}}" th:object="${commentForm}" method="post" novalidate>
-								  					<input type="hidden" name="depth" th:value="${item.depth + 1}">
-								  					
-								  					<div class="text">
-								  						<textarea th:field="*{content}"></textarea>
-								  					</div>
-								  					<input type="submit" class="btn btn-info submit_btn" value="등록">
-								  				</form>
-								  			</div>
-								  		</div>
-			  				</div>
 		  				</div>
 		  			</div>
 		  		</div>
@@ -164,6 +182,7 @@
 		<div th:replace="fragments.html :: date-time"></div>
 		<script th:replace="fragments.html :: ajax-csrf-header"></script>
 		<script type="application/javascript" th:inline="javascript">
+		
 			$('.vote-down').click(function() {
 				let commentId = $(this).data('comment-id');
 				let postId = $(this).data('post-id');
@@ -229,17 +248,72 @@
 				});
 				
 			});
-		</script>
-		
-		<script type="application/javascript">
+			
+			
+			$('.comment-delete').click(function() {
+				
+				var result = confirm("정말로 삭제하시겠습니까 ? ");
+				
+				if (result) {
+					const commentId = $(this).data('comment-id');
+					const postId = /*[[@{${post.id}}]]*/'';
+					
+					$.ajax({
+						type: 'POST',
+						url: '/comment/delete',
+						data: {'commentId': commentId , 'postId' : postId },
+						dataType : "json",
+						success: function (response) {
+							console.log(response);
+							$('comment-'+commentId).load(window.location.href + 'comment-'+commentId);
+						},
+						error: function (request, status ,error) {
+							console.log(request);
+							console.log(status);
+							console.log(error);
+							//alert("로그인이 필요합니다. ")
+						},
+					});
+				}
+				
+			});
+			
 			$('.comment-reply').click(function () {
 				const commentId = $(this).data('comment-id');
 				console.log('clicked');
 				console.log(commentId);
+				
+				const postId = /*[[@{${post.id}}]]*/'';
+				
+				
+				$('#comment-form-id-' + commentId).attr('action' , '/comment/add/' + postId + '/' + commentId);
+				$('#comment-textarea-' + commentId).val('');
 				$('#comment-form-'+ commentId).toggle();
 				
+
 			});
+			
+			$('.comment-update').click(function () {
+				const commentId = $(this).data('comment-id');
+				console.log('clicked');
+				console.log(commentId);
+				console.log($('#comment-form-'+ commentId).is(':visible'));
+				const postId = /*[[@{${post.id}}]]*/'';
+				
+				$('#comment-form-id-' + commentId).attr('action' , '/comment/update/'  + postId + '/' + commentId);
+				$('#comment-textarea-' + commentId).val($('#comment-content-' + commentId).text());
+				$('#comment-form-'+ commentId).toggle();
+
+				/*
+				if ($('#comment-form-'+ commentId).is(':visible')) {
+					$('#comment-form-'+ commentId).toggle();					
+				} 
+				*/
+			});
+			
+			
 		</script>
+		
 	</body>
 
 </html>

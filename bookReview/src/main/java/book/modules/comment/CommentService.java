@@ -3,6 +3,8 @@ package book.modules.comment;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import book.modules.account.Account;
+import book.modules.comment.form.CommentDeleteForm;
+import book.modules.comment.form.CommentDeleteType;
 import book.modules.comment.form.CommentForm;
 import book.modules.post.Post;
 import book.modules.post.PostRepository;
@@ -61,10 +65,17 @@ public class CommentService {
 	
 		commentRepository.save(comment);
 	}
+	
+	public void updateComment(Account account, CommentForm form) throws NotFoundException {
+		// TODO Auto-generated method stub
+		Optional<Comment> findById = commentRepository.findById(form.getParentCommentId());
+		Comment comment = findById.orElseThrow(() -> new NotFoundException("댓글이 존재하지 않습니다."));
+		comment.updateContent(form.getContent());
+	}
 
 	public List<Comment> getCommentList(Post post) {
 		// TODO Auto-generated method stub		
-		return commentRepository.findAllByPostAndDeletedAndDepthOrderByIdAsc(post,false,0);
+		return commentRepository.findAllByPostAndDepthOrderByIdAsc(post,0);
 	}
 	
 	public PostVote createVote(Comment comment, VoteType voteType) {
@@ -117,5 +128,41 @@ public class CommentService {
 		// TODO Auto-generated method stub
 		return commentRepository.countByPost(post);
 	}
+
+	public String delete(Long commentId, Long postId, Account account) throws JsonProcessingException {
+		// TODO Auto-generated method stub
+		CommentDeleteForm form = new CommentDeleteForm();
+		
+		Optional<Post> findByIdPost = postRepository.findById(postId);
+		if (!findByIdPost.isPresent()) {
+			form.setMessage("글이 존재하지 않습니다.");
+			form.setMessageType(CommentDeleteType.FALSE);
+			return objectMapper.writeValueAsString(form);
+		}
+		
+		Optional<Comment> findByIdComment = commentRepository.findById(commentId);
+		
+		if (!findByIdComment.isPresent()) {
+			form.setMessage("댓글이 존재하지 않습니다.");
+			form.setMessageType(CommentDeleteType.FALSE);
+			return objectMapper.writeValueAsString(form);
+		}
+		
+		Comment comment = findByIdComment.get();
+		
+//		if (!comment.getChildList().isEmpty()) {
+//			
+//			comment.updateContent("[삭제된 댓글입니다.]");
+//			form.setMessage("댓글이 삭제되었습니다.");
+//			form.setMessageType(CommentDeleteType.UPDATED);
+//			return objectMapper.writeValueAsString(form);
+//		}
+		
+		comment.updateDeleted(true);
+		form.setMessage("댓글이 삭제되었습니다.");
+		form.setMessageType(CommentDeleteType.DELETED);
+		return objectMapper.writeValueAsString(form);
+	}
+
 
 }
