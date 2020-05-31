@@ -23,5 +23,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	List<Comment> findAllByPostAndDepthOrderByIdAsc(Post post, int i);
 	
 	int countByPost(Post post);
-
+	
+	int countByPostAndDeleted(Post post, boolean deleted);
 }

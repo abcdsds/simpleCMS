@@ -265,7 +265,8 @@
 						dataType : "json",
 						success: function (response) {
 							console.log(response);
-							$('comment-'+commentId).load(window.location.href + 'comment-'+commentId);
+							location.reload();
+							/* $('.comment-list').load(window.location.href + '.comment-list'); */
 						},
 						error: function (request, status ,error) {
 							console.log(request);
