@@ -1,17 +1,15 @@
 package book.modules.post.vote;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import book.modules.account.Account;
 import book.modules.base.BaseEntity;
-import book.modules.base.BaseTimeEntity;
+import book.modules.comment.Comment;
 import book.modules.post.Post;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -33,6 +31,11 @@ public class PostVote extends BaseEntity {
 	@ManyToOne
 	private Post post;
 	
+	@JoinColumn(name = "comment_id")
+	@ManyToOne
+	private Comment comment;
+	
+	@Enumerated(EnumType.STRING)
 	private VoteType voteType;
 	
 	

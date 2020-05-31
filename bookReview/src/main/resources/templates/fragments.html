@@ -18,9 +18,20 @@
 	        
 			.text {
 				padding-bottom : 10px;
-				
 			}
 	        	
+	        .comment-item-sub {
+	        	padding-top:2%;
+	        	padding-left:8%;
+	        }
+	        
+	        .comment-text-parent-nickname{
+	        	opacity:0.5;
+	        }
+	        
+	        .comment-text {
+	        	padding-top:2%;
+	        }
 	        .text textarea {
 	        	width:95%;
 	        	height: 80px;
@@ -402,6 +413,15 @@
 	        })
 	    </script>
 	</div>
+	<script type="application/javascript" th:inline="javascript" th:fragment="ajax-csrf-header">
+	    $(function() {
+	        var csrfToken = /*[[${_csrf.token}]]*/ null;
+	        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+	        $(document).ajaxSend(function (e, xhr, options) {
+	            xhr.setRequestHeader(csrfHeader, csrfToken);
+	        });
+	    });
+	</script>
 		
 
 </html>

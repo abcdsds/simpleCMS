@@ -96,23 +96,24 @@ public class PostService {
 		
 		PostVote findByPostAndCreatedBy = postVoteRepository.findByPostAndCreatedBy(post, account);
 		if (findByPostAndCreatedBy != null) {
-			form.setMessage("이미 추천하셨습니다.");			
-			form.setVoteCount(voteType.equals(VoteType.up) ? post.getUp() : post.getDown());
+			form.setMessage("이미 추천하셨습니다.");	
+			form.setVoteDownCount(post.getDown());
+			form.setVoteUpCount(post.getUp());
 			return objectMapper.writeValueAsString(form);
 		}
 		
 		findByPostAndCreatedBy = createVote(post,voteType);
 		postVoteRepository.save(findByPostAndCreatedBy);
 		
-		if (voteType.equals(VoteType.up)) {
+		if (voteType.equals(VoteType.UP)) {
 			post.voteUp();
 		} else {
 			post.voteDown();
 		}
 		
 		form.setMessage("추천 되었습니다.");			
-		form.setVoteCount(voteType.equals(VoteType.up) ? post.getUp() : post.getDown());
-		
+		form.setVoteDownCount(post.getDown());
+		form.setVoteUpCount(post.getUp());
 		
 		
 		return objectMapper.writeValueAsString(form);

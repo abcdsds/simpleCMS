@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -19,6 +20,7 @@ import org.springframework.core.annotation.Order;
 
 import book.modules.base.BaseEntity;
 import book.modules.post.Post;
+import book.modules.post.vote.PostVote;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -61,15 +63,14 @@ public class Comment extends BaseEntity {
 	@ManyToOne
 	private Post post;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")
 	private Comment parent;
 	
+	@OneToMany(mappedBy = "post")
+	private List<PostVote> voteList = new ArrayList<PostVote>();
 	
-//	@OneToMany(mappedBy = "parent")
-//	private List<Comment> childList = new ArrayList<Comment>();
-	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "group_id")
 	private Comment group;
 	
@@ -87,5 +88,15 @@ public class Comment extends BaseEntity {
 	
 	public void updateGroup(Comment group) {
 		this.group = group;
+	}
+
+	public void voteUp() {
+		// TODO Auto-generated method stub
+		this.up++;
+	}
+
+	public void voteDown() {
+		// TODO Auto-generated method stub
+		this.down++;
 	}
 }

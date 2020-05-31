@@ -94,10 +94,10 @@
 			  						</h5>
 			  						<span class="comment-date" th:text="${item.updatedAt}">date</span>
 			  						<span class="comment-reply" th:attr="data-comment-id=${item.id}">댓글</span>
-			  						<span class="comment-vote-down"><i class="fa fa-thumbs-down"></i>
+			  						<span class="comment-vote-down" th:attr="data-comment-id=${item.id}"><i class="fa fa-thumbs-down"></i>
 			  							<span class="comment-vote-down-count" th:text="${item.down}">1</span>
 			  						</span>
-			  						<span class="comment-vote-up"><i class="fa fa-thumbs-up"></i>
+			  						<span class="comment-vote-up" th:attr="data-comment-id=${item.id}"><i class="fa fa-thumbs-up"></i>
 			  							<span class="comment-vote-up-count" th:text="${item.up}">1</span>
 			  						</span>
 			  						<div class="comment-text">
@@ -105,9 +105,21 @@
 			  						</div>
 			  						<div class="comment-item-sub" th:each="child: ${item.childList}">
 			  						   <div class="text" th:if="${child.id != item.id}">
-			  						   	   <div th:text="${child.parent.createdBy.nickname}">상위 닉네임</div>
-				  						   <div th:text="${child.content}">1</div>
-				  						   <span class="comment-reply" th:attr="data-comment-id=${child.id}">댓글</span>
+			  						   	  <h5 class="name">
+			  						   	  	<i class="fa fa-user"></i> <p th:text="${child.parent.createdBy.nickname}">상위 닉네임</p>
+			  						   	  </h5> 
+			  						   	  <span class="comment-date" th:text="${child.updatedAt}">date</span>
+				  						  <span class="comment-reply" th:attr="data-comment-id=${child.id}">댓글</span>
+				  						  <span class="comment-vote-down" th:attr="data-comment-id=${child.id}"><i class="fa fa-thumbs-down"></i>
+				  							<span class="comment-vote-down-count" th:id="${'comment-vote-down-count-' + child.id}" th:text="${child.down}">1</span>
+				  						  </span>
+				  						  <span class="comment-vote-up" th:attr="data-comment-id=${child.id}"><i class="fa fa-thumbs-up"></i>
+					  							<span class="comment-vote-up-count" th:id="${'comment-vote-up-count-' + child.id}" th:text="${child.up}">1</span>
+					  					  </span>
+					  				      <div class="comment-text">
+					  				      	<div class="comment-text-parent-nickname" th:text="${child.parent.createdBy.nickname}"></div>
+					  						<p th:text="${child.content}">가나다라마바사1</p>
+					  					  </div>
 				  						   
 				  						   <div th:id="'comment-form-' + ${child.id}" style="display:none; border-bottom:1px solid;">
 							  							<div class="row justify-content-center">
@@ -150,6 +162,54 @@
 	    </div>
 		<script th:replace="fragments.html :: editor-script"></script>
 		<div th:replace="fragments.html :: date-time"></div>
+		<script th:replace="fragments.html :: ajax-csrf-header"></script>
+		<script type="application/javascript" th:inline="javascript">
+			$('.comment-vote-down').click(function() {
+				const commentId = $(this).data('comment-id');
+				const postId = $(this).data('post-id');
+				
+				$.ajax({
+					type: "POST",
+					url: "/comment/vote/down",
+					data: {'commentId': commentId , 'postId' : postId },
+					dataType : "json",
+					success: function (response) {
+						console.log(response);
+						$('#comment-vote-down-count-' + commentId).text(response.voteDownCount);
+						$('#comment-vote-up-count-' + commentId).text(response.voteUpCount);
+					},
+					error: function (request, status ,error) {
+						//alert("로그인이 필요합니다. ")
+					},
+				});
+				
+			});
+			
+			$('.comment-vote-up').click(function() {
+				const commentId = $(this).data('comment-id');
+				const postId = $(this).data('post-id');
+				
+				$.ajax({
+					type: "POST",
+					url: "/comment/vote/up",
+					data: {'commentId': commentId , 'postId' : postId },
+					dataType : "json",
+					success: function (response) {
+						console.log(response);
+						$('#comment-vote-down-count-' + commentId).text(response.voteDownCount);
+						$('#comment-vote-up-count-' + commentId).text(response.voteUpCount);
+					},
+					error: function (request, status ,error) {
+						console.log(request);
+						console.log(status);
+						console.log(error);
+						//alert("로그인이 필요합니다. ")
+					},
+				});
+				
+			});
+		</script>
+		
 		<script type="application/javascript">
 			$('.comment-reply').click(function () {
 				const commentId = $(this).data('comment-id');

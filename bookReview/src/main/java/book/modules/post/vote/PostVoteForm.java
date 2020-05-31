@@ -5,7 +5,10 @@ import lombok.Data;
 @Data
 public class PostVoteForm {
 
-	private int voteCount;
+	private int voteUpCount;
+	
+	private int voteDownCount;
 	
 	private String message;
+
 }

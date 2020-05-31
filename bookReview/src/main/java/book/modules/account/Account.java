@@ -8,6 +8,8 @@ import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -51,8 +53,10 @@ public class Account extends BaseTimeEntity{
 	
 	private String role;
 	
+	@Enumerated(EnumType.STRING)
 	private AccountType accountType;
 	
+	@Enumerated(EnumType.STRING)
 	private AccountGender accountGender;
 	
 	private String password;

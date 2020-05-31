@@ -93,7 +93,7 @@ public class PostController {
 	public ResponseEntity<String> postUp(@CurrentAccount Account account, Model model, @PathVariable Long id) throws JsonProcessingException, NotFoundException {
 	
 		Post post = postService.getPost(id);
-		String message = postService.vote(account, post, VoteType.up);
+		String message = postService.vote(account, post, VoteType.UP);
 		
 		model.addAttribute("post" , post);
 		model.addAttribute(account);
@@ -106,7 +106,7 @@ public class PostController {
 	public ResponseEntity<String> postDown(@CurrentAccount Account account, Model model, @PathVariable Long id) throws JsonProcessingException, NotFoundException {
 	
 		Post post = postService.getPost(id);
-		String message = postService.vote(account, post, VoteType.down);
+		String message = postService.vote(account, post, VoteType.DOWN);
 				
 		model.addAttribute("post" , post);
 		model.addAttribute(account);
