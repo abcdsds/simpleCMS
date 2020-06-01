@@ -58,9 +58,11 @@
 		                	</span>
 		                </div>
 		                <div class="menu-bottom" style="text-align:center; padding-bottom:20px;">
-		                	<a class="btn btn-primary" href="/list" style="float:left;">리스트</a>
-		                	<a class="btn btn-primary" href="/list" >다음글</a>
-		                	<a class="btn btn-primary" href="/list" style="float:right;">이전글</a>
+		                	<a class="btn btn-primary list" href="/list">리스트</a>
+		                	<a class="btn btn-primary next" th:if="${postPrevNextForm.nextPostId != null}" th:href="@{'/post/view/' + ${postPrevNextForm.nextPostId}}">다음글</a>
+		                	<a class="btn btn-primary prev" th:if="${postPrevNextForm.prevPostId != null}" th:href="@{'/post/view/' + ${postPrevNextForm.prevPostId}}">이전글</a>
+		                	<a class="btn btn-primary post-update" th:if="${post.isCreatedBy(#authentication.principal)}" th:href="@{'/post/update/' + ${post.id}}">수정</a>
+		                	<span class="btn btn-primary post-delete" th:if="${post.isCreatedBy(#authentication.principal)}">삭제</a>
 		                </div>
 		            </div>
 		        </div>
@@ -266,6 +268,36 @@
 						success: function (response) {
 							console.log(response);
 							location.reload();
+							/* $('.comment-list').load(window.location.href + '.comment-list'); */
+						},
+						error: function (request, status ,error) {
+							console.log(request);
+							console.log(status);
+							console.log(error);
+							//alert("로그인이 필요합니다. ")
+						},
+					});
+				}
+				
+			});
+			
+			$('.post-delete').click(function() {
+				
+				var result = confirm("정말로 삭제하시겠습니까 ? ");
+				
+				if (result) {
+					const postId = /*[[@{${post.id}}]]*/'';
+					
+					$.ajax({
+						type: 'POST',
+						url: '/post/delete',
+						data: {'postId' : postId },
+						dataType : "json",
+						success: function (response) {
+							console.log(response);
+							if (response.type !== undefined && response.type !== 'false') {
+								location.href = '/list';
+							}
 							/* $('.comment-list').load(window.location.href + '.comment-list'); */
 						},
 						error: function (request, status ,error) {

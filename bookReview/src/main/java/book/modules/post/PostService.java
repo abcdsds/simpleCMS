@@ -18,7 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import book.modules.account.Account;
 import book.modules.account.AccountRepository;
+import book.modules.comment.form.DeleteType;
+import book.modules.post.form.PostDeleteForm;
 import book.modules.post.form.PostForm;
+import book.modules.post.form.PostPrevNextForm;
 import book.modules.post.vote.PostVote;
 import book.modules.post.vote.PostVoteForm;
 import book.modules.post.vote.PostVoteRepository;
@@ -68,7 +71,13 @@ public class PostService {
 
 	public Post getPost(Long id,HttpServletResponse response,HttpServletRequest request) throws NotFoundException {
 		// TODO Auto-generated method stub
-		Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
+				
+		
+		Post post = postRepository.findPostAndCommentByIdAndDeleted(id, false).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
+		
+		//Post post = postRepository.findPostAndCommentAndPrevNextPostByIdAndDeleted(id, false).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
+		
+		//Post post = postRepository.findByIdAndDeleted(id, false).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
 		
 		Cookie[] cookies = request.getCookies();
 		
@@ -116,9 +125,24 @@ public class PostService {
 		modelMapper.map(form, post);
 	}
 
-	public void UpdateDeleteStatus(Post post) {
+	public String UpdateDeleteStatus(Long id, Account account,boolean deleted) throws JsonProcessingException {
 		// TODO Auto-generated method stub
-		post.updateDeleteStatus(true);
+		PostDeleteForm form = new PostDeleteForm();
+		
+		Post postWithAccount = postRepository.findByIdAndCreatedByAndDeleted(id,account,deleted);
+		
+		if (postWithAccount == null) {
+			form.setMessage("글이 존재하지 않습니다.");
+			form.setType(DeleteType.FALSE);
+			return objectMapper.writeValueAsString(form);
+		}
+		
+		postWithAccount.updateDeleteStatus(true);
+		
+		form.setMessage("삭제되었습니다.");
+		form.setType(DeleteType.UPDATED);
+		
+		return objectMapper.writeValueAsString(form);
 	}
 
 	public PostVote createVote(Post post, VoteType voteType) {
@@ -163,6 +187,11 @@ public class PostService {
 		
 		
 		return objectMapper.writeValueAsString(form);
+	}
+
+	public PostPrevNextForm getPrevNextId(Long id) {
+		// TODO Auto-generated method stub
+		return postRepository.findPrevNextPostById(id, false);
 	}
 	
 	

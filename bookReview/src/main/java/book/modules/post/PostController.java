@@ -29,6 +29,7 @@ import book.modules.comment.Comment;
 import book.modules.comment.CommentService;
 import book.modules.comment.form.CommentForm;
 import book.modules.post.form.PostForm;
+import book.modules.post.form.PostPrevNextForm;
 import book.modules.post.vote.VoteType;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -73,13 +74,16 @@ public class PostController {
 	public String view(@CurrentAccount Account account, Model model, @PathVariable Long id, HttpServletResponse response,HttpServletRequest request) throws NotFoundException {
 	
 		Post post = postService.getPost(id,response,request);
+		PostPrevNextForm prevNextId = postService.getPrevNextId(id);
 		List<Comment> commentList = commentService.getCommentList(post);
-		System.out.println(commentList.size());
-		
+		//System.out.println(commentList.size());
+		System.out.println("===========SIZE=========");
 		// commentList.sort((a,b) -> a.getId().compareTo(b.getId())); //정렬 오름차순
+		
 		
 		model.addAttribute("post" , post);
 		model.addAttribute(new CommentForm());
+		model.addAttribute(prevNextId);
 		model.addAttribute("commentList", commentList);
 		model.addAttribute("commentTotalCount" , commentService.getTotalCount(post));
 		model.addAttribute(account);
@@ -128,12 +132,12 @@ public class PostController {
 		return "redirect:/post/view/"+id;
 	}
 	
-	@PostMapping("/update/delete/{id}")
-	public String deletePost(@CurrentAccount Account account, Model model, @PathVariable Long id) throws AccessDeniedException {
+	@PostMapping("/delete")
+	@ResponseBody
+	public ResponseEntity<String> deletePost(@CurrentAccount Account account, Model model, Long postId) throws AccessDeniedException, JsonProcessingException {
 		
-		Post post = postService.getPostWithAccount(id,account,false);
-		postService.UpdateDeleteStatus(post);
+		String message = postService.UpdateDeleteStatus(postId,account,false);
 		
-		return "redirect:/list";
+		return new ResponseEntity<>(message , HttpStatus.OK);
 	}
 }

@@ -1,5 +1,5 @@
 package book.modules.comment.form;
 
-public enum CommentDeleteType {
+public enum DeleteType {
      DELETED, UPDATED , FALSE
 }

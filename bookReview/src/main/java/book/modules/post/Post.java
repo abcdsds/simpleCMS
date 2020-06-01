@@ -13,17 +13,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 
-import book.modules.account.Account;
+import org.hibernate.annotations.Where;
+
 import book.modules.account.UserAccount;
 import book.modules.base.BaseEntity;
 import book.modules.board.Board;
 import book.modules.comment.Comment;
 import book.modules.post.vote.PostVote;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -31,9 +34,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NamedEntityGraph(
+        name = "Post.withCommentAndParentAndGroupAndChildList",
+        attributeNodes = {
+        		@NamedAttributeNode("createdBy"),
+                @NamedAttributeNode(value = "comments" , subgraph = "childList")
+        },
+        subgraphs = @NamedSubgraph(name = "childList", attributeNodes = @NamedAttributeNode("childList"))
+)
 @EqualsAndHashCode(of = "id" , callSuper = true)
 @Builder @Getter @Setter
-@Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity @AllArgsConstructor @NoArgsConstructor
 public class Post extends BaseEntity {
 
 	@Id @GeneratedValue
@@ -63,8 +74,11 @@ public class Post extends BaseEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	private Board category = null;
 
+	
+	//@Where(clause = "depth = 0")
+	//@OrderBy("id")
 	@OneToMany(mappedBy = "post")
-	private List<Comment> comments = new ArrayList<Comment>();
+	private Set<Comment> comments = new HashSet<Comment>();
 	
 	@OneToMany(mappedBy = "post")
 	private List<PostVote> voteList = new ArrayList<PostVote>();
@@ -97,7 +111,8 @@ public class Post extends BaseEntity {
 	}
 	
 	public boolean isCreatedBy(UserAccount userAccount) {
-		return super.getCreatedBy() == userAccount.getAccount();
+		
+		return super.getCreatedBy().getId() == userAccount.getAccount().getId();
 	}
 	
 	

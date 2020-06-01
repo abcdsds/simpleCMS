@@ -6,5 +6,5 @@ import lombok.Data;
 public class CommentDeleteForm {
 
 	private String message;
-	private CommentDeleteType messageType;
+	private DeleteType messageType;
 }

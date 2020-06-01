@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import book.modules.account.Account;
 import book.modules.comment.form.CommentDeleteForm;
-import book.modules.comment.form.CommentDeleteType;
+import book.modules.comment.form.DeleteType;
 import book.modules.comment.form.CommentForm;
 import book.modules.post.Post;
 import book.modules.post.PostRepository;
@@ -136,7 +136,7 @@ public class CommentService {
 		Optional<Post> findByIdPost = postRepository.findById(postId);
 		if (!findByIdPost.isPresent()) {
 			form.setMessage("글이 존재하지 않습니다.");
-			form.setMessageType(CommentDeleteType.FALSE);
+			form.setMessageType(DeleteType.FALSE);
 			return objectMapper.writeValueAsString(form);
 		}
 		
@@ -144,7 +144,7 @@ public class CommentService {
 		
 		if (!findByIdComment.isPresent()) {
 			form.setMessage("댓글이 존재하지 않습니다.");
-			form.setMessageType(CommentDeleteType.FALSE);
+			form.setMessageType(DeleteType.FALSE);
 			return objectMapper.writeValueAsString(form);
 		}
 		
@@ -160,7 +160,7 @@ public class CommentService {
 		
 		comment.updateDeleted(true);
 		form.setMessage("댓글이 삭제되었습니다.");
-		form.setMessageType(CommentDeleteType.DELETED);
+		form.setMessageType(DeleteType.DELETED);
 		return objectMapper.writeValueAsString(form);
 	}
 

@@ -1,7 +1,9 @@
 package book.modules.comment;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,8 +17,6 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-
-import org.springframework.core.annotation.Order;
 
 import book.modules.account.UserAccount;
 import book.modules.base.BaseEntity;
@@ -33,6 +33,7 @@ import lombok.Setter;
 @NamedEntityGraph(
         name = "Comment.withParentAndGroupAndChildList",
         attributeNodes = {
+        		@NamedAttributeNode("createdBy"),
         		@NamedAttributeNode("parent"),
                 @NamedAttributeNode(value = "group", subgraph = "childList")
         },
@@ -77,7 +78,7 @@ public class Comment extends BaseEntity {
 	
 	@OrderBy("id")
 	@OneToMany(mappedBy = "group")
-	private List<Comment> childList = new ArrayList<Comment>();
+	private Set<Comment> childList = new HashSet<Comment>();
 	
 	public void updateParent (Comment parent) {
 		this.parent = parent;
