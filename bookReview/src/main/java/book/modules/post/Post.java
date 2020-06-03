@@ -39,6 +39,7 @@ import lombok.Setter;
         name = "Post.withCommentAndParentAndGroupAndChildList",
         attributeNodes = {
         		@NamedAttributeNode("createdBy"),
+        		@NamedAttributeNode("board"),
                 @NamedAttributeNode(value = "comments" , subgraph = "childList")
         },
         subgraphs = @NamedSubgraph(name = "childList", attributeNodes = @NamedAttributeNode("childList"))

@@ -58,7 +58,7 @@
 		                	</span>
 		                </div>
 		                <div class="menu-bottom" style="text-align:center; padding-bottom:20px;">
-		                	<a class="btn btn-primary list" href="/list">리스트</a>
+		                	<a class="btn btn-primary list" th:href="@{'/board/' + ${post.board.path}}">리스트</a>
 		                	<a class="btn btn-primary next" th:if="${postPrevNextForm.nextPostId != null}" th:href="@{'/post/view/' + ${postPrevNextForm.nextPostId}}">다음글</a>
 		                	<a class="btn btn-primary prev" th:if="${postPrevNextForm.prevPostId != null}" th:href="@{'/post/view/' + ${postPrevNextForm.prevPostId}}">이전글</a>
 		                	<a class="btn btn-primary post-update" th:if="${post.isCreatedBy(#authentication.principal)}" th:href="@{'/post/update/' + ${post.id}}">수정</a>

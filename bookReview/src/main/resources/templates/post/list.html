@@ -20,6 +20,7 @@
 				            </div>
 				        </div>
 				    </form>
+				    <h1 class="board_title" th:text="${board.name}"></h1>
 				    <ul class="topics-table">
 				        <li class="topics-header">
 				           <ul class="header-titles">
@@ -31,12 +32,12 @@
 				               <li class="up">추천수</li>
 				           </ul>
 				        </li>
-				        <li class="topics-body" th:each="item: ${board.postList}">
+				        <li class="topics-body" th:each="item: ${postList}">
 				            <ul class="topic-item-1">
 				               <a th:href="@{'/post/view/' +  ${item.id}}">
 				               <li class="no" th:text="${item.id}">글번호</li>
 				               <li class="title" th:text="${item.title}">제목</li>
-				               <li class="writer"><span class="bbp-topic-freshness-author" th:text="${item.createdBy.nickname}">작성자</span></li>
+				               <li class="writer"><span class="bbp-topic-freshness-author" th:text="${item.createdBy}">작성자</span></li>
 				               <li class="date" th:text="${item.createdAt}" >작성일</li>
 				               <li class="views" th:text="${item.views}">조회수</li>
 			                   <li class="up" th:text="${item.up}">추천수</li>

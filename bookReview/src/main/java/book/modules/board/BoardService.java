@@ -4,6 +4,8 @@ import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import book.modules.account.Account;
 import book.modules.board.manager.BoardManager;
 import book.modules.board.manager.BoardManagerRepository;
-import javassist.NotFoundException;
+import book.modules.post.PostRepository;
+import book.modules.post.form.PostListForm;
 import lombok.RequiredArgsConstructor;
 
 @Transactional
@@ -21,6 +24,7 @@ public class BoardService {
 
 	private final BoardRepository boardRepository;
 	private final BoardManagerRepository boardManagerRepository;
+	private final PostRepository postRepository;
 	
 	public void boardCreateTest(Account account) {
 		//Board board = Board.builder().
@@ -48,7 +52,13 @@ public class BoardService {
 		return orElseThrow;
 	}
 
-	public void getPostList(Board board) {
+	public Page<PostListForm> getPostList(Board board, String keyword , Pageable pageable) {
 		// TODO Auto-generated method stub
+		
+		if (keyword == null) {
+			return postRepository.findAllPostByBoardAndDeleted(board.getPath(), false, pageable);
+		}
+		
+		return postRepository.findAllPostByBoardAndDeletedWithKeyword(keyword, board.getPath(), false, pageable);
 	}
 }

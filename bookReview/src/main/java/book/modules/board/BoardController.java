@@ -2,6 +2,9 @@ package book.modules.board;
 
 import java.nio.file.AccessDeniedException;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +32,14 @@ public class BoardController {
 	}
 	
 	@GetMapping("/{boardPath}")
-	public String boardView(@CurrentAccount Account account , Model model , @PathVariable String boardPath) throws AccessDeniedException {
+	public String boardView(@CurrentAccount Account account , Model model , @PathVariable String boardPath, String keyword,
+							@PageableDefault(size = 12, page = 0 ,
+							sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) throws AccessDeniedException {
+		
 		Board board = boardService.getBoard(account, boardPath);
 
 		model.addAttribute(board);
+		model.addAttribute("postList" , boardService.getPostList(board, keyword, pageable));
 		model.addAttribute(account);
 		
 		return "post/list";

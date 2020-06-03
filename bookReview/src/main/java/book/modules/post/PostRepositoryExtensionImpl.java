@@ -3,18 +3,26 @@ package book.modules.post;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import book.modules.account.QAccount;
+import book.modules.board.QBoard;
 import book.modules.comment.QComment;
+import book.modules.post.form.PostListForm;
 import book.modules.post.form.PostPrevNextForm;
+import book.modules.post.form.QPostListForm;
 
 @Repository
 public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport implements PostRepositoryExtension {
@@ -79,6 +87,94 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 		
 		
 		return fetchOne;
+	}
+
+	@Override
+	public Page<PostListForm> findAllPostByBoardAndDeleted(String boardPath, boolean deleted, Pageable pageable) {
+		// TODO Auto-generated method stub
+		
+		QPost post = QPost.post;
+		QAccount account = QAccount.account;
+		QBoard board = QBoard.board;
+		
+		List<PostListForm> content = queryFactory.select(new QPostListForm(
+								post.id,
+								post.title,
+								post.createdAt,
+								account.nickname,
+								post.up,
+								post.views								
+							)
+				
+					).from(post)
+					 .leftJoin(post.createdBy , account)
+					 .leftJoin(post.board, board)
+					 .where(
+							 post.board.path.eq(boardPath),
+							 post.deleted.eq(deleted)
+							 
+					 )
+					 .offset(pageable.getOffset())
+					 .limit(pageable.getPageSize())
+					 .fetch();
+		
+		JPAQuery<Post> count = queryFactory.select(post)
+					.from(post)
+					.leftJoin(post.createdBy , account)
+					 .leftJoin(post.board, board)
+					 .where(
+							 post.board.path.eq(boardPath),
+							 post.deleted.eq(deleted)
+							 
+					 );
+
+		return PageableExecutionUtils.getPage(content, pageable, count::fetchCount);
+	}
+
+	@Override
+	public Page<PostListForm> findAllPostByBoardAndDeletedWithKeyword(String keyword,String boardPath, boolean deleted,
+			Pageable pageable) {
+		// TODO Auto-generated method stub
+		QPost post = QPost.post;
+		QAccount account = QAccount.account;
+		QBoard board = QBoard.board;
+		
+		List<PostListForm> content = queryFactory.select(new QPostListForm(
+								post.id,
+								post.title,
+								post.createdAt,
+								account.nickname,
+								post.up,
+								post.views								
+							)
+				
+					).from(post)
+					 .leftJoin(post.createdBy , account)
+					 .leftJoin(post.board, board)
+					 .where(
+							 post.title.containsIgnoreCase(keyword)
+							 .or(post.content.containsIgnoreCase(keyword)),
+							 post.board.path.eq(boardPath),
+							 post.deleted.eq(deleted)
+							 
+					 )
+					 .offset(pageable.getOffset())
+					 .limit(pageable.getPageSize())
+					 .fetch();
+		
+		JPAQuery<Post> count = queryFactory.select(post)
+					.from(post)
+					.leftJoin(post.createdBy , account)
+					 .leftJoin(post.board, board)
+					 .where(
+							 post.title.containsIgnoreCase(keyword)
+							 .or(post.content.containsIgnoreCase(keyword)),
+							 post.board.path.eq(boardPath),
+							 post.deleted.eq(deleted)
+							 
+					 );
+
+		return PageableExecutionUtils.getPage(content, pageable, count::fetchCount);
 	}
 
 }
