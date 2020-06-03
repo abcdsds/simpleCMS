@@ -4,9 +4,13 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
+@AllArgsConstructor
 public class PostForm {
 
 	@NotBlank
@@ -15,4 +19,8 @@ public class PostForm {
 	
 	@NotBlank
 	private String content;
+	
+	@NotBlank
+	private String boardName;
+
 }

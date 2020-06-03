@@ -29,8 +29,7 @@ import lombok.Setter;
 
 
 @EqualsAndHashCode(of = "id" , callSuper = true)
-@Getter @Setter
-@Builder
+@Getter @Builder
 @Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Account extends BaseTimeEntity{
 

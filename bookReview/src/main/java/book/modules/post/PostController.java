@@ -25,6 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import book.modules.account.Account;
 import book.modules.account.CurrentAccount;
+import book.modules.board.Board;
+import book.modules.board.BoardService;
 import book.modules.comment.Comment;
 import book.modules.comment.CommentService;
 import book.modules.comment.form.CommentForm;
@@ -45,11 +47,14 @@ public class PostController {
 	private final ModelMapper modelMapper;
 	private final ObjectMapper objectMapper;
 	
-	@GetMapping("/add")
-	public String postAddForm(@CurrentAccount Account account, Model model) {
+	@GetMapping("/{boardName}/add")
+	public String postAddForm(@CurrentAccount Account account, Model model, @PathVariable String boardName) {
+		
+		PostForm form = PostForm.builder().boardName(boardName).build();
+		
 		
 		model.addAttribute(account);
-		model.addAttribute(new PostForm());
+		model.addAttribute(form);
 		
 		return "post/add";
 	}
@@ -57,7 +62,7 @@ public class PostController {
 	@PostMapping("/add")
 	public String postAddSubmit(@CurrentAccount Account account, Model model,
 								@Valid PostForm form, Errors errors,
-								RedirectAttributes redirect) {
+								RedirectAttributes redirect) throws AccessDeniedException {
 		
 		if (errors.hasErrors()) {
 			model.addAttribute(account);

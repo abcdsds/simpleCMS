@@ -1,7 +1,7 @@
 package book.modules.comment;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +42,7 @@ import lombok.Setter;
 
 @EqualsAndHashCode(of = "id" , callSuper = true)
 @Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Setter @Builder
+@Getter @Builder
 public class Comment extends BaseEntity {
 
 	@Id @GeneratedValue
@@ -78,7 +78,7 @@ public class Comment extends BaseEntity {
 	
 	@OrderBy("id")
 	@OneToMany(mappedBy = "group")
-	private Set<Comment> childList = new HashSet<Comment>();
+	private Set<Comment> childList = new LinkedHashSet<Comment>();
 	
 	public void updateParent (Comment parent) {
 		this.parent = parent;

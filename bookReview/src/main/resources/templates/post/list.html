@@ -23,57 +23,26 @@
 				    <ul class="topics-table">
 				        <li class="topics-header">
 				           <ul class="header-titles">
-				               <li>Forum</li>
-				               <li>Topics</li>
-				               <li>Posts</li>
-				               <li>Freshness</li>
+				               <li class="no">글번호</li>
+				               <li class="title">제목</li>
+				               <li class="writer">작성자</li>
+				               <li class="date">작성일</li>
+				               <li class="views">조회수</li>
+				               <li class="up">추천수</li>
 				           </ul>
 				        </li>
-				        <li class="topics-body">
+				        <li class="topics-body" th:each="item: ${board.postList}">
 				            <ul class="topic-item-1">
-				                <li>
-				                    <a class="badge badge-primary" href="">Around the Boards</a>
-			                    </li>
-			                    <li>4</li>
-			                    <li>5</li>
-			                    <li>
-			                        
-			                        <a class="badge badge-info" href="http://skatingbuzz.test/forums/topic/random-4/" title="Random 4">1 week ago</a>
-		                            <p class="bbp-topic-meta">
-				                        <span class="bbp-topic-freshness-author">
-			                                <a 
-			                                href="http://skatingbuzz.test/forums/user/admin/" 
-			                                title="View admin's profile" 
-			                                class="bbp-author-name badge badge-info" 
-			                                rel="nofollow">
-			                                    admin
-		                                    </a>
-			                            </span>
-		                            </p>
-			                    </li>
+				               <a th:href="@{'/post/view/' +  ${item.id}}">
+				               <li class="no" th:text="${item.id}">글번호</li>
+				               <li class="title" th:text="${item.title}">제목</li>
+				               <li class="writer"><span class="bbp-topic-freshness-author" th:text="${item.createdBy.nickname}">작성자</span></li>
+				               <li class="date" th:text="${item.createdAt}" >작성일</li>
+				               <li class="views" th:text="${item.views}">조회수</li>
+			                   <li class="up" th:text="${item.up}">추천수</li>
+							   </a>
 				            </ul>
-				            <ul class="topic-item-2">
-				                <li>
-				                    <a class="badge badge-primary" href="">Skating Events</a>
-			                    </li>
-			                    <li>2</li>
-			                    <li>4</li>
-			                    <li>
-			                        
-			                        <a class="badge badge-info" href="http://skatingbuzz.test/forums/topic/random-4/" title="Random 4">1 day ago</a>
-		                            <p class="bbp-topic-meta">
-				                        <span class="bbp-topic-freshness-author">
-			                                <a 
-			                                href="http://skatingbuzz.test/forums/user/admin/" 
-			                                title="View admin's profile" 
-			                                class="bbp-author-name badge badge-info" 
-			                                rel="nofollow">
-			                                    leslie
-		                                    </a>
-			                            </span>
-		                            </p>
-			                    </li>
-				            </ul>
+
 				        </li>
 				    </ul>
 				</div>

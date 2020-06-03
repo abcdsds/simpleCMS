@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
@@ -43,7 +44,7 @@ import lombok.Setter;
         subgraphs = @NamedSubgraph(name = "childList", attributeNodes = @NamedAttributeNode("childList"))
 )
 @EqualsAndHashCode(of = "id" , callSuper = true)
-@Builder @Getter @Setter
+@Builder @Getter
 @Entity @AllArgsConstructor @NoArgsConstructor
 public class Post extends BaseEntity {
 
@@ -71,8 +72,8 @@ public class Post extends BaseEntity {
 	private String content;
 	
 	@JoinColumn(name = "board_id")
-	@OneToOne(fetch = FetchType.LAZY)
-	private Board category = null;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Board board;
 
 	
 	//@Where(clause = "depth = 0")

@@ -18,6 +18,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import book.modules.account.Account;
 import book.modules.account.AccountRepository;
+import book.modules.board.Board;
+import book.modules.board.BoardRepository;
+import book.modules.board.BoardService;
 import book.modules.comment.form.DeleteType;
 import book.modules.post.form.PostDeleteForm;
 import book.modules.post.form.PostForm;
@@ -39,9 +42,13 @@ public class PostService {
 	private final AccountRepository accountRepository;
 	private final ModelMapper modelMapper;
 	private final ObjectMapper objectMapper;
+	private final BoardService boardService;
 
-	public void add(Account account, PostForm form) {
+	public void add(Account account, PostForm form) throws AccessDeniedException {
 		// TODO Auto-generated method stub
+		
+		Board board = boardService.getBoard(account, form.getBoardName());
+		
 		
 		Optional<Account> findById = accountRepository.findById(account.getId());
 		
@@ -61,12 +68,14 @@ public class PostService {
 						 .lock(false)
 						 .views(0)
 						 .deleted(false)
+						 .board(board)
 						 .build();
 		
 		Post save = postRepository.save(post);
 		
 		getAccount.getPosts().add(save);
-				
+		board.getPostList().add(save);
+		
 	}
 
 	public Post getPost(Long id,HttpServletResponse response,HttpServletRequest request) throws NotFoundException {

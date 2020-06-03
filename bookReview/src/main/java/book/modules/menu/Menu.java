@@ -1,6 +1,6 @@
-package book.modules.board;
+package book.modules.menu;
 
-import java.util.HashSet;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -8,12 +8,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
+import book.modules.account.Account;
+import book.modules.board.Board;
 import book.modules.board.manager.BoardManager;
-import book.modules.post.Post;
+import book.modules.board.manager.BoardManager.BoardManagerBuilder;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,28 +24,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(of = "id")
-@Getter @Builder
+@Builder @Getter
 @Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Board {
-	
+public class Menu {
+
 	@Id @GeneratedValue
-	@Column(name = "board_id")
+	@Column(name = "menu_id")
 	private Long id;
-	
-	@Column(unique = true , nullable = false)
-	private String name;
-	
-	@Column(unique = true , nullable = false)
-	private String path;
-	
-	private SimpleGrantedAuthority role;
 		
 	@Builder.Default
-	@OneToMany(mappedBy = "board")
-	private Set<BoardManager> managers = new HashSet<BoardManager>();
+	@OneToMany(mappedBy = "parent")
+	private Set<Menu> subMenus = new LinkedHashSet<Menu>();
 	
-	@OneToMany(mappedBy = "board")
-	private Set<Post> postList = new LinkedHashSet<Post>();
-
-
+	@JoinColumn(name = "parent_id")
+	@ManyToOne
+	private Menu parent;
+	
+	private String name;
+	
+	private String path;
 }

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @EqualsAndHashCode(of = "id" , callSuper = true)
-@Builder @Getter @Setter
+@Builder @Getter
 @Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostVote extends BaseEntity {
 
