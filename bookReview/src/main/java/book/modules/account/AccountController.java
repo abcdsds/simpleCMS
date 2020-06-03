@@ -183,9 +183,9 @@ public class AccountController {
 		if(profileImage.startsWith("data:image") && profileImage != null ) {
 			accountService.updateProfileImage(account, profileImage);
 			
-			message = "배너 이미지가 수정되었습니다.";
+			message = "프로필 이미지가 수정되었습니다.";
 		}else {
-			message = "배너 이미지 수정이 실패했습니다.";
+			message = "프로필 이미지 수정이 실패했습니다.";
 		}
 		
 		redirectAttributes.addFlashAttribute("message", message);
@@ -235,13 +235,5 @@ public class AccountController {
 		
 		return "redirect:/login";
 	}
-	
-	@GetMapping("/post/list")
-	public String PostList(@CurrentAccount Account account, Model model) {
-		
-		model.addAttribute(account);
-		return "post/list";
-	}
-	
 	
 }

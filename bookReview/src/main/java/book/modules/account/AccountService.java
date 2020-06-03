@@ -88,12 +88,12 @@ public class AccountService implements UserDetailsService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		Account findByLoginId = accountRepository.findByLoginId(username);
+		Account findByLoginId = accountRepository.findByLoginId(loginId);
 		
 		if (findByLoginId == null) {
-			throw new UsernameNotFoundException(username + " 아이디가 존재하지 않습니다.");
+			throw new UsernameNotFoundException(loginId + " 아이디가 존재하지 않습니다.");
 		}
 		
 		return new UserAccount(findByLoginId);
@@ -166,7 +166,7 @@ public class AccountService implements UserDetailsService {
 		
 		Email emailMessage = Email.builder()
 										.to(account.getEmail())
-										.subject("회원 가입 인증 메일")
+										.subject("비밀번호 변경 인증 메일")
 										.message(message)
 										.build();										
 		
