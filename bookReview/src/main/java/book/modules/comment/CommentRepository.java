@@ -25,4 +25,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	int countByPost(Post post);
 	
 	int countByPostAndDeleted(Post post, boolean deleted);
+
+	Comment findTopByOrderByIdDesc();
 }

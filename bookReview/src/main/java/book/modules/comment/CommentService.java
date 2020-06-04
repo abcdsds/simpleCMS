@@ -87,6 +87,8 @@ public class CommentService {
 	public String vote(Long commentId, Long postId, Account account, VoteType type) throws NotFoundException, JsonProcessingException {
 		// TODO Auto-generated method stub
 		
+		String message = type.equals(type.DOWN) ? "반대" : "추천";
+		
 		PostVoteForm form = new PostVoteForm();
 		
 		Optional<Comment> findById = commentRepository.findById(commentId);
@@ -101,7 +103,7 @@ public class CommentService {
 		PostVote findByCommentAndCreatedBy = postVoteRepository.findByCommentAndCreatedBy(findComment, account);
 		
 		if (findByCommentAndCreatedBy != null) {
-			form.setMessage("이미 추천했습니다.");
+			form.setMessage("이미 "+message+"했습니다.");
 			form.setVoteUpCount(findComment.getUp());
 			form.setVoteDownCount(findComment.getDown());
 			return objectMapper.writeValueAsString(form);
@@ -116,7 +118,7 @@ public class CommentService {
 			findComment.voteDown();
 		}
 		
-		form.setMessage("추천 되었습니다.");			
+		form.setMessage(message+" 되었습니다.");			
 		form.setVoteUpCount(findComment.getUp());
 		form.setVoteDownCount(findComment.getDown());
 		

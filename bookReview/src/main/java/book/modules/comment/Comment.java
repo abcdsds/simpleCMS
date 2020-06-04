@@ -76,6 +76,7 @@ public class Comment extends BaseEntity {
 	@JoinColumn(name = "group_id")
 	private Comment group;
 	
+	@Builder.Default
 	@OrderBy("id")
 	@OneToMany(mappedBy = "group")
 	private Set<Comment> childList = new LinkedHashSet<Comment>();

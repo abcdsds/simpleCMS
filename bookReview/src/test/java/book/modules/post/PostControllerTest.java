@@ -228,9 +228,7 @@ class PostControllerTest {
 	@DisplayName("게시판 글 반대하기 - 성공")
 	@Test
 	void postViewVoteDownSuccess() throws Exception {
-		
-		
-		
+
 		 MvcResult andReturn = mockMvc.perform(
 					post("/post/vote/down")
 						.param("postId", testPost.getId().toString())
@@ -342,7 +340,7 @@ class PostControllerTest {
 		mockMvc.perform(
 					post("/post/add")
 					.param("title", "제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목")
-					.param("content", "내용")
+					.param("content", "내용9811")
 					.param("boardName", testBoard.getPath())
 					.with(csrf())
 				)
@@ -353,6 +351,7 @@ class PostControllerTest {
 		Post findTopByOrderByIdDesc = postRepository.findTopByOrderByIdDesc();
 		
 		assertNotNull(findTopByOrderByIdDesc);
+		assertThat(findTopByOrderByIdDesc.getContent()).isNotEqualTo("내용9811");
 		
 	}
 	
