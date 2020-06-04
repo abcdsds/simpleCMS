@@ -161,6 +161,9 @@ public class PostService {
 	
 	public String vote(Account account, Long postId, VoteType voteType) throws JsonProcessingException {
 		// TODO Auto-generated method stub
+		
+		String message = voteType.equals(voteType.DOWN) ? "반대" : "추천";
+
 		PostVoteForm form = new PostVoteForm();
 		
 		Optional<Post> findById = postRepository.findById(postId);
@@ -175,7 +178,7 @@ public class PostService {
 		
 		PostVote findByPostAndCreatedBy = postVoteRepository.findByPostAndCreatedBy(post, account);
 		if (findByPostAndCreatedBy != null) {
-			form.setMessage("이미 추천하셨습니다.");	
+			form.setMessage("이미 "+message+"하셨습니다.");	
 			form.setVoteDownCount(post.getDown());
 			form.setVoteUpCount(post.getUp());
 			return objectMapper.writeValueAsString(form);
@@ -190,7 +193,7 @@ public class PostService {
 			post.voteDown();
 		}
 		
-		form.setMessage("추천 되었습니다.");			
+		form.setMessage(message +" 되었습니다.");			
 		form.setVoteDownCount(post.getDown());
 		form.setVoteUpCount(post.getUp());
 		

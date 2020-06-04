@@ -42,6 +42,7 @@ public class Board {
 	@OneToMany(mappedBy = "board")
 	private Set<BoardManager> managers = new HashSet<BoardManager>();
 	
+	@Builder.Default
 	@OneToMany(mappedBy = "board")
 	private Set<Post> postList = new LinkedHashSet<Post>();
 

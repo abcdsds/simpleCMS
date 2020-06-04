@@ -26,7 +26,7 @@ public class BoardService {
 	private final BoardManagerRepository boardManagerRepository;
 	private final PostRepository postRepository;
 	
-	public void boardCreateTest(Account account) {
+	public Board boardCreateTest(Account account) {
 		//Board board = Board.builder().
 		
 		
@@ -40,7 +40,8 @@ public class BoardService {
 		boardManagerRepository.save(bm);
 
 		board.getManagers().add(bm);
-		
+	
+		return board;
 	}
 
 	public Board getBoard(Account account, String boardPath) throws AccessDeniedException {

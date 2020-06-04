@@ -21,6 +21,8 @@ public interface PostRepository extends JpaRepository<Post, Long> , PostReposito
 	Post findByIdAndCreatedByAndDeleted(Long id, Account account, boolean deleted);
 
 	Optional<Post> findByIdAndDeleted(Long id, boolean b);
+
+	Post findTopByOrderByIdDesc();
 	
 
 }

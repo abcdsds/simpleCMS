@@ -67,9 +67,11 @@ public class Account extends BaseTimeEntity{
 	@Lob @Basic(fetch = FetchType.LAZY)
 	private String profileImage;
 	
+	@Builder.Default
 	@OneToMany(mappedBy = "createdBy")
 	private List<Post> posts = new ArrayList<Post>();
 	
+	@Builder.Default
 	@OneToMany(mappedBy = "createdBy")
 	private List<Comment> comments = new ArrayList<Comment>();
 
