@@ -1,5 +1,6 @@
 package book.modules.post;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,13 +19,13 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import book.modules.account.QAccount;
+import book.modules.admin.form.StatisticsForm;
 import book.modules.board.QBoard;
 import book.modules.comment.QComment;
 import book.modules.post.form.PostListForm;
 import book.modules.post.form.PostPrevNextForm;
 import book.modules.post.form.QPostListForm;
 
-@Repository
 public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport implements PostRepositoryExtension {
 
 	private final JPAQueryFactory queryFactory;
@@ -175,6 +176,24 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 					 );
 
 		return PageableExecutionUtils.getPage(content, pageable, count::fetchCount);
+	}
+
+	@Override
+	public List<StatisticsForm> findAllPostMonthlyCount() {
+		// TODO Auto-generated method stub
+		QPost post = QPost.post;
+		
+		List<StatisticsForm> fetch = queryFactory.select(
+				Projections.fields(StatisticsForm.class,
+						post.createdAt.month().as("month") , post.count().as("count")
+				))
+				.from(post)
+				.where(post.createdAt.year().eq(LocalDateTime.now().getYear()))
+				.groupBy(post.createdAt.month())
+				.orderBy(post.createdAt.month().asc())
+				.fetch();
+		
+		return fetch;
 	}
 
 }

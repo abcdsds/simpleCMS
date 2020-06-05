@@ -1,6 +1,7 @@
 package book.modules.post;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -23,6 +24,8 @@ public interface PostRepository extends JpaRepository<Post, Long> , PostReposito
 	Optional<Post> findByIdAndDeleted(Long id, boolean b);
 
 	Post findTopByOrderByIdDesc();
+	
+	List<Post> findTop10ByOrderByIdDesc();
 	
 
 }

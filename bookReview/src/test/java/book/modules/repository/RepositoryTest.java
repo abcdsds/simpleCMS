@@ -2,6 +2,12 @@ package book.modules.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.verify;
+
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +17,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import book.modules.account.AccountRepository;
+import book.modules.admin.form.StatisticsForm;
 import book.modules.board.Board;
 import book.modules.board.BoardRepository;
 import book.modules.post.PostRepository;
@@ -26,6 +37,34 @@ public class RepositoryTest {
 
 	@Autowired
 	PostRepository postRepository;
+	
+	@Autowired
+	AccountRepository accountRepository;
+	
+	@Autowired
+	ObjectMapper objectMapper;
+	
+	@Test
+	void accountTest() throws JsonProcessingException {
+		
+		int[] array2 = IntStream.range(1, 13).map(v -> 0).toArray();			
+		
+		List<StatisticsForm> list = accountRepository.findAllAccountMonthlyCount();
+		list.forEach(a -> {
+			array2[a.getMonth()-1] = a.getCount().intValue();
+			log.info("month : {}" , a.getMonth());
+			log.info("count : {}" , a.getCount());
+		});
+		
+		for (int a : array2) {
+			System.out.println(a);
+		}
+		
+		String writeValueAsString = objectMapper.writeValueAsString(array2);
+		log.info("result {}" , writeValueAsString);
+		
+		//findAllAccountMonthlyCount.stream().iterator()
+	}
 	
 	@Test
 	void boardTest() {

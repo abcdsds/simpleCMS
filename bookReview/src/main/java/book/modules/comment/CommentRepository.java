@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import book.modules.post.Post;
 
 @Transactional(readOnly = true)
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+public interface CommentRepository extends JpaRepository<Comment, Long> , CommentRepositoryExtension {
 
 	List<Comment> findAllByPostAndDeleted(Post post, boolean b);
 
@@ -27,4 +27,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	int countByPostAndDeleted(Post post, boolean deleted);
 
 	Comment findTopByOrderByIdDesc();
+	
+	List<Comment> findTop10ByOrderByIdDesc();
 }

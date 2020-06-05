@@ -1,12 +1,13 @@
 package book.modules.account;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-public interface AccountRepository extends JpaRepository<Account, Long>{
+public interface AccountRepository extends JpaRepository<Account, Long> , AccountRepositoryExtension{
 
 	Account findByEmail(String email);
 
@@ -18,4 +19,5 @@ public interface AccountRepository extends JpaRepository<Account, Long>{
 
 	Account findByLoginId(String loginId);
 
+	List<Account> findTop10ByOrderByIdDesc();
 }
