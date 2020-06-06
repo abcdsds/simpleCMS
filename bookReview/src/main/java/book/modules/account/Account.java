@@ -17,6 +17,7 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 import book.modules.base.BaseTimeEntity;
+import book.modules.board.manager.BoardManager;
 import book.modules.comment.Comment;
 import book.modules.post.Post;
 import lombok.AccessLevel;
@@ -25,7 +26,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @EqualsAndHashCode(of = "id" , callSuper = true)
@@ -74,7 +74,10 @@ public class Account extends BaseTimeEntity{
 	@Builder.Default
 	@OneToMany(mappedBy = "createdBy")
 	private List<Comment> comments = new ArrayList<Comment>();
-
+	
+	@OneToMany(mappedBy = "")
+	private List<BoardManager> managers = new ArrayList<BoardManager>(); 
+	
 	public void changePassword(String encode) {
 		// TODO Auto-generated method stub
 		this.password = encode;

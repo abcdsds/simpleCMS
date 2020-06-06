@@ -3,13 +3,21 @@ package book.modules.account;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
+import book.modules.account.form.AccountForm;
+import book.modules.account.form.AccountListForm;
 import book.modules.admin.form.StatisticsForm;
+import book.modules.board.QBoard;
+import book.modules.board.manager.QBoardManager;
 import book.modules.post.form.PostPrevNextForm;
 
 public class AccountRepositoryExtensionImpl extends QuerydslRepositorySupport implements AccountRepositoryExtension {
@@ -40,6 +48,50 @@ public class AccountRepositoryExtensionImpl extends QuerydslRepositorySupport im
 						.fetch();
 		
 		return fetch;
+	}
+
+	@Override
+	public Page<AccountListForm> findAllAccount(Pageable pageable) {
+		// TODO Auto-generated method stub
+		
+		QAccount account = QAccount.account;
+		
+		List<AccountListForm> content = queryFactory.select(
+						Projections.fields(AccountListForm.class, account.id , account.nickname , account.loginId , account.email , account.role)
+					)
+					.from(account)
+					.fetch();
+		
+		JPAQuery<Long> count = queryFactory.select(account.count()).from(account);
+		
+		
+		return PageableExecutionUtils.getPage(content, pageable, count::fetchCount);
+	}
+
+	@Override
+	public Page<AccountListForm> findAccountByBoardManagerId(Long id, Pageable pageable) {
+		// TODO Auto-generated method stub
+		QAccount account = QAccount.account;
+		QBoardManager boardmanager = QBoardManager.boardManager;
+		QBoard board = QBoard.board;
+		
+		 List<AccountListForm> content = queryFactory.select(
+						Projections.fields(AccountListForm.class, account.id , account.nickname , account.loginId , account.email , account.role , boardmanager.managedAt)
+					)
+					.from(account)
+					.leftJoin(account.managers ,boardmanager)
+					.leftJoin(boardmanager.board , board)
+					.where(board.id.eq(id))
+					.fetch();
+		
+		
+		JPAQuery<Long> count = queryFactory.select(account.count())
+					.from(account)
+					.leftJoin(account.managers ,boardmanager)
+					.leftJoin(boardmanager.board , board)
+					.where(board.id.eq(id));
+		
+		return PageableExecutionUtils.getPage(content, pageable, count::fetchCount);
 	}
 
 }

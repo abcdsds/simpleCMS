@@ -1,8 +1,11 @@
 package book.modules.admin;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,13 +14,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import book.modules.account.Account;
 import book.modules.account.AccountRepository;
+import book.modules.account.form.AccountListForm;
 import book.modules.admin.form.StatisticsForm;
 import book.modules.board.Board;
 import book.modules.board.BoardRepository;
+import book.modules.board.manager.BoardManagerRepository;
 import book.modules.comment.Comment;
 import book.modules.comment.CommentRepository;
 import book.modules.post.Post;
 import book.modules.post.PostRepository;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -27,6 +33,7 @@ public class AdminService {
 
 	private final AccountRepository accountRepository;
 	private final PostRepository postRepository;
+	private final BoardManagerRepository boardManagerRepository;
 	private final BoardRepository boardRepository;
 	private final CommentRepository commentRepository;
 
@@ -74,5 +81,16 @@ public class AdminService {
 	public List<Account> getAllAccounts() {
 		// TODO Auto-generated method stub
 		return accountRepository.findTop10ByOrderByIdDesc();
+	}
+
+	public Page<AccountListForm> getAccountsWithBoardId(Long id, Pageable pageable) {
+		// TODO Auto-generated method stub
+		
+		return accountRepository.findAccountByBoardManagerId(id, pageable);
+	}
+
+	public Page<AccountListForm> getAccounts(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return accountRepository.findAllAccount(pageable);
 	}
 }

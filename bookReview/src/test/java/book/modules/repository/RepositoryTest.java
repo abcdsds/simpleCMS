@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -45,9 +46,21 @@ public class RepositoryTest {
 	ObjectMapper objectMapper;
 	
 	@Test
+	void test() {
+		int[] array2 = IntStream.range(1, 13).toArray();	
+		int[] c = Arrays.copyOfRange(array2, 1, 3);
+		
+		System.out.println(c[0]);
+		System.out.println(c[1]);
+		System.out.println(c[2]);
+		
+	}
+	
+	@Test
 	void accountTest() throws JsonProcessingException {
 		
 		int[] array2 = IntStream.range(1, 13).map(v -> 0).toArray();			
+	
 		
 		List<StatisticsForm> list = accountRepository.findAllAccountMonthlyCount();
 		list.forEach(a -> {
