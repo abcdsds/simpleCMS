@@ -57,7 +57,7 @@ public class AccountRepositoryExtensionImpl extends QuerydslRepositorySupport im
 		QAccount account = QAccount.account;
 		
 		List<AccountListForm> content = queryFactory.select(
-						Projections.fields(AccountListForm.class, account.id , account.nickname , account.loginId , account.email , account.role)
+						Projections.fields(AccountListForm.class, account.id , account.nickname , account.loginId , account.email , account.role , account.createdAt.as("managedAt"))
 					)
 					.from(account)
 					.fetch();

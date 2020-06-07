@@ -75,7 +75,7 @@ public class Account extends BaseTimeEntity{
 	@OneToMany(mappedBy = "createdBy")
 	private List<Comment> comments = new ArrayList<Comment>();
 	
-	@OneToMany(mappedBy = "")
+	@OneToMany(mappedBy = "managedBy")
 	private List<BoardManager> managers = new ArrayList<BoardManager>(); 
 	
 	public void changePassword(String encode) {

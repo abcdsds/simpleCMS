@@ -12,6 +12,7 @@
   </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+  <link href="/node_modules/datatables.net-dt/css/jquery.dataTables.min.css" ref="stylesheet"/>
   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
   <!-- Nucleo Icons -->
   <link href="/css/nucleo-icons.css" rel="stylesheet" />
@@ -159,7 +160,7 @@
         </div>
       </nav>
       <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
@@ -170,6 +171,48 @@
           </div>
         </div>
       </div>
+      
+      <div class="modal modal-account fade" id="accountListModal" tabindex="-1" role="dialog" aria-labelledby="accountListModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i class="tim-icons icon-simple-remove"></i>
+              </button>
+              <table id="accountList" class="display" style="width:100%; height:100%;">
+              	 <thead>
+		            <tr>
+		                <th>아이디</th>
+		                <th>닉네임</th>
+		                <th>이메일</th>
+		                <th>권한</th>
+		                <th>가입일</th>
+		                <th class="text-left">선택</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		        	<tr th:each="item : ${allAccountList}">
+		        		<td th:text="${item.loginId}">
+		        		</td>
+		        		<td th:text="${item.nickname}">
+		        		</td>
+		        		<td th:text="${item.email}">
+		        		</td>
+		        		<td th:text="${item.role}">
+		        		</td>
+		        		<td th:text="${item.createdAt}">
+		        		</td>
+		        		<td>
+		        			<div id="select-id" class="btn btn-primary" th:attr="data-account-id=${item.id}">선택</div>
+		        		</td>
+		        	</tr>
+		        </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <!-- End Navbar -->
     	<div class="content">
         <div class="row">
@@ -236,7 +279,7 @@
 	                  <div class="col-sm-10" >	
 	                    <input type="hidden" th:field="*{id}">
 	                    
-	                    <div class="btn btn-primary float-right">관리자 추가</div>
+	                    <div class="btn btn-primary float-right" data-toggle="modal" data-target="#accountListModal">관리자 추가</div>
 	                    <h1>관리자 관리</h1>
 		                <div class="table-responsive">
 		                  <table class="table tablesorter">
@@ -261,24 +304,24 @@
 		                    </thead>
 		                    <tbody>
 		                      
-		                        <tr th:each="item : ${board.managers}">
-		                        	<td th:text="${item.managedBy.loginId}">
+		                        <tr th:each="item : ${accountListWithBoard.getContent()}">
+		                        	<td th:text="${item.loginId}">
 			                          Dakota Rice
 			                        </td>
-			                        <td th:text="${item.managedBy.nickname}">
+			                        <td th:text="${item.nickname}">
 			                          Dakota Rice
 			                        </td>
-			                        <td th:text="${item.managedBy.email}">
+			                        <td th:text="${item.email}">
 			                          Niger
 			                        </td>
-			                        <td th:if="${#strings.equals(item.managedBy.role, 'ROLE_ADMIN')}">
+			                        <td th:if="${#strings.equals(item.role, 'ROLE_ADMIN')}">
 			                           	관리자
 			                        </td>
-			                        <td th:if="${#strings.equals(item.managedBy.role, 'ROLE_USER')}">
+			                        <td th:if="${#strings.equals(item.role, 'ROLE_USER')}">
 			                           	일반회원
 			                        </td>
 			                        <td class="text-center">
-			                          <a th:href="@{'/board/' + ${item.id}}" class="btn btn-primary">삭제</a>
+			                          <div id="delete-id" class="btn btn-primary" th:attr="data-account-id=${item.id}">해제</div>
 			                        </td>
 		                      	</tr>                                
 		                    </tbody>
@@ -287,22 +330,22 @@
 		              </div>
 		              
 		              <ul class="pagination justify-content-center">
-                        <li class="page-item" th:classappend="${!accountList.hasPrevious()}? disabled">
-                            <a th:href="@{'/admin/board/update/' +  ${boardForm.id} +'?sort=managedAt,desc&page=' + ${accountList.getNumber() - 1}}"
+                        <li class="page-item" th:classappend="${!accountListWithBoard.hasPrevious()}? disabled">
+                            <a th:href="@{'/admin/board/update/' +  ${boardForm.id} +'?sort=managedAt,desc&page=' + ${accountListWithBoard.getNumber() - 1}}"
                                class="page-link" tabindex="-1" aria-disabled="true">
                                 Previous
                             </a>
                         </li>
-                        <li class="page-item" th:classappend="${i == accountList.getNumber()}? active"
-                            th:each="i: ${#numbers.sequence(0, accountList.getTotalPages())}">
+                        <li class="page-item" th:classappend="${i == accountListWithBoard.getNumber()}? active"
+                            th:each="i: ${#numbers.sequence(0, accountListWithBoard.getTotalPages())}">
                             
  							 <a th:href="@{'/admin/board/update/' +  ${boardForm.id} +'?sort=managedAt,desc&page=' + ${i}}"
                                class="page-link" href="#" th:text="${i + 1}">1</a>
                                                       
                             
                         </li>
-                        <li class="page-item" th:classappend="${!accountList.hasNext()}? disabled">
-                            <a th:href="@{'/admin/board/update/' +  ${boardForm.id} +'?sort=managedAt,desc&page=' + ${accountList.getNumber() + 1}}"
+                        <li class="page-item" th:classappend="${!accountListWithBoard.hasNext()}? disabled">
+                            <a th:href="@{'/admin/board/update/' +  ${boardForm.id} +'?sort=managedAt,desc&page=' + ${accountListWithBoard.getNumber() + 1}}"
                                class="page-link">
                                 Next
                             </a>
@@ -372,6 +415,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+  <script src="/node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/node_modules/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
+  
   <!--  Google Maps Plugin    -->
   <!-- Place this tag in your head or just before your close body tag. -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
@@ -383,9 +429,18 @@
   <script src="/js/black-dashboard.min.js?v=1.0.0"></script>
   <!-- Black Dashboard DEMO methods, don't include it in your project! -->
   <script src="/js/demo.js"></script>
-  <script>
+  <script th:replace="fragments.html :: ajax-csrf-header"></script>
+  <script th:inline="javascript">
     $(document).ready(function() {
       $().ready(function() {
+    	  
+    	$('#accountList').DataTable();
+    	
+    	$('#accountList_wrapper').css("width" , '100%');
+    	$('#accountList_wrapper').css('height' , '100%');
+    	$('#accountList_filter').css('float' , 'right')
+    	$('#accountList_filter .search').css('padding-left' , '20px');
+    	
         $sidebar = $('.sidebar');
         $navbar = $('.navbar');
         $main_panel = $('.main-panel');
@@ -400,6 +455,75 @@
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
+        $('#select-id').click(function () {
+			
+			var result = confirm("정말로 관리자로 설정하시겠습니까 ? ");
+			
+			if (result) {
+				const accountId = $(this).data('account-id');
+				const boardId = /*[[@{${boardForm.id}}]]*/'';
+				
+				console.log(accountId);
+				console.log(boardId);
+				
+				$.ajax({
+					type: 'POST',
+					url: '/admin/board/manager/add',
+					data: {'accountId' : accountId , 'boardId' : boardId },
+					dataType : "json",
+					success: function (response) {
+						console.log(response);
+						if (response.messageType !== undefined && response.messageType !== 'FAIL') {
+							location.href = '/admin/board/update/' + boardId;
+						} else {
+							alert (response.message);
+						}
+						/* $('.comment-list').load(window.location.href + '.comment-list'); */
+					},
+					error: function (request, status ,error) {
+						console.log(request);
+						console.log(status);
+						console.log(error);
+						//alert("로그인이 필요합니다. ")
+					},
+				});
+			}
+		});
+        
+		$('#delete-id').click(function () {
+			
+			var result = confirm("정말로 관리자를 해제하시겠습니까 ? ");
+			
+			if (result) {
+				const accountId = $(this).data('account-id');
+				const boardId = /*[[@{${boardForm.id}}]]*/'';
+				
+				console.log(accountId);
+				console.log(boardId);
+				
+				$.ajax({
+					type: 'POST',
+					url: '/admin/board/manager/delete',
+					data: {'accountId' : accountId , 'boardId' : boardId },
+					dataType : "json",
+					success: function (response) {
+						console.log(response);
+						if (response.messageType !== undefined && response.messageType !== 'FAIL') {
+							location.href = '/admin/board/update/' + boardId;
+						} else {
+							alert (response.message);
+						}
+						/* $('.comment-list').load(window.location.href + '.comment-list'); */
+					},
+					error: function (request, status ,error) {
+						console.log(request);
+						console.log(status);
+						console.log(error);
+						//alert("로그인이 필요합니다. ")
+					},
+				});
+			}
+		});
 
 
         $('.fixed-plugin a').click(function(event) {

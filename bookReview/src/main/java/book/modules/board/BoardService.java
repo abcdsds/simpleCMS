@@ -11,10 +11,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import book.modules.account.Account;
 import book.modules.account.AccountRepository;
 import book.modules.account.form.AccountListForm;
 import book.modules.board.form.BoardForm;
+import book.modules.board.form.BoardMessageForm;
+import book.modules.board.form.BoardMessageType;
 import book.modules.board.manager.BoardManager;
 import book.modules.board.manager.BoardManagerRepository;
 import book.modules.post.PostRepository;
@@ -32,6 +37,7 @@ public class BoardService {
 	private final PostRepository postRepository;
 	private final AccountRepository accountRepository;
 	private final ModelMapper modelMapper;
+	private final ObjectMapper objectMapper;
 	
 	public Board boardCreateTest(Account account) {
 		//Board board = Board.builder().
@@ -47,6 +53,7 @@ public class BoardService {
 		boardManagerRepository.save(bm);
 
 		board.getManagers().add(bm);
+		
 	
 		return board;
 	}
@@ -69,7 +76,7 @@ public class BoardService {
 		return postRepository.findAllPostByBoardAndDeletedWithKeyword(keyword, board.getPath(), false, pageable);
 	}
 
-	public Board addBoard(Account account, BoardForm boardForm) {
+	public Board addBoard(Account account, BoardForm boardForm) throws NotFoundException {
 		// TODO Auto-generated method stub
 		Board board = Board.builder().role(new SimpleGrantedAuthority(boardForm.getRole())).name(boardForm.getName()).path(boardForm.getPath()).build();
 		
@@ -81,6 +88,12 @@ public class BoardService {
 		boardManagerRepository.save(bm);
 
 		board.getManagers().add(bm);
+		
+		Optional<Account> findById = accountRepository.findById(account.getId());
+		
+		Account getAccount = findById.orElseThrow(() -> new NotFoundException("아이디가 존재하지 않습니다."));
+		
+		getAccount.getManagers().add(bm);
 	
 		return board;
 	}
@@ -99,6 +112,94 @@ public class BoardService {
 		Optional<Board> findById = boardRepository.findById(id);
 		Board orElseThrow = findById.orElseThrow(() -> new NotFoundException("게시판이 존재하지 않습니다."));
 		return orElseThrow;
+	}
+
+	public String addBoardManager(Long accountId, Long boardId) throws JsonProcessingException {
+		// TODO Auto-generated method stub
+		
+		BoardMessageForm form = new BoardMessageForm();
+		
+		Board getBoard = boardRepository.findNotOptionalBoardById(boardId);
+		
+		if (getBoard == null) {
+			
+			form.setMessage("게시판이 존재하지 않습니다.");
+			form.setMessageType(BoardMessageType.FAIL);
+			return objectMapper.writeValueAsString(form);
+		}
+
+		Account getAccount = accountRepository.findNotOptionalById(accountId);
+		
+		if (getAccount == null) {
+			
+			form.setMessage("아이디가 존재하지 않습니다.");
+			form.setMessageType(BoardMessageType.FAIL);
+			return objectMapper.writeValueAsString(form);
+			
+		}
+		
+		BoardManager getBoardManager = boardManagerRepository.findByBoardAndManagedBy(getBoard, getAccount);
+		
+		if (getBoardManager != null) {
+			
+			form.setMessage("이미 등록된 관리자입니다.");
+			form.setMessageType(BoardMessageType.FAIL);
+			return objectMapper.writeValueAsString(form);
+		}
+		
+		BoardManager bm = BoardManager.builder().board(getBoard).managedBy(getAccount).managedAt(LocalDateTime.now()).build();
+		boardManagerRepository.save(bm);
+		
+		getBoard.getManagers().add(bm);
+		getAccount.getManagers().add(bm);
+		
+		
+		form.setMessage("성공적으로 추가했습니다.");
+		form.setMessageType(BoardMessageType.SUCCESS);
+		return objectMapper.writeValueAsString(form);
+	}
+
+	public String deleteBoardManager(Long accountId, Long boardId) throws JsonProcessingException {
+		// TODO Auto-generated method stub
+BoardMessageForm form = new BoardMessageForm();
+		
+		Board getBoard = boardRepository.findNotOptionalBoardById(boardId);
+		
+		if (getBoard == null) {
+			
+			form.setMessage("게시판이 존재하지 않습니다.");
+			form.setMessageType(BoardMessageType.FAIL);
+			return objectMapper.writeValueAsString(form);
+		}
+
+		Account getAccount = accountRepository.findNotOptionalById(accountId);
+		
+		if (getAccount == null) {
+			
+			form.setMessage("아이디가 존재하지 않습니다.");
+			form.setMessageType(BoardMessageType.FAIL);
+			return objectMapper.writeValueAsString(form);
+			
+		}
+		
+		BoardManager getBoardManager = boardManagerRepository.findByBoardAndManagedBy(getBoard, getAccount);
+		
+		if (getBoardManager == null) {
+			
+			form.setMessage("관리자로 등록되지 않은 회원입니다.");
+			form.setMessageType(BoardMessageType.FAIL);
+			return objectMapper.writeValueAsString(form);
+		}
+		
+		boardManagerRepository.delete(getBoardManager);
+		
+		getBoard.getManagers().remove(getBoardManager);
+		getAccount.getManagers().remove(getBoardManager);
+		
+		
+		form.setMessage("성공적으로 해제했습니다.");
+		form.setMessageType(BoardMessageType.SUCCESS);
+		return objectMapper.writeValueAsString(form);
 	}
 
 }

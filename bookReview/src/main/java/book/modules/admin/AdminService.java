@@ -62,23 +62,28 @@ public class AdminService {
 		return objectMapper.writeValueAsString(array);
 	}
 
-	public List<Board> getAllBoards() {
-		// TODO Auto-generated method stub
+
+	public List<Account> getAllAccounts() {
 		
+		return accountRepository.findAll();
+	}
+	
+	public List<Board> getTop10Boards() {
+		// TODO Auto-generated method stub
 		return boardRepository.findTop10ByOrderByIdDesc();
 	}
 
-	public List<Post> getAllPosts() {
-		// TODO Auto-generated method stub
-		return postRepository.findTop10ByOrderByIdDesc();
-	}
-
-	public List<Comment> getAllComments() {
+	public List<Comment> getTop10Comments() {
 		// TODO Auto-generated method stub
 		return commentRepository.findTop10ByOrderByIdDesc();
 	}
-
-	public List<Account> getAllAccounts() {
+	
+	public List<Post> getTop10Posts() {
+		// TODO Auto-generated method stub
+		return postRepository.findTop10ByOrderByIdDesc();
+	}
+	
+	public List<Account> getTop10Accounts() {
 		// TODO Auto-generated method stub
 		return accountRepository.findTop10ByOrderByIdDesc();
 	}
@@ -92,5 +97,6 @@ public class AdminService {
 	public Page<AccountListForm> getAccounts(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return accountRepository.findAllAccount(pageable);
-	}
+	}	
+
 }

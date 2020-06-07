@@ -20,4 +20,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> , Accoun
 	Account findByLoginId(String loginId);
 
 	List<Account> findTop10ByOrderByIdDesc();
+
+	Account findNotOptionalById(Long accountId);
 }

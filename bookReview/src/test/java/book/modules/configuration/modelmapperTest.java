@@ -22,7 +22,6 @@ public class modelmapperTest {
 		BoardForm form = new BoardForm();
 		
 		form.setName("가위");
-		form.setBulabulaBulaBBBualbuWId("가가");
 		
 		Board board = Board.builder().name("바위")
 									 .build();

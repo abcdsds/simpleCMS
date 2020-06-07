@@ -6654,7 +6654,6 @@ a.close.disabled {
 
 @media (min-width: 576px) {
   .modal-dialog {
-    max-width: 500px;
     margin: 1.75rem auto;
   }
 
@@ -7030,6 +7029,7 @@ a.close.disabled {
   backface-visibility: hidden;
   transition: transform 0.6s ease-in-out;
 }
+
 
 @media (prefers-reduced-motion: reduce) {
   .carousel-item {
@@ -16850,6 +16850,10 @@ table.tablesorter thead tr .headerSortDown {
   font-size: 10px;
 }
 
+div.dataTables_filter input{
+  margin-left: 10px;
+}
+
 .form-check {
   margin-top: .5rem;
   padding-left: 0;
@@ -19231,6 +19235,15 @@ textarea.form-control:active {
   color: #222a42;
 }
 
+#accountListModal .modal-dialog {
+	width:1000px;
+	height: 500px;
+	position: relative;
+}
+
+#accountListModal .modal-dialog .modal-content {
+	height: 80%;
+}
 .input-group-prepend {
   margin-right: 0;
 }

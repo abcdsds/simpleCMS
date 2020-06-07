@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -59,10 +62,10 @@ public class AdminController {
 		String postStatistics = adminService.getPostStatistics();
 		String commentStatistics = adminService.getCommentStatistics();
 		
-		List<Board> allBoards = adminService.getAllBoards();
-		List<Post> allPosts = adminService.getAllPosts();
-		List<Comment> allComments = adminService.getAllComments();
-		List<Account> allAccounts = adminService.getAllAccounts();
+		List<Board> allBoards = adminService.getTop10Boards();
+		List<Post> allPosts = adminService.getTop10Posts();
+		List<Comment> allComments = adminService.getTop10Comments();
+		List<Account> allAccounts = adminService.getTop10Accounts();
 		
 		model.addAttribute("accountStatistics", accountStatistics);
 		model.addAttribute("postStatistics", postStatistics);
@@ -82,7 +85,7 @@ public class AdminController {
 	@GetMapping("/board")
 	public String adminBoardManagement(@CurrentAccount Account account , Model model) {
 		
-		List<Board> allBoards = adminService.getAllBoards();
+		List<Board> allBoards = adminService.getTop10Boards();
 		
 		model.addAttribute("boardList", allBoards);
 		
@@ -98,7 +101,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/board/add")
-	public String adminBoardManagementAddSubmit(@CurrentAccount Account account , Model model , @Valid BoardForm boardForm , Errors errors) {
+	public String adminBoardManagementAddSubmit(@CurrentAccount Account account , Model model , @Valid BoardForm boardForm , Errors errors) throws NotFoundException {
 		
 		if (errors.hasErrors()) {
 			model.addAttribute(account);
@@ -117,10 +120,13 @@ public class AdminController {
 		
 		Board board = boardService.getBoardWithId(account, id);
 		Page<AccountListForm> accounts = adminService.getAccountsWithBoardId(id, pageable);
+		List<Account> allAccounts = adminService.getAllAccounts();
+		
 		model.addAttribute(modelMapper.map(board, BoardForm.class));
 		model.addAttribute(board);
-		model.addAttribute("accountList", accounts);
-		
+		model.addAttribute("accountListWithBoard", accounts);
+		model.addAttribute("allAccountList", allAccounts);
+				
 		return "admin/board/update";
 	}
 	
@@ -141,10 +147,21 @@ public class AdminController {
 		return "redirect:/admin/board/update/" + boardForm.getId();
 	}
 	
-	@GetMapping("/accountList")
-	public Page<AccountListForm> accountPaging(@PageableDefault(size = 12, page = 0 , sort = "id" , direction = Sort.Direction.DESC) 
-													Pageable pageable) {
-		return adminService.getAccounts(pageable);
+	@PostMapping("/board/manager/add")
+	@ResponseBody
+	public ResponseEntity<String> adminBoardManagermentManagerAddSubmit(Long accountId , Long boardId) throws JsonProcessingException {
+
+		String message = boardService.addBoardManager(accountId, boardId);
+		
+		return new ResponseEntity<>(message , HttpStatus.OK);
 	}
 	
+	@PostMapping("/board/manager/delete")
+	@ResponseBody
+	public ResponseEntity<String> adminBoardManagermentManagerDeleteSubmit(Long accountId , Long boardId) throws JsonProcessingException {
+
+		String message = boardService.deleteBoardManager(accountId, boardId);
+		
+		return new ResponseEntity<>(message , HttpStatus.OK);
+	}
 }

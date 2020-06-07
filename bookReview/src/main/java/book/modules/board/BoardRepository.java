@@ -24,4 +24,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> , BoardRepos
 	Board findByPath(String path);
 	
 	Optional<Board> findOptionalBoardByPath(String path);
+
+	Board findNotOptionalBoardById(Long boardId);
 }
