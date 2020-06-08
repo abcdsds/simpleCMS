@@ -2,8 +2,10 @@ package book.modules.board;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -217,16 +219,18 @@ BoardMessageForm form = new BoardMessageForm();
 			
 		
 		Set<Post> postList = board.getPostList();
-		postList.forEach(p -> p.updateDeleteStatusTrueAndDeleteBoard());
+		
+		List<Long> postIdList = postList.stream().map(Post::getId).collect(Collectors.toList());
+		
+		postRepository.updateAllByIdInQuery(postIdList, null, true);
+		//postList.forEach(p -> p.updateDeleteStatusTrueAndDeleteBoard());
 
 		Set<BoardManager> managers = board.getManagers();
-		managers.forEach(bm -> {
-			bm.getManagedBy().getManagers().remove(bm);
-			bm.deleteBoard();
-			//bm.deleteManager();
-			boardManagerRepository.delete(bm);
-		});
 		
+		//List<Long> boardManagerIdList = managers.stream().map(BoardManager::getId).collect(Collectors.toList());
+		
+		boardManagerRepository.deleteInBatch(managers);
+		//boardManagerRepository.deleteAllByBoardList(managers);		
 		boardRepository.delete(board);
 		
 		form.setMessage("성공적으로 삭제되었습니다.");
