@@ -8,6 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +24,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@NamedEntityGraph(
+        name = "Board.withPostListAndManagersAndManagersAccount",
+        attributeNodes = {
+        		@NamedAttributeNode("postList"),
+        		@NamedAttributeNode("managers"),
+                @NamedAttributeNode(value = "managers", subgraph = "managersAccount")
+        },
+        subgraphs = @NamedSubgraph(name = "managersAccount", attributeNodes = @NamedAttributeNode("managedBy"))
+)
 @EqualsAndHashCode(of = "id")
 @Getter @Builder
 @Entity @AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)

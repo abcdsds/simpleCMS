@@ -6,11 +6,15 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import book.modules.account.Account;
 import book.modules.board.Board;
@@ -40,7 +44,34 @@ public class Menu {
 	@ManyToOne
 	private Menu parent;
 	
+	@JoinColumn(name = "board_id")
+	@ManyToOne
+	private Board board;
+	
 	private String name;
 	
 	private String path;
+	
+	@Enumerated(EnumType.STRING)
+	private MenuType type;
+	
+	private SimpleGrantedAuthority role;
+	
+	public void addParentAndSub(Menu parent) {
+		this.parent = parent;
+		parent.getSubMenus().add(this);
+	}
+	
+	public void addBoardAndRoleAndPath(Board board, SimpleGrantedAuthority role, String path) {
+		this.board = board;
+		this.role = role;
+		this.path = path;
+	}
+
+	public void addPathAndRole(String path , SimpleGrantedAuthority role) {
+		// TODO Auto-generated method stub
+		this.path = path;
+		this.role = role;
+		
+	}
 }

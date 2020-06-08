@@ -19241,6 +19241,18 @@ textarea.form-control:active {
 	position: relative;
 }
 
+#boardListModal .modal-dialog {
+	width:1000px;
+	height: 500px;
+	position: relative;
+}
+
+#menuListModal .modal-dialog {
+	width:1000px;
+	height: 500px;
+	position: relative;
+}
+
 #accountListModal .modal-dialog .modal-content {
 	height: 80%;
 }

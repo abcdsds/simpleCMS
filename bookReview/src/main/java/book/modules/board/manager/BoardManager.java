@@ -46,6 +46,15 @@ public class BoardManager {
 	@Column(updatable = false)
 	private LocalDateTime managedAt;
 	
+	public void deleteManager() {
+		// TODO Auto-generated method stub
+		this.managedBy.getManagers().remove(this);
+		this.board = null;
+	}
+	
+	public void deleteBoard() {
+		this.board = null;
+	}
 	
 	
 }

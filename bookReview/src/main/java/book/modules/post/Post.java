@@ -90,6 +90,11 @@ public class Post extends BaseEntity {
 		this.deleted = b;
 	}
 
+	public void updateDeleteStatusTrueAndDeleteBoard() {
+		this.deleted = true;
+		this.board = null;
+	}
+	
 	public void voteUp() {
 		// TODO Auto-generated method stub
 		this.up++;

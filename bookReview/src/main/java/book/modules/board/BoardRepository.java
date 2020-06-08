@@ -26,4 +26,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> , BoardRepos
 	Optional<Board> findOptionalBoardByPath(String path);
 
 	Board findNotOptionalBoardById(Long boardId);
+
+	@EntityGraph(value = "Board.withPostListAndManagersAndManagersAccount")
+	Board findBoardAndPostById(Long boardId);
 }

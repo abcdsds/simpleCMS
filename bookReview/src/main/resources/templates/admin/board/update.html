@@ -203,7 +203,7 @@
 		        		<td th:text="${item.createdAt}">
 		        		</td>
 		        		<td>
-		        			<div id="select-id" class="btn btn-primary" th:attr="data-account-id=${item.id}">선택</div>
+		        			<div id="select-id" class="btn btn-primary select-id" th:attr="data-account-id=${item.id}">선택</div>
 		        		</td>
 		        	</tr>
 		        </tbody>
@@ -321,7 +321,7 @@
 			                           	일반회원
 			                        </td>
 			                        <td class="text-center">
-			                          <div id="delete-id" class="btn btn-primary" th:attr="data-account-id=${item.id}">해제</div>
+			                          <div id="delete-id" class="btn btn-primary delete-id" th:attr="data-account-id=${item.id}">해제</div>
 			                        </td>
 		                      	</tr>                                
 		                    </tbody>
@@ -455,7 +455,7 @@
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
-        $('#select-id').click(function () {
+        $('.select-id').click(function () {
 			
 			var result = confirm("정말로 관리자로 설정하시겠습니까 ? ");
 			
@@ -474,6 +474,7 @@
 					success: function (response) {
 						console.log(response);
 						if (response.messageType !== undefined && response.messageType !== 'FAIL') {
+							alert (response.message);
 							location.href = '/admin/board/update/' + boardId;
 						} else {
 							alert (response.message);
@@ -490,7 +491,7 @@
 			}
 		});
         
-		$('#delete-id').click(function () {
+		$('.delete-id').click(function () {
 			
 			var result = confirm("정말로 관리자를 해제하시겠습니까 ? ");
 			

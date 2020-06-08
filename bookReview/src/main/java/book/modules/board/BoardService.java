@@ -3,6 +3,7 @@ package book.modules.board;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -16,12 +17,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import book.modules.account.Account;
 import book.modules.account.AccountRepository;
-import book.modules.account.form.AccountListForm;
 import book.modules.board.form.BoardForm;
 import book.modules.board.form.BoardMessageForm;
 import book.modules.board.form.BoardMessageType;
 import book.modules.board.manager.BoardManager;
 import book.modules.board.manager.BoardManagerRepository;
+import book.modules.post.Post;
 import book.modules.post.PostRepository;
 import book.modules.post.form.PostListForm;
 import javassist.NotFoundException;
@@ -199,6 +200,38 @@ BoardMessageForm form = new BoardMessageForm();
 		
 		form.setMessage("성공적으로 해제했습니다.");
 		form.setMessageType(BoardMessageType.SUCCESS);
+		return objectMapper.writeValueAsString(form);
+	}
+
+	public String deleteBoard(Long boardId) throws JsonProcessingException {
+		// TODO Auto-generated method stub
+		BoardMessageForm form = new BoardMessageForm();
+		
+		Board board = boardRepository.findBoardAndPostById(boardId);
+		
+		if (board == null) {
+			form.setMessage("게시판이 존재하지 않습니다.");
+			form.setMessageType(BoardMessageType.FAIL);
+			return objectMapper.writeValueAsString(form);
+		}
+			
+		
+		Set<Post> postList = board.getPostList();
+		postList.forEach(p -> p.updateDeleteStatusTrueAndDeleteBoard());
+
+		Set<BoardManager> managers = board.getManagers();
+		managers.forEach(bm -> {
+			bm.getManagedBy().getManagers().remove(bm);
+			bm.deleteBoard();
+			//bm.deleteManager();
+			boardManagerRepository.delete(bm);
+		});
+		
+		boardRepository.delete(board);
+		
+		form.setMessage("성공적으로 삭제되었습니다.");
+		form.setMessageType(BoardMessageType.SUCCESS);
+		
 		return objectMapper.writeValueAsString(form);
 	}
 

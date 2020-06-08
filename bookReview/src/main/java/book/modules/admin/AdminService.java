@@ -1,7 +1,6 @@
 package book.modules.admin;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.IntStream;
 
 import org.springframework.data.domain.Page;
@@ -21,6 +20,8 @@ import book.modules.board.BoardRepository;
 import book.modules.board.manager.BoardManagerRepository;
 import book.modules.comment.Comment;
 import book.modules.comment.CommentRepository;
+import book.modules.menu.Menu;
+import book.modules.menu.MenuRepository;
 import book.modules.post.Post;
 import book.modules.post.PostRepository;
 import javassist.NotFoundException;
@@ -36,6 +37,7 @@ public class AdminService {
 	private final BoardManagerRepository boardManagerRepository;
 	private final BoardRepository boardRepository;
 	private final CommentRepository commentRepository;
+	private final MenuRepository menuRespository;
 
 	private final ObjectMapper objectMapper;
 
@@ -97,6 +99,26 @@ public class AdminService {
 	public Page<AccountListForm> getAccounts(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return accountRepository.findAllAccount(pageable);
+	}
+
+	public List<Menu> getAllMenus() {
+		// TODO Auto-generated method stub
+		return menuRespository.findAll();
+	}
+
+	public List<Board> getAllBoards() {
+		// TODO Auto-generated method stub
+		return boardRepository.findAll();
+	}
+
+	public Menu getMenu(Long id) throws NotFoundException {
+		// TODO Auto-generated method stub
+		return menuRespository.findById(id).orElseThrow(() -> new NotFoundException("메뉴가 존재하지 않습니다."));
+	}
+
+	public List<Menu> getAllMenusWithOutId(Long id) {
+		// TODO Auto-generated method stub
+		return menuRespository.findAllByWithOutId(id);
 	}	
 
 }

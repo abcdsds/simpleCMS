@@ -13,6 +13,7 @@
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <link href="/node_modules/datatables.net-dt/css/jquery.dataTables.min.css" ref="stylesheet"/>
   <!-- Nucleo Icons -->
   <link href="/css/nucleo-icons.css" rel="stylesheet" />
   <!-- CSS Files -->
@@ -170,58 +171,173 @@
           </div>
         </div>
       </div>
+      <div class="modal modal-account fade" id="boardListModal" tabindex="-1" role="dialog" aria-labelledby="boardListModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i class="tim-icons icon-simple-remove"></i>
+              </button>
+              <table id="boardList" class="display" style="width:100%; height:100%;">
+              	 <thead>
+		            <tr>
+		                <th>이름</th>
+		                <th>경로</th>
+		                <th>권한</th>
+		                <th class="text-left">선택</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		        	<tr th:each="item : ${allBoardList}">
+		        		<td th:class="${'board-name-' + item.id}" th:text="${item.name}">
+		        		</td>
+		        		<td th:text="${item.path}">
+		        		</td>
+		        		<td th:text="${item.role}">
+		        		</td>
+		        		<td>
+		        			<div id="select-board" class="btn btn-primary select-board" th:attr="data-board-id=${item.id}">선택</div>
+		        		</td>
+		        	</tr>
+		        </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal modal-menu fade" id="menuListModal" tabindex="-1" role="dialog" aria-labelledby="menuListModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i class="tim-icons icon-simple-remove"></i>
+              </button>
+              <table id="menuList" class="display" style="width:100%; height:100%;">
+              	 <thead>
+		            <tr>
+		                <th>이름</th>
+		                <th>경로</th>
+		                <th>권한</th>
+		                <th class="text-left">선택</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		        	<tr th:each="item : ${allMenuList}">
+		        		<td th:class="${'menu-name-' + item.id}" th:text="${item.name}">
+		        		</td>
+		        		<td th:text="${item.path}">
+		        		</td>
+		        		<td th:text="${item.role}">
+		        		</td>
+		        		<td>
+		        			<div id="select-menu" class="btn btn-primary select-menu" th:attr="data-menu-id=${item.id}">선택</div>
+		        		</td>
+		        	</tr>
+		        </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <!-- End Navbar -->
     	<div class="content">
         <div class="row">
           <div class="col-lg-12 col-md-12">
             <div class="card card-all">
               <div class="card-header">
-              	<button class="btn btn-primary float-right">추가</button>
-                <h2 class="card-title"> Simple Table</h4>
+                <h2 class="card-title"> 메뉴 추가 </h4>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table tablesorter">
-                    <thead class=" text-primary">
-                      <tr>
-                         <th>
-                          	이름
-                        </th>
-                        <th>
-                          	경로
-                        </th>
-                        <th>
-                          	권한
-                        </th>
-                        <th class="text-center">
-                        	이동
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      
-                        <tr th:each="item : ${boardList}">
-	                        <td th:text="${item.name}">
-	                          Dakota Rice
-	                        </td>
-	                        <td th:text="${item.path}">
-	                          Niger
-	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_ADMIN')}">
-	                           	관리자
-	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_USER')}">
-	                           	일반회원
-	                        </td>
-	                        <td class="text-center">
-	                          <a th:href="@{'/admin/board/update/' + ${item.id}}" class="btn btn-primary">수정</a>
-	                          <button th:attr="data-board-id=${item.id}" class="btn btn-primary delete-board">삭제</a>
-	                        </td>
-                      	</tr>                                
-                    </tbody>
-                  </table>
+                  <form class="needs-validation col-sm-10" th:action="@{/admin/menu/add}" th:object="${menuForm}" method="post" novalidate>	
+                  	<div class="form-group">
+                  		<label for="title">상위 메뉴</label>
+                  		<div class="btn btn-primary float-right" data-toggle="modal" data-target="#menuListModal">상위 메뉴 추가</div>
+                  		
+                  		<input type="hidden" th:field="*{parentId}" class="form-control">
+                  		
+	                    <input id="parentName" type="text" name="parentName" class="form-control"
+	                              placeholder="상위 게시판을 설정해주세요." aria-describedby="nameHelp" required maxlength="100" disabled>
+	                              
+	                    <small id="parentIdHelp" class="form-text text-muted">
+	                        		상위 메뉴의 하위 메뉴로 등록할때 추가해주세요.
+	                    </small>
+	                    <small class="invalid-feedback">상위 메뉴를 추가</small>
+	                    <small class="form-text text-danger" th:if="${#fields.hasErrors('parentId')}" th:errors="*{parentId}">상위 메뉴 Error</small>
+                  	</div>
+	                <div class="form-group">
+	                    <label for="title">메뉴 이름</label>
+	                    <input id="name" type="text" th:field="*{name}" class="form-control"
+	                              placeholder="게시판의 이름을 작성해주세요." aria-describedby="nameHelp" required maxlength="100">
+	                    <small id="nameHelp" class="form-text text-muted">
+	                        		메뉴 이름을 작성해주세요.
+	                    </small>
+	                    <small class="invalid-feedback">이름을 작성</small>
+	                    <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</small>
+	                </div>
+
+					<div class="form-group">
+	                    <label for="role">메뉴 종류</label>
+	                    <select th:field="*{type}"  class="custom-select mr-sm-2" id="type" aria-describedby="typeHelp" >
+			                    <option th:value="BOARD">게시판</option>
+			                    <option th:value="LINK">링크</option>
+			                    <option th:value="PAGE">페이지</option>
+			            </select>
+	                    <small id="typeHelp" class="form-text text-muted">
+	                        		메뉴의 종류를 선택해주세요.
+	                    </small>
+	                    <small class="form-text text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">type Error</small>
+	                </div>
+	                
+	                
+	                <div class="form-group d-none" id="menuPath">
+	                    <label for="path">메뉴 경로</label>
+	                    <input id="path" type="text" th:field="*{path}" class="form-control"
+	                              placeholder="게시판의 경로을 작성해주세요." aria-describedby="pathHelp" required maxlength="100">
+	                    <small id="pathHelp" class="form-text text-muted">
+	                        		메뉴 경로를 작성해주세요.
+	                    </small>
+	                    <small class="invalid-feedback">경로을 작성</small>
+	                    <small class="form-text text-danger" th:if="${#fields.hasErrors('path')}" th:errors="*{path}">path Error</small>
+	                </div>
+	               
+	                <div class="form-group d-none" id="menuRole">
+	                    <label for="role">메뉴 권한</label>
+	                    <select th:field="*{role}"  class="custom-select mr-sm-2" id="role" aria-describedby="roleHelp" >
+			                    <option th:value="ROLE_USER">일반회원</option>
+			                    <option th:value="ROLE_ADMIN">관리자</option>
+			            </select>
+	                    <small id="roleHelp" class="form-text text-muted">
+	                        		메뉴 권한을 선택해주세요.
+	                    </small>
+	                    <small class="invalid-feedback">이름을 작성</small>
+	                    <small class="form-text text-danger" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">role Error</small>
+	                </div>
+	                
+	                <div class="form-group" id="menuBoard">
+                  		<label for="title">게시판</label>
+                  		<div class="btn btn-primary float-right" data-toggle="modal" data-target="#boardListModal">게시판 추가</div>
+                  		
+                  		<input type="hidden" th:field="*{boardId}" class="form-control">
+                  		
+	                    <input id="boardName" type="text" name="boardName" class="form-control"
+	                              placeholder="게시판을 설정해주세요." aria-describedby="boardIdHelp" required maxlength="100" disabled>
+	                              
+	                    <small id="boardIdHelp" class="form-text text-muted">
+	                        		게시판을 설정해주세요.
+	                    </small>
+	                    <small class="invalid-feedback">게시판 설정</small>
+	                    <small class="form-text text-danger" th:if="${#fields.hasErrors('boardId')}" th:errors="*{boardId}">boardId Error</small>
+                  	</div>
+	
+	                <div class="form-group">
+	                    <button class="btn btn-primary btn-block" type="submit"
+	                            aria-describedby="submitHelp">메뉴 생성</button>
+                	</div>
+	            </form>
                 </div>
-              
               </div>
             </div>
           </div>
@@ -277,6 +393,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+  <script src="/node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/node_modules/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
+  
   <!--  Google Maps Plugin    -->
   <!-- Place this tag in your head or just before your close body tag. -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
@@ -288,7 +407,6 @@
   <script src="/js/black-dashboard.min.js?v=1.0.0"></script>
   <!-- Black Dashboard DEMO methods, don't include it in your project! -->
   <script src="/js/demo.js"></script>
-  <script th:replace="fragments.html :: ajax-csrf-header"></script>
   <script>
     $(document).ready(function() {
       $().ready(function() {
@@ -305,39 +423,45 @@
         window_width = $(window).width();
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+		
+		$('#boardList').DataTable();
+    	
+    	$('#boardList_wrapper').css("width" , '100%');
+    	$('#boardList_wrapper').css('height' , '100%');
+    	$('#boardList_filter').css('float' , 'right')
+    	$('#boardList_filter .search').css('padding-left' , '20px');
 
-		$('.delete-board').click(function () {
+		$('#menuList').DataTable();
+    	
+    	$('#menuList_wrapper').css("width" , '100%');
+    	$('#menuList_wrapper').css('height' , '100%');
+    	$('#menuList_filter').css('float' , 'right')
+    	$('#menuList_filter .search').css('padding-left' , '20px');
+    	
+		$('.select-board').click(function () {
 			
-			var result = confirm("게시판에 등록된 모든 글들이 삭제됩니다. \n 게시판을 삭제하시겠습니까? ");
+			var result = confirm("정말로 게시판을 설정하시겠습니까 ? ");
 			
 			if (result) {
 				const boardId = $(this).data('board-id');
-
 				
-				$.ajax({
-					type: 'POST',
-					url: '/admin/board/delete',
-					data: {'boardId' : boardId},
-					dataType : "json",
-					success: function (response) {
-						console.log(response);
-						if (response.messageType !== undefined && response.messageType !== 'FAIL') {
-							alert (response.message);
-							location.href = '/admin/board/';
-						} else {
-							alert (response.message);
-						}
-					},
-					error: function (request, status ,error) {
-						console.log(request);
-						console.log(status);
-						console.log(error);
-						//alert("로그인이 필요합니다. ")
-					},
-				});
+				$('#boardId').val(boardId);
+				$('#boardName').val($('.board-name-'+ boardId).text());
 			}
 		});
-
+		
+		$('.select-menu').click(function () {
+			
+			var result = confirm("정말로 상위메뉴로 설정하시겠습니까 ? ");
+			
+			if (result) {
+				const menuId = $(this).data('menu-id');
+				
+				$('#parentId').val(menuId);
+				$('#parentName').val($('.menu-name-'+ menuId).text());
+			}
+		});
+		
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {
             if (event.stopPropagation) {
@@ -426,6 +550,26 @@
 
         $('.dark-badge').click(function() {
           $('body').removeClass('white-content');
+        });
+        
+        $('#type').change(function () {
+        	let selectedValue = $(this).val();
+        	console.log(selectedValue);
+        	if (selectedValue === 'BOARD') {
+        		$('#menuPath').addClass('d-none');
+        		$('#menuRole').addClass('d-none');
+        		$('#menuBoard').removeClass('d-none');
+        	}
+			if (selectedValue === 'LINK') {
+				$('#menuPath').removeClass('d-none');
+        		$('#menuRole').removeClass('d-none');
+        		$('#menuBoard').addClass('d-none');
+        	}
+			if (selectedValue === 'PAGE') {
+				$('#menuPath').removeClass('d-none');
+        		$('#menuRole').removeClass('d-none');
+        		$('#menuBoard').addClass('d-none');
+        	}
         });
       });
     });
