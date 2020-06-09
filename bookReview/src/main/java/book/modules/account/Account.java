@@ -78,10 +78,23 @@ public class Account extends BaseTimeEntity{
 	@OneToMany(mappedBy = "managedBy")
 	private List<BoardManager> managers = new ArrayList<BoardManager>(); 
 	
+	public void changeGender(AccountGender accountGender) {
+		this.accountGender = accountGender;
+	}
+	
+	
+	public void changeRole(String role) {
+		this.role = role;
+	}
+	
+	public void changeBirthYear (int birthYear) {
+		this.birthYear = birthYear;
+	}
 	public void changePassword(String encode) {
 		// TODO Auto-generated method stub
 		this.password = encode;
 	}
+	
 
 	public void changeNickname(String nickname) {
 		// TODO Auto-generated method stub
@@ -97,6 +110,15 @@ public class Account extends BaseTimeEntity{
 		// TODO Auto-generated method stub
 		this.token = UUID.randomUUID().toString();
 		this.tokenGeneratedAt = LocalDateTime.now();
+	}
+
+	public void updateDeleted() {
+		// TODO Auto-generated method stub
+		String beforeLoginId = this.loginId;
+		String beforeEmail = this.email;
+		
+		this.loginId = "deleted-" + LocalDateTime.now() + "-" + beforeLoginId;
+		this.email = "deleted-" + LocalDateTime.now() + "-" + beforeEmail;
 	}
 
 	

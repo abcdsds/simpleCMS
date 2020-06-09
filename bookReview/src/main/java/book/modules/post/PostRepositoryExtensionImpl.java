@@ -196,4 +196,38 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 		return fetch;
 	}
 
+	@Override
+	public Page<PostListForm> findAllPost(String keyword, Pageable pageable) {
+		// TODO Auto-generated method stub
+		QPost post = QPost.post;
+		QAccount account = QAccount.account;
+		QBoard board = QBoard.board;
+		
+		List<PostListForm> content = queryFactory.select(
+								new QPostListForm(
+										post.id,
+										post.title,
+										post.createdAt,
+										account.nickname,
+										post.up,
+										post.views,
+										board.name
+								))
+								.from(post)
+								.leftJoin(post.createdBy , account)
+								.leftJoin(post.board, board)
+								.where(post.title.containsIgnoreCase(keyword).or(post.content.containsIgnoreCase(keyword)))
+								.orderBy(post.createdAt.desc())
+								.fetch();
+		
+		
+		JPAQuery<Long> count = queryFactory.select(post.count())
+					.from(post)
+					.where(post.title.containsIgnoreCase(keyword)
+						  .or(post.content.containsIgnoreCase(keyword))
+					);
+		
+		return PageableExecutionUtils.getPage(content, pageable, count::fetchCount);
+	}
+
 }

@@ -1,5 +1,7 @@
 package book.modules.comment.form;
 
+import java.time.LocalDateTime;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -12,25 +14,31 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CommentForm {
-		
+public class CommentListForm {
+
 	private Long id;
-	
-	private Long postId;
-	
-	private Long parentCommentId;
-	
+		
 	@NotNull
-	private int depth;
-	
+	private Long postId;
+		
 	@Length(max = 50)
 	@NotBlank
 	private String content;
 	
-	private boolean deleted = false;
+	private LocalDateTime createdAt;
+	
+	private String createdBy;
 
+	@QueryProjection
+	public CommentListForm(Long id, Long postId, String content,
+			LocalDateTime createdAt, String createdBy) {
+		this.id = id;
+		this.postId = postId;
+		this.content = content;
+		this.createdAt = createdAt;
+		this.createdBy = createdBy;
+	}
 	
 	
 }

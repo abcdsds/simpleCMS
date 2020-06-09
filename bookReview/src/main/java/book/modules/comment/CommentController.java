@@ -38,7 +38,7 @@ public class CommentController {
 		
 		
 		if (errors.hasErrors()) {
-			return "redirect:/post/view/"+form.getPostId();
+			return "redirect:/post/view/"+id;
 		}
 		
 		form.setPostId(id);

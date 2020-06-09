@@ -68,10 +68,19 @@ public class CommentService {
 	
 	public void updateComment(Account account, CommentForm form) throws NotFoundException {
 		// TODO Auto-generated method stub
-		Optional<Comment> findById = commentRepository.findById(form.getParentCommentId());
+		Optional<Comment> findById = commentRepository.findById(form.getId());
 		Comment comment = findById.orElseThrow(() -> new NotFoundException("댓글이 존재하지 않습니다."));
 		comment.updateContent(form.getContent());
 	}
+	
+	public void updateComment(CommentForm form) throws NotFoundException {
+		// TODO Auto-generated method stub
+		Optional<Comment> findById = commentRepository.findById(form.getId());
+		Comment comment = findById.orElseThrow(() -> new NotFoundException("댓글이 존재하지 않습니다."));
+		comment.updateContent(form.getContent());
+		comment.updateDeleted(form.isDeleted());
+	}
+	
 
 	public List<Comment> getCommentList(Post post) {
 		// TODO Auto-generated method stub		
@@ -164,6 +173,12 @@ public class CommentService {
 		form.setMessage("댓글이 삭제되었습니다.");
 		form.setMessageType(DeleteType.DELETED);
 		return objectMapper.writeValueAsString(form);
+	}
+
+	public Comment getComment(Long id) throws NotFoundException {
+		// TODO Auto-generated method stub
+		Optional<Comment> findById = commentRepository.findById(id);
+		return findById.orElseThrow(() -> new NotFoundException("댓글이 존재하지 않습니다."));
 	}
 
 

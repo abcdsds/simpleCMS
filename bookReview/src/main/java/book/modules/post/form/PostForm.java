@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostForm {
 
+	private Long id;
+	
 	@NotBlank
     @Length(max = 50)
 	private String title;
@@ -22,7 +24,10 @@ public class PostForm {
 	@NotBlank
 	private String content;
 	
-	@NotBlank
+	private Long boardId;
+	
 	private String boardName;
+	
+	private boolean deleted = false;
 
 }

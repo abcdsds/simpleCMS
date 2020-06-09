@@ -13,7 +13,6 @@
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-  <link href="/node_modules/datatables.net-dt/css/jquery.dataTables.min.css" ref="stylesheet"/>
   <!-- Nucleo Icons -->
   <link href="/css/nucleo-icons.css" rel="stylesheet" />
   <!-- CSS Files -->
@@ -177,28 +176,27 @@
           <div class="col-lg-12 col-md-12">
             <div class="card card-all">
               <div class="card-header">
-              	<a th:href="@{/admin/menu/add}" class="btn btn-primary float-right">추가</a>
-                <h2 class="card-title">메뉴 목록</h4>
+                <h2 class="card-title"> Simple Table</h4>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table id="menuList" class="table tablesorter">
+                  <table class="table tablesorter">
                     <thead class=" text-primary">
                       <tr>
-                         <th>
-                          	메뉴 이름
+                        <th>
+                          	아이디
                         </th>
                         <th>
-                          	메뉴 경로
+                          	이메일
                         </th>
                         <th>
-                          	메뉴 권한
+                          	닉네임
                         </th>
                         <th>
-                          	메뉴 종류
+                          	가입일
                         </th>
                         <th>
-                          	상위 메뉴
+                          	등급
                         </th>
                         <th class="text-center">
                         	이동
@@ -207,35 +205,48 @@
                     </thead>
                     <tbody>
                       
-                        <tr th:each="item : ${menuList}">
-	                        <td th:text="${item.name}">
-	                          	이름
+                        <tr th:each="item : ${resultList}">
+	                        <td th:text="${item.loginId}">
+	                          	아이디
 	                        </td>
-	                        <td th:text="${item.path}">
-	                          	경로
+	                        <td th:text="${item.email}">
+	                          	이메일
 	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_ADMIN')}">
-	                           	관리자
+	                        <td th:text="${item.nickname}">
+	                          	닉네임
 	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_USER')}">
-	                           	일반회원
+	                        <td th:text="${item.createdAt}">
+	                          	가입일
 	                        </td>
-	                        <td th:text="${item.type}">
-	                        	종류
-	                        </td>
-	                        <td th:if="${item.parent != null}" th:text="${item.parent.name}">
-	                        	종류
-	                        </td>
-	                        <td th:if="${item.parent == null}">
-	                        	
+	                        <td th:text="${item.role}">
+	                          	등급
 	                        </td>
 	                        <td class="text-center">
-	                          <a th:href="@{'/admin/menu/update/' + ${item.id}}" class="btn btn-primary">수정</a>
-	                          <button th:attr="data-menu-id=${item.id}" class="btn btn-primary delete-menu">삭제</a>
+	                          <a th:href="@{'/admin/account/update/' + ${item.id}}" class="btn btn-primary">수정</a>
 	                        </td>
                       	</tr>                                
                     </tbody>
                   </table>
+                  <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${!resultList.hasPrevious()}? disabled">
+                            <a th:href="@{/admin/comment?sort=createdAt,desc&page=' + ${resultList.getNumber() - 1}}"
+                               class="page-link" tabindex="-1" aria-disabled="true">
+                                Previous
+                            </a>
+                        </li>
+                        <li class="page-item" th:classappend="${i == resultList.getNumber()}? active"
+                            th:each="i: ${#numbers.sequence(0, resultList.getTotalPages()-1)}">
+                            
+ 							 <a th:href="@{'/admin/comment?sort=createdAt,desc&page=' + ${i}}"
+                               class="page-link" href="#" th:text="${i + 1}">1</a>
+                        </li>
+                        <li class="page-item" th:classappend="${!resultList.hasNext()}? disabled">
+                            <a th:href="@{'/admin/comment?sort=createdAt,desc&page=' + ${resultList.getNumber() + 1}}"
+                               class="page-link">
+                                Next
+                            </a>
+                        </li>
+                    </ul>
                 </div>
               
               </div>
@@ -293,8 +304,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
-  <script src="/node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
-  <script src="/node_modules/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
   <!--  Google Maps Plugin    -->
   <!-- Place this tag in your head or just before your close body tag. -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
@@ -324,14 +333,6 @@
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
-
-		$('#menuList').DataTable();
-    	
-    	$('#menuList_wrapper').css("width" , '100%');
-    	$('#menuList_wrapper').css('height' , '100%');
-    	$('#menuList_filter').css('float' , 'right')
-    	$('#menuList_filter .search').css('padding-left' , '20px');
-
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {
             if (event.stopPropagation) {
@@ -341,38 +342,6 @@
             }
           }
         });
-        
-		$('.delete-menu').click(function () {
-			
-			var result = confirm("정말로 메뉴를 삭제하시겠습니까 ? ");
-			
-			if (result) {
-				const menuId = $(this).data('menu-id');
-
-				
-				$.ajax({
-					type: 'POST',
-					url: '/admin/menu/delete',
-					data: {'menuId' : menuId},
-					dataType : "json",
-					success: function (response) {
-						console.log(response);
-						if (response.type !== undefined && response.type !== 'FAIL') {
-							alert (response.message);
-							location.href = '/admin/menu/';
-						} else {
-							alert (response.message);
-						}
-					},
-					error: function (request, status ,error) {
-						console.log(request);
-						console.log(status);
-						console.log(error);
-						//alert("로그인이 필요합니다. ")
-					},
-				});
-			}
-		});
 
         $('.fixed-plugin .background-color span').click(function() {
           $(this).siblings().removeClass('active');

@@ -12,8 +12,8 @@
   </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
-  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
   <link href="/node_modules/datatables.net-dt/css/jquery.dataTables.min.css" ref="stylesheet"/>
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
   <!-- Nucleo Icons -->
   <link href="/css/nucleo-icons.css" rel="stylesheet" />
   <!-- CSS Files -->
@@ -158,86 +158,59 @@
             </ul>
           </div>
         </div>
-      </nav>
-      <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <i class="tim-icons icon-simple-remove"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      </nav>  
       <!-- End Navbar -->
     	<div class="content">
         <div class="row">
           <div class="col-lg-12 col-md-12">
             <div class="card card-all">
               <div class="card-header">
-              	<a th:href="@{/admin/menu/add}" class="btn btn-primary float-right">추가</a>
-                <h2 class="card-title">메뉴 목록</h4>
+                <h2 class="card-title"> Simple Table</h4>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table id="menuList" class="table tablesorter">
-                    <thead class=" text-primary">
-                      <tr>
-                         <th>
-                          	메뉴 이름
-                        </th>
-                        <th>
-                          	메뉴 경로
-                        </th>
-                        <th>
-                          	메뉴 권한
-                        </th>
-                        <th>
-                          	메뉴 종류
-                        </th>
-                        <th>
-                          	상위 메뉴
-                        </th>
-                        <th class="text-center">
-                        	이동
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      
-                        <tr th:each="item : ${menuList}">
-	                        <td th:text="${item.name}">
-	                          	이름
-	                        </td>
-	                        <td th:text="${item.path}">
-	                          	경로
-	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_ADMIN')}">
-	                           	관리자
-	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_USER')}">
-	                           	일반회원
-	                        </td>
-	                        <td th:text="${item.type}">
-	                        	종류
-	                        </td>
-	                        <td th:if="${item.parent != null}" th:text="${item.parent.name}">
-	                        	종류
-	                        </td>
-	                        <td th:if="${item.parent == null}">
-	                        	
-	                        </td>
-	                        <td class="text-center">
-	                          <a th:href="@{'/admin/menu/update/' + ${item.id}}" class="btn btn-primary">수정</a>
-	                          <button th:attr="data-menu-id=${item.id}" class="btn btn-primary delete-menu">삭제</a>
-	                        </td>
-                      	</tr>                                
-                    </tbody>
-                  </table>
+	                  <form class="needs-validation col-sm-10" th:action="@{/admin/comment/update/}" th:object="${commentForm}" method="post" novalidate>	
+	                  	<h1>게시판 관리</h1>
+	                  	<input type="hidden" th:field="*{id}">
+	                    <input type="hidden" th:field="*{postId}">
+		                		                
+		                <div class="form-group">
+		                    <label for="content">댓글 내용</label>
+		                    <input id="content" type="text" th:field="*{content}" class="form-control"
+		                              placeholder="댓글 내용을 작성해주세요." aria-describedby="contentHelp" required maxlength="100">
+		                    <small id="contentHelp" class="form-text text-muted">
+		                        		댓글 내용을 작성해주세요.
+		                    </small>
+		                    <small class="invalid-feedback">댓글 내용을 작성</small>
+		                    <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">path Error</small>
+		                </div>
+		                
+		                <div class="form-group">
+		                    <label for="deleted">삭제 여부</label>
+		                    <select th:field="*{deleted}"  class="custom-select mr-sm-2" id="deleted" aria-describedby="deletedHelp" >
+				                    <option th:value="true">예</option>
+				                    <option th:value="false">아니오</option>
+				            </select>
+		                    <small id="deletedHelp" class="form-text text-muted">
+		                        		삭제 여부를 선택해주세요.
+		                    </small>
+		                    <small class="invalid-feedback">삭제 여부 선택</small>
+		                    <small class="form-text text-danger" th:if="${#fields.hasErrors('deleted')}" th:errors="*{deleted}">deleted Error</small>
+		                </div>
+		                
+		                <div class="form-group">
+		                    <button class="btn btn-primary btn-block" type="submit"
+		                            aria-describedby="submitHelp">댓글 수정</button>
+	                	</div>
+		              </form>
                 </div>
-              
+                
+                <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+	                    <span th:text="${message}">완료</span>
+	                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+	            </div>              
               </div>
             </div>
           </div>
@@ -295,6 +268,7 @@
   <script src="/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
   <script src="/node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="/node_modules/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
+  
   <!--  Google Maps Plugin    -->
   <!-- Place this tag in your head or just before your close body tag. -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
@@ -307,9 +281,17 @@
   <!-- Black Dashboard DEMO methods, don't include it in your project! -->
   <script src="/js/demo.js"></script>
   <script th:replace="fragments.html :: ajax-csrf-header"></script>
-  <script>
+  <script th:inline="javascript">
     $(document).ready(function() {
       $().ready(function() {
+    	  
+    	$('#accountList').DataTable();
+    	
+    	$('#accountList_wrapper').css("width" , '100%');
+    	$('#accountList_wrapper').css('height' , '100%');
+    	$('#accountList_filter').css('float' , 'right')
+    	$('#accountList_filter .search').css('padding-left' , '20px');
+    	
         $sidebar = $('.sidebar');
         $navbar = $('.navbar');
         $main_panel = $('.main-panel');
@@ -324,13 +306,26 @@
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
-
-		$('#menuList').DataTable();
+		$('#boardList').DataTable();
     	
-    	$('#menuList_wrapper').css("width" , '100%');
-    	$('#menuList_wrapper').css('height' , '100%');
-    	$('#menuList_filter').css('float' , 'right')
-    	$('#menuList_filter .search').css('padding-left' , '20px');
+    	$('#boardList_wrapper').css("width" , '100%');
+    	$('#boardList_wrapper').css('height' , '100%');
+    	$('#boardList_filter').css('float' , 'right')
+    	$('#boardList_filter .search').css('padding-left' , '20px');
+
+    	
+		$('.select-board').click(function () {
+			
+			var result = confirm("정말로 게시판을 수정하시겠습니까 ? ");
+			
+			if (result) {
+				const boardId = $(this).data('board-id');
+				
+				$('#boardId').val(boardId);
+				$('#boardName').val($('.board-name-'+ boardId).text());
+			}
+		});
+		
 
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {
@@ -341,38 +336,6 @@
             }
           }
         });
-        
-		$('.delete-menu').click(function () {
-			
-			var result = confirm("정말로 메뉴를 삭제하시겠습니까 ? ");
-			
-			if (result) {
-				const menuId = $(this).data('menu-id');
-
-				
-				$.ajax({
-					type: 'POST',
-					url: '/admin/menu/delete',
-					data: {'menuId' : menuId},
-					dataType : "json",
-					success: function (response) {
-						console.log(response);
-						if (response.type !== undefined && response.type !== 'FAIL') {
-							alert (response.message);
-							location.href = '/admin/menu/';
-						} else {
-							alert (response.message);
-						}
-					},
-					error: function (request, status ,error) {
-						console.log(request);
-						console.log(status);
-						console.log(error);
-						//alert("로그인이 필요합니다. ")
-					},
-				});
-			}
-		});
 
         $('.fixed-plugin .background-color span').click(function() {
           $(this).siblings().removeClass('active');

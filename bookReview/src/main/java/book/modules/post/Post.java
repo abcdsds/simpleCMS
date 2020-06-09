@@ -121,6 +121,13 @@ public class Post extends BaseEntity {
 		
 		return super.getCreatedBy().getId() == userAccount.getAccount().getId();
 	}
+
+	public void updateBoard(Board getBoard) {
+		// TODO Auto-generated method stub
+		this.board.getPostList().remove(this);
+		this.board = getBoard;
+		
+	}
 	
 	
 	

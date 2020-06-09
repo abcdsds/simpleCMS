@@ -12,6 +12,7 @@
   </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+  <link href="/node_modules/datatables.net-dt/css/jquery.dataTables.min.css" ref="stylesheet"/>
   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
   <!-- Nucleo Icons -->
   <link href="/css/nucleo-icons.css" rel="stylesheet" />
@@ -157,273 +158,97 @@
             </ul>
           </div>
         </div>
-      </nav>
-      <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <i class="tim-icons icon-simple-remove"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      </nav>  
       <!-- End Navbar -->
-      <div class="content">
+    	<div class="content">
         <div class="row">
-          <div class="col-12">
-            <div class="card card-chart">
-              <div class="card-header ">
-                <div class="row">
-                  <div class="col-sm-6 text-left">
-                    <h5 class="card-category">Total Counts</h5>
-                    <h2 class="card-title">Performance</h2>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                      <label class="btn btn-sm btn-primary btn-simple active" id="0">
-                        <input type="radio" name="options" checked>
-                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">회원</span>
-                        <span class="d-block d-sm-none">
-                          <i class="tim-icons icon-single-02"></i>
-                        </span>
-                      </label>
-                      <label class="btn btn-sm btn-primary btn-simple" id="1">
-                        <input type="radio" class="d-none d-sm-none" name="options">
-                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">글</span>
-                        <span class="d-block d-sm-none">
-                          <i class="tim-icons icon-gift-2"></i>
-                        </span>
-                      </label>
-                      <label class="btn btn-sm btn-primary btn-simple" id="2">
-                        <input type="radio" class="d-none" name="options">
-                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">댓글</span>
-                        <span class="d-block d-sm-none">
-                          <i class="tim-icons icon-tap-02"></i>
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="chart-area">
-                  <canvas id="chartBig1"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks">
-              <div class="card-header ">
-                <h6 class="title d-inline">글 목록</h6>
-                <p class="card-category d-inline">최근 10개</p>
-                <div class="dropdown">
-                  <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
-                    <i class="tim-icons icon-settings-gear-63"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#pablo">Action</a>
-                    <a class="dropdown-item" href="#pablo">Another action</a>
-                    <a class="dropdown-item" href="#pablo">Something else</a>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body ">
-                <div class="table-full-width table-responsive">
-                  <table class="table">
-                    <tbody>
-                      <tr th:each="item : ${postList}">
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="text-muted" style="float:right;" th:text="${item.updatedAt}">날짜</p>
-                          <p class="title" th:text="${item.title}">제목</p>
-                          <p class="text-muted" th:utext="${item.content}">내용</p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks">
+          <div class="col-lg-12 col-md-12">
+            <div class="card card-all">
               <div class="card-header">
-                <h4 class="card-title"> 게시판 목록</h4>
+                <h2 class="card-title"> Simple Table</h4>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
-                  <table class="table tablesorter">
-                    <thead class="text-primary">
-                      <tr>
-                        <th>
-                          	이름
-                        </th>
-                        <th>
-                          	경로
-                        </th>
-                        <th>
-                          	권한
-                        </th>
-                        <th>
-                        	이동
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr th:each="item : ${boardList}">
-	                        <td th:text="${item.name}">
-	                          Dakota Rice
-	                        </td>
-	                        <td th:text="${item.path}">
-	                          Niger
-	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_ADMIN')}">
-	                           	관리자
-	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_USER')}">
-	                           	일반회원
-	                        </td>
-                        	<td>
-                        		<a th:href="@{'/board/' + ${item.path}}"><i class="tim-icons icon-zoom-split"></i></a>
-                        	</td>
-                      </tr>                      
-                    </tbody>
-                  </table>
+	                  <form class="needs-validation col-sm-10" th:action="@{/admin/account/update/}" th:object="${accountAdminForm}" method="post" novalidate>	
+	                  	<h1>회원 관리</h1>
+	                  	<input type="hidden" th:field="*{id}">
+		                		                
+
+						<div class="form-group">
+		                    <label for="loginId">아이디</label>
+		                    <input id="loginId" type="text" th:field="*{loginId}" class="form-control"
+		                              placeholder="아이디는 수정할수 없습니다." aria-describedby="loginIdHelp" required maxlength="100" disabled>
+		                </div>	
+		                <div class="form-group">
+		                    <label for="email">이메일</label>
+		                    <input id="email" type="text" th:field="*{email}" class="form-control"
+		                              placeholder="이메일은 수정할수 없습니다." aria-describedby="emailHelp" required maxlength="100" disabled>
+		                </div>		                	
+		                <div class="form-group">
+		                    <label for="nickname">닉네임</label>
+		                    <input id="nickname" type="text" th:field="*{nickname}" class="form-control"
+		                              placeholder="닉네임을 작성해주세요." aria-describedby="nicknameHelp" required maxlength="100">
+		                    <small id="nicknameHelp" class="form-text text-muted">
+		                        		닉네임을 작성해주세요.
+		                    </small>
+		                    <small class="invalid-feedback">닉네임을 작성</small>
+		                    <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">닉네임 Error</small>
+		                </div>
+		                
+		                <div class="form-group">
+		                    <label for="birthYear">생 년 </label>
+		                    <input id="birthYear" type="text" th:field="*{birthYear}" class="form-control"
+		                              placeholder="생 년 을 작성해주세요." aria-describedby="birthYearHelp" required maxlength="100">
+		                    <small id="birthYearHelp" class="form-text text-muted">
+		                        		생 년 을 작성해주세요.
+		                    </small>
+		                    <small class="invalid-feedback">생 년 을 작성</small>
+		                    <small class="form-text text-danger" th:if="${#fields.hasErrors('birthYear')}" th:errors="*{birthYear}">생 년  Error</small>
+		                </div>
+		                
+		                <div class="form-group">
+		                    <label for="accountGender">성별</label>
+		                    <select th:field="*{accountGender}"  class="custom-select mr-sm-2" id="accountGender" aria-describedby="accountGenderHelp" >
+				                    <option th:value="female">여자</option>
+				                    <option th:value="male">남자</option>
+				            </select>
+		                    <small id="roleHelp" class="form-text text-muted">
+		                        		등급을 선택해주세요.
+		                    </small>
+		                    <small class="invalid-feedback">등급 선택</small>
+		                    <small class="form-text text-danger" th:if="${#fields.hasErrors('accountGender')}" th:errors="*{accountGender}">accountGender Error</small>
+		                </div>
+		                
+		                <div class="form-group">
+		                    <label for="role">등급</label>
+		                    <select th:field="*{role}"  class="custom-select mr-sm-2" id="role" aria-describedby="roleHelp" >
+				                    <option th:value="ROLE_USER">일반회원</option>
+				                    <option th:value="ROLE_ADMIN">관리자</option>
+				            </select>
+		                    <small id="roleHelp" class="form-text text-muted">
+		                        		등급을 선택해주세요.
+		                    </small>
+		                    <small class="invalid-feedback">등급 선택</small>
+		                    <small class="form-text text-danger" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">role Error</small>
+		                </div>
+		                
+		                <div class="form-group">
+		                    <button class="btn btn-primary btn-block" type="submit"
+		                            aria-describedby="submitHelp">회원 수정</button>
+	                	</div>
+		              </form>
                 </div>
+                
+                <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+	                    <span th:text="${message}">완료</span>
+	                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+	            </div>              
               </div>
             </div>
           </div>
         </div>
-   		
-   		<div class="row">
-          <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks">
-              <div class="card-header ">
-                <h6 class="title d-inline">댓글 목록</h6>
-                <p class="card-category d-inline">최근 10개</p>
-                <div class="dropdown">
-                  <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
-                    <i class="tim-icons icon-settings-gear-63"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#pablo">Action</a>
-                    <a class="dropdown-item" href="#pablo">Another action</a>
-                    <a class="dropdown-item" href="#pablo">Something else</a>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body ">
-                <div class="table-full-width table-responsive">
-                  <table class="table">
-                    <tbody>
-                      <tr th:each="item : ${commentList}">
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          
-                          <p class="title" th:text="${item.content}">제목</p>
-                          <p class="text-muted" th:utext="${item.updatedAt}">내용</p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-         
-       	  <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks">
-              <div class="card-header">
-                <h4 class="card-title"> 회원 목록</h4>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table tablesorter">
-                    <thead class="text-primary">
-                      <tr>
-                        <th>
-                          	아이디
-                        </th>
-                        <th>
-                          	이메일
-                        </th>
-                        <th>
-                          	닉네임
-                        </th>
-                        <th>
-                          	권한
-                        </th>
-                        <th>
-                        	이동
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr th:each="item : ${accountList}">
-	                        <td th:text="${item.loginId}">
-	                          Dakota Rice
-	                        </td>
-	                        <td th:text="${item.email}">
-	                          Niger
-	                        </td>
-	                        <td th:text="${item.nickname}">
-	                          Niger
-	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_ADMIN')}">
-	                           	관리자
-	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_USER')}">
-	                           	일반회원
-	                        </td>
-                        	<td>
-                        		<a th:href="@{'/board/' + ${item.id}}"><i class="tim-icons icon-zoom-split"></i></a>
-                        	</td>
-                      </tr>                      
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-         
-  
-        </div>
-   
       </div>
     </div>
   </div>
@@ -475,6 +300,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+  <script src="/node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/node_modules/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
+  
   <!--  Google Maps Plugin    -->
   <!-- Place this tag in your head or just before your close body tag. -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
@@ -486,9 +314,18 @@
   <script src="/js/black-dashboard.min.js?v=1.0.0"></script>
   <!-- Black Dashboard DEMO methods, don't include it in your project! -->
   <script src="/js/demo.js"></script>
-  <script>
+  <script th:replace="fragments.html :: ajax-csrf-header"></script>
+  <script th:inline="javascript">
     $(document).ready(function() {
       $().ready(function() {
+    	  
+    	$('#accountList').DataTable();
+    	
+    	$('#accountList_wrapper').css("width" , '100%');
+    	$('#accountList_wrapper').css('height' , '100%');
+    	$('#accountList_filter').css('float' , 'right')
+    	$('#accountList_filter .search').css('padding-left' , '20px');
+    	
         $sidebar = $('.sidebar');
         $navbar = $('.navbar');
         $main_panel = $('.main-panel');
@@ -503,7 +340,26 @@
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
+		$('#boardList').DataTable();
+    	
+    	$('#boardList_wrapper').css("width" , '100%');
+    	$('#boardList_wrapper').css('height' , '100%');
+    	$('#boardList_filter').css('float' , 'right')
+    	$('#boardList_filter .search').css('padding-left' , '20px');
 
+    	
+		$('.select-board').click(function () {
+			
+			var result = confirm("정말로 게시판을 수정하시겠습니까 ? ");
+			
+			if (result) {
+				const boardId = $(this).data('board-id');
+				
+				$('#boardId').val(boardId);
+				$('#boardName').val($('.board-name-'+ boardId).text());
+			}
+		});
+		
 
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {

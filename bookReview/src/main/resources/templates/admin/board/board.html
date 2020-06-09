@@ -176,7 +176,7 @@
           <div class="col-lg-12 col-md-12">
             <div class="card card-all">
               <div class="card-header">
-              	<button class="btn btn-primary float-right">추가</button>
+              	<a th:href="@{/admin/board/add}" class="btn btn-primary float-right">추가</a>
                 <h2 class="card-title"> Simple Table</h4>
               </div>
               <div class="card-body">
@@ -202,10 +202,10 @@
                       
                         <tr th:each="item : ${boardList}">
 	                        <td th:text="${item.name}">
-	                          Dakota Rice
+	                          	이름
 	                        </td>
 	                        <td th:text="${item.path}">
-	                          Niger
+	                          	경로
 	                        </td>
 	                        <td th:if="${#strings.equals(item.role, 'ROLE_ADMIN')}">
 	                           	관리자

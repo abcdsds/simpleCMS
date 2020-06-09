@@ -13,4 +13,5 @@ public interface AccountRepositoryExtension {
 	List<StatisticsForm> findAllAccountMonthlyCount();
 	Page<AccountListForm> findAllAccount(Pageable pageable);
 	Page<AccountListForm> findAccountByBoardManagerId(Long id , Pageable pageable);
+	Page<AccountListForm> findAllAccount(String keyword , Pageable pageable);
 }

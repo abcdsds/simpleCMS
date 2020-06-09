@@ -33,6 +33,7 @@ import book.modules.account.form.AccountForm;
 import book.modules.account.form.NicknameForm;
 import book.modules.account.form.PasswordForm;
 import book.modules.account.form.ProfileForm;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -129,7 +130,8 @@ public class AccountService implements UserDetailsService {
 
 	public void deleteAccount(Account account) {
 		// TODO Auto-generated method stub
-		accountRepository.delete(account);
+		account.updateDeleted();
+		//accountRepository.delete(account);
 	}
 
 	public void logout(HttpServletRequest request, HttpServletResponse response) {
@@ -198,6 +200,11 @@ public class AccountService implements UserDetailsService {
 		account.changePassword(passwordEncoder.encode(form.getNewPassword()));
 		account.generateEmailCheckToken();
 	
+	}
+
+	public Account getAccount(Long id) throws NotFoundException {
+		// TODO Auto-generated method stub
+		return accountRepository.findById(id).orElseThrow(() -> new NotFoundException("아이디가 존재하지 않습니다."));
 	}
 	
 	

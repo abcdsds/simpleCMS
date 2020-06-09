@@ -171,259 +171,94 @@
         </div>
       </div>
       <!-- End Navbar -->
-      <div class="content">
+    	<div class="content">
         <div class="row">
-          <div class="col-12">
-            <div class="card card-chart">
-              <div class="card-header ">
-                <div class="row">
-                  <div class="col-sm-6 text-left">
-                    <h5 class="card-category">Total Counts</h5>
-                    <h2 class="card-title">Performance</h2>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                      <label class="btn btn-sm btn-primary btn-simple active" id="0">
-                        <input type="radio" name="options" checked>
-                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">회원</span>
-                        <span class="d-block d-sm-none">
-                          <i class="tim-icons icon-single-02"></i>
-                        </span>
-                      </label>
-                      <label class="btn btn-sm btn-primary btn-simple" id="1">
-                        <input type="radio" class="d-none d-sm-none" name="options">
-                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">글</span>
-                        <span class="d-block d-sm-none">
-                          <i class="tim-icons icon-gift-2"></i>
-                        </span>
-                      </label>
-                      <label class="btn btn-sm btn-primary btn-simple" id="2">
-                        <input type="radio" class="d-none" name="options">
-                        <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">댓글</span>
-                        <span class="d-block d-sm-none">
-                          <i class="tim-icons icon-tap-02"></i>
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="chart-area">
-                  <canvas id="chartBig1"></canvas>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks">
-              <div class="card-header ">
-                <h6 class="title d-inline">글 목록</h6>
-                <p class="card-category d-inline">최근 10개</p>
-                <div class="dropdown">
-                  <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
-                    <i class="tim-icons icon-settings-gear-63"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#pablo">Action</a>
-                    <a class="dropdown-item" href="#pablo">Another action</a>
-                    <a class="dropdown-item" href="#pablo">Something else</a>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body ">
-                <div class="table-full-width table-responsive">
-                  <table class="table">
-                    <tbody>
-                      <tr th:each="item : ${postList}">
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          <p class="text-muted" style="float:right;" th:text="${item.updatedAt}">날짜</p>
-                          <p class="title" th:text="${item.title}">제목</p>
-                          <p class="text-muted" th:utext="${item.content}">내용</p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks">
+          <div class="col-lg-12 col-md-12">
+            <div class="card card-all">
               <div class="card-header">
-                <h4 class="card-title"> 게시판 목록</h4>
+                <h2 class="card-title"> Simple Table</h4>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
                   <table class="table tablesorter">
-                    <thead class="text-primary">
+                    <thead class=" text-primary">
                       <tr>
                         <th>
-                          	이름
+                          	게시판
                         </th>
                         <th>
-                          	경로
+                          	글번호
                         </th>
                         <th>
-                          	권한
+                          	글제목
                         </th>
                         <th>
+                          	작성자
+                        </th>
+                        <th>
+                          	작성일
+                        </th>
+                        <th>
+                          	조회수
+                        </th>
+                        <th class="text-center">
                         	이동
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr th:each="item : ${boardList}">
-	                        <td th:text="${item.name}">
-	                          Dakota Rice
+                      
+                        <tr th:each="item : ${postList}">
+	                        <td th:text="${item.board}">
+	                          	게시판
 	                        </td>
-	                        <td th:text="${item.path}">
-	                          Niger
+	                        <td th:text="${item.id}">
+	                          	글번호
 	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_ADMIN')}">
-	                           	관리자
+	                        <td th:text="${item.title}">
+	                          	글제목
 	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_USER')}">
-	                           	일반회원
+	                        <td th:text="${item.createdBy}">
+	                          	작성자
 	                        </td>
-                        	<td>
-                        		<a th:href="@{'/board/' + ${item.path}}"><i class="tim-icons icon-zoom-split"></i></a>
-                        	</td>
-                      </tr>                      
+	                        <td th:text="${item.createdAt}">
+	                          	작성일
+	                        </td>
+	                        <td th:text="${item.views}">
+	                          	조회수
+	                        </td>
+	                        <td class="text-center">
+	                          <a th:href="@{'/admin/post/update/' + ${item.id}}" class="btn btn-primary">수정</a>
+	                        </td>
+                      	</tr>                                
                     </tbody>
                   </table>
+                  <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${!postList.hasPrevious()}? disabled">
+                            <a th:href="@{/admin/post?sort=createdAt,desc&page=' + ${postList.getNumber() - 1}}"
+                               class="page-link" tabindex="-1" aria-disabled="true">
+                                Previous
+                            </a>
+                        </li>
+                        <li class="page-item" th:classappend="${i == postList.getNumber()}? active"
+                            th:each="i: ${#numbers.sequence(0, postList.getTotalPages()-1)}">
+                            
+ 							 <a th:href="@{'/admin/post?sort=createdAt,desc&page=' + ${i}}"
+                               class="page-link" href="#" th:text="${i + 1}">1</a>
+                        </li>
+                        <li class="page-item" th:classappend="${!postList.hasNext()}? disabled">
+                            <a th:href="@{'/admin/post?sort=createdAt,desc&page=' + ${postList.getNumber() + 1}}"
+                               class="page-link">
+                                Next
+                            </a>
+                        </li>
+                    </ul>
                 </div>
+              
               </div>
             </div>
           </div>
         </div>
-   		
-   		<div class="row">
-          <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks">
-              <div class="card-header ">
-                <h6 class="title d-inline">댓글 목록</h6>
-                <p class="card-category d-inline">최근 10개</p>
-                <div class="dropdown">
-                  <button type="button" class="btn btn-link dropdown-toggle btn-icon" data-toggle="dropdown">
-                    <i class="tim-icons icon-settings-gear-63"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#pablo">Action</a>
-                    <a class="dropdown-item" href="#pablo">Another action</a>
-                    <a class="dropdown-item" href="#pablo">Something else</a>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body ">
-                <div class="table-full-width table-responsive">
-                  <table class="table">
-                    <tbody>
-                      <tr th:each="item : ${commentList}">
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>
-                          
-                          <p class="title" th:text="${item.content}">제목</p>
-                          <p class="text-muted" th:utext="${item.updatedAt}">내용</p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-         
-       	  <div class="col-lg-6 col-md-12">
-            <div class="card card-tasks">
-              <div class="card-header">
-                <h4 class="card-title"> 회원 목록</h4>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table class="table tablesorter">
-                    <thead class="text-primary">
-                      <tr>
-                        <th>
-                          	아이디
-                        </th>
-                        <th>
-                          	이메일
-                        </th>
-                        <th>
-                          	닉네임
-                        </th>
-                        <th>
-                          	권한
-                        </th>
-                        <th>
-                        	이동
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr th:each="item : ${accountList}">
-	                        <td th:text="${item.loginId}">
-	                          Dakota Rice
-	                        </td>
-	                        <td th:text="${item.email}">
-	                          Niger
-	                        </td>
-	                        <td th:text="${item.nickname}">
-	                          Niger
-	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_ADMIN')}">
-	                           	관리자
-	                        </td>
-	                        <td th:if="${#strings.equals(item.role, 'ROLE_USER')}">
-	                           	일반회원
-	                        </td>
-                        	<td>
-                        		<a th:href="@{'/board/' + ${item.id}}"><i class="tim-icons icon-zoom-split"></i></a>
-                        	</td>
-                      </tr>                      
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-         
-  
-        </div>
-   
       </div>
     </div>
   </div>
@@ -486,6 +321,7 @@
   <script src="/js/black-dashboard.min.js?v=1.0.0"></script>
   <!-- Black Dashboard DEMO methods, don't include it in your project! -->
   <script src="/js/demo.js"></script>
+  <script th:replace="fragments.html :: ajax-csrf-header"></script>
   <script>
     $(document).ready(function() {
       $().ready(function() {
@@ -502,8 +338,6 @@
         window_width = $(window).width();
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
-
-
 
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {

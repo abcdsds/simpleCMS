@@ -22,4 +22,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> , Accoun
 	List<Account> findTop10ByOrderByIdDesc();
 
 	Account findNotOptionalById(Long accountId);
+
+	Account findByNickname(String nickname);
 }

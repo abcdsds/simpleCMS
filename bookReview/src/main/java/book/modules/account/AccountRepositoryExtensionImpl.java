@@ -15,6 +15,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import book.modules.account.form.AccountForm;
 import book.modules.account.form.AccountListForm;
+import book.modules.account.form.QAccountListForm;
 import book.modules.admin.form.StatisticsForm;
 import book.modules.board.QBoard;
 import book.modules.board.manager.QBoardManager;
@@ -90,6 +91,29 @@ public class AccountRepositoryExtensionImpl extends QuerydslRepositorySupport im
 					.leftJoin(account.managers ,boardmanager)
 					.leftJoin(boardmanager.board , board)
 					.where(board.id.eq(id));
+		
+		return PageableExecutionUtils.getPage(content, pageable, count::fetchCount);
+	}
+
+	@Override
+	public Page<AccountListForm> findAllAccount(String keyword, Pageable pageable) {
+		// TODO Auto-generated method stub
+		
+		QAccount account = QAccount.account;
+		
+		List<AccountListForm> content = queryFactory.select(new QAccountListForm(account.id , account.nickname , account.loginId , account.email , account.role , account.createdAt, account.createdAt.as("managedAt")))
+					.from(account)
+					.where(account.nickname.containsIgnoreCase(keyword)
+							.or(account.email.containsIgnoreCase(keyword))
+							.or(account.loginId.containsIgnoreCase(keyword))
+					).orderBy(account.createdAt.desc()).fetch();
+		
+		JPAQuery<Long> count = queryFactory.select(account.count())
+					.from(account)
+					.where(account.nickname.containsIgnoreCase(keyword)
+							.or(account.email.containsIgnoreCase(keyword))
+							.or(account.loginId.containsIgnoreCase(keyword))
+					);
 		
 		return PageableExecutionUtils.getPage(content, pageable, count::fetchCount);
 	}

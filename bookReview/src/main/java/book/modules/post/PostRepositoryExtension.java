@@ -22,4 +22,6 @@ public interface PostRepositoryExtension {
 	
 	List<StatisticsForm> findAllPostMonthlyCount();
 	
+	Page<PostListForm> findAllPost(String keyword, Pageable pageable);
+	
 }

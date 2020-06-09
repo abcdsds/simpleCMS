@@ -337,7 +337,7 @@
                             </a>
                         </li>
                         <li class="page-item" th:classappend="${i == accountListWithBoard.getNumber()}? active"
-                            th:each="i: ${#numbers.sequence(0, accountListWithBoard.getTotalPages())}">
+                            th:each="i: ${#numbers.sequence(0, accountListWithBoard.getTotalPages() -1)}">
                             
  							 <a th:href="@{'/admin/board/update/' +  ${boardForm.id} +'?sort=managedAt,desc&page=' + ${i}}"
                                class="page-link" href="#" th:text="${i + 1}">1</a>

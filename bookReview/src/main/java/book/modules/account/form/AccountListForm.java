@@ -23,6 +23,21 @@ public class AccountListForm {
 	
 	private LocalDateTime managedAt;
 	
+	private LocalDateTime createdAt;
+
+	@QueryProjection
+	public AccountListForm(Long id, String nickname, String loginId, String email, String role, LocalDateTime createdAt , LocalDateTime managedAt) {
+		super();
+		this.id = id;
+		this.nickname = nickname;
+		this.loginId = loginId;
+		this.email = email;
+		this.role = role;
+		this.managedAt = managedAt;
+		this.createdAt = createdAt;
+	}
+
+	
 	@QueryProjection
 	public AccountListForm(Long id, String nickname, String loginId, String email, String role, LocalDateTime managedAt) {
 		super();
@@ -32,6 +47,7 @@ public class AccountListForm {
 		this.email = email;
 		this.role = role;
 		this.managedAt = managedAt;
+		this.createdAt = null;
 	}
 
 }

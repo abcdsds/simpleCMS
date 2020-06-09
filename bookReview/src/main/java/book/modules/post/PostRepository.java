@@ -37,6 +37,9 @@ public interface PostRepository extends JpaRepository<Post, Long> , PostReposito
 	@Query("update Post p set p.deleted = :deleted , p.board = :board where p.id in :ids")
 	void updateAllByIdInQuery(@Param("ids") List<Long> postList , @Param("board") Long board, @Param("deleted") Boolean deleted);
 
+	@EntityGraph(attributePaths = {"createdBy" , "board"})
+	Optional<Post> findPostAndBoardAndAccountById(Long id);
+
 	
 
 }

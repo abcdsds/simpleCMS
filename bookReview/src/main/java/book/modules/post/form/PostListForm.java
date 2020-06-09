@@ -22,6 +22,8 @@ public class PostListForm {
 	private int up;
 	
 	private int views;
+	
+	private String board;
 
 	@QueryProjection
 	public PostListForm(Long id, String title, LocalDateTime createdAt, String createdBy, int up, int views) {
@@ -31,6 +33,18 @@ public class PostListForm {
 		this.createdBy = createdBy;
 		this.up = up;
 		this.views = views;
+		this.board = null;
+	}
+	
+	@QueryProjection
+	public PostListForm(Long id, String title, LocalDateTime createdAt, String createdBy, int up, int views, String board) {
+		this.id = id;
+		this.title = title;
+		this.createdAt = createdAt;
+		this.createdBy = createdBy;
+		this.up = up;
+		this.views = views;
+		this.board = board;
 	}
 	
 	

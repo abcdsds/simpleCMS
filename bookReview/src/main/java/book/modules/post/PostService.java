@@ -40,6 +40,7 @@ public class PostService {
 	private final PostRepository postRepository;
 	private final PostVoteRepository postVoteRepository; 
 	private final AccountRepository accountRepository;
+	private final BoardRepository boardRepository;
 	private final ModelMapper modelMapper;
 	private final ObjectMapper objectMapper;
 	private final BoardService boardService;
@@ -129,6 +130,21 @@ public class PostService {
 		}
 		return findByIdAndAccount;
 	}
+	
+	public void updatePost(PostForm form) throws NotFoundException {
+		// TODO Auto-generated method stub
+		Optional<Post> findById = postRepository.findById(form.getId());
+		Post getPost = findById.orElseThrow(() -> new NotFoundException("글이 존재하지 않습니다."));
+		
+
+		Optional<Board> optionalBoard = boardRepository.findById(form.getBoardId());
+		Board getBoard = optionalBoard.orElseThrow(() -> new NotFoundException("게시판이 존재하지 않습니다."));
+		
+		getPost.updateBoard(getBoard);
+		modelMapper.map(form, getPost);		
+		
+	}
+	
 	public void updatePost(Post post, PostForm form) {
 		// TODO Auto-generated method stub
 		modelMapper.map(form, post);
