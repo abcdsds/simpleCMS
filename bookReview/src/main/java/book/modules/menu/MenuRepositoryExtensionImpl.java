@@ -57,9 +57,10 @@ public class MenuRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 		QMenu subMenu = new QMenu("subMenu");
 		QMenu parent = new QMenu("parent");
 		
-		List<Menu> fetch = queryFactory.selectFrom(menu)
-					.leftJoin(menu.subMenus , subMenu)
-					.leftJoin(menu.parent, parent)
+		List<Menu> fetch = queryFactory.select(menu)
+					.from(menu)
+					.leftJoin(menu.subMenus , subMenu).fetchJoin()
+					.leftJoin(menu.parent, parent).fetchJoin()
 					.where(parent.isNull())
 					.distinct()
 					.fetch();

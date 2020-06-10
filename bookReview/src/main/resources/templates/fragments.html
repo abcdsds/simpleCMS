@@ -344,6 +344,10 @@
 			.badge {
 			    font-weight: normal;
 			}
+			
+			.dropdown-submenu {
+				left: 8.5%;
+			}
 
 		</style>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -355,7 +359,7 @@
 	<header th:fragment="main-nav">
 			<div class="header-wrapper">
 				<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-				  <a class="navbar-brand" href="#">소설리뷰</a>
+				  <a class="navbar-brand" href="#">게시판사이트</a>
 				  <!-- Navbar brand yo -->
 				  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTop" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 				    <span class="navbar-toggler-icon"></span>
@@ -363,7 +367,14 @@
 				
 				  <div class="collapse navbar-collapse" id="navbarTop">
 				    <ul class="navbar-nav mr-auto">
-				      <li class="nav-item" th:each="item : ${menus}"><a class="nav-link" href="#about" th:text="${item.name}">이름</a> </li>
+				      <li class="nav-item" th:each="item : ${menus}">
+				      	<a class="nav-link dropdown-toggle" href="#about" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${item.name}">이름</a> 
+				      	<div class="dropdown-menu dropdown-submenu" th:if="${item.subMenus != null}" th:each="subItem : ${item.subMenus}">
+						    <a class="dropdown-item" th:if="${subItem.type == T(book.modules.menu.MenuType).BOARD }" th:text="${subItem.name}" th:href="@{'/board/' + ${subItem.path}}">Action</a>
+						    <a class="dropdown-item" th:if="${subItem.type == T(book.modules.menu.MenuType).LINK }" th:text="${subItem.name}" th:href="${subItem.path}">Action</a>
+						    <a class="dropdown-item" th:if="${subItem.type == T(book.modules.menu.MenuType).PAGE }" th:text="${subItem.name}" th:href="@{'/page/' + ${subItem.path}}">Action</a>
+						</div>
+				      </li>
 				    </ul>
 				  </div>
 				  
