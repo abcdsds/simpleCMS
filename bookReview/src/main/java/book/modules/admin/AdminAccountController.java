@@ -1,5 +1,7 @@
 package book.modules.admin;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -7,6 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -17,7 +22,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.resource.HttpResource;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import book.modules.account.Account;
 import book.modules.account.AccountService;
@@ -85,5 +94,17 @@ public class AdminAccountController {
 		redirect.addFlashAttribute("message", "성공적으로 변경되었습니다.");
 		log.info("========================성공");
 		return "redirect:/admin/account/update/" + accountAdminForm.getId();
+	}
+	
+	@PostMapping("/account/delete")
+	@ResponseBody
+	public ResponseEntity<String> adminMenuManagerDeleteSutmit(Long accountId, HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
+
+		
+		String message = accountService.deleteAccountWithId(accountId);
+		
+		accountService.logout(request, response);
+		
+		return new ResponseEntity<>(message , HttpStatus.OK);
 	}
 }

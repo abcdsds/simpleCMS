@@ -3,6 +3,7 @@ package book.modules.menu;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -31,6 +32,37 @@ public class MenuRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 						.on(subMenu.parent.id.ne(id))
 						.where(menu.id.ne(id))
 						.fetch();
+		
+		return fetch;
+	}
+
+	@Override
+	public List<Menu> findMenuWithoutSubMenus() {
+		// TODO Auto-generated method stub
+		QMenu menu = QMenu.menu;
+		QMenu parent = new QMenu("parent");
+		
+		List<Menu> fetch = queryFactory.selectFrom(menu)
+						.leftJoin(menu.parent , parent).fetchJoin()
+						.where(parent.isNull())
+						.fetch();
+		
+		return fetch;
+	}
+
+	@Override
+	public List<Menu> findAllByRole(SimpleGrantedAuthority role) {
+		// TODO Auto-generated method stub
+		QMenu menu = QMenu.menu;
+		QMenu subMenu = new QMenu("subMenu");
+		QMenu parent = new QMenu("parent");
+		
+		List<Menu> fetch = queryFactory.selectFrom(menu)
+					.leftJoin(menu.subMenus , subMenu)
+					.leftJoin(menu.parent, parent)
+					.where(parent.isNull())
+					.distinct()
+					.fetch();
 		
 		return fetch;
 	}

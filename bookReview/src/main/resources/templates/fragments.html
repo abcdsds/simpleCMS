@@ -363,10 +363,7 @@
 				
 				  <div class="collapse navbar-collapse" id="navbarTop">
 				    <ul class="navbar-nav mr-auto">
-				      <li class="nav-item"><a class="nav-link" href="#about">랭킹</a> </li>
-				      <li class="nav-item"><a class="nav-link" href="#portfolio">리뷰</a> </li>
-				      <li class="nav-item"><a class="nav-link" href="#contact">추천</a> </li>
-				      <li class="nav-item"><a class="nav-link" href="#social">커뮤니티</a> </li>
+				      <li class="nav-item" th:each="item : ${menus}"><a class="nav-link" href="#about" th:text="${item.name}">이름</a> </li>
 				    </ul>
 				  </div>
 				  

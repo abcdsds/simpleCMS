@@ -1,5 +1,6 @@
 package book.modules.menu;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -12,11 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import book.modules.account.Account;
 import book.modules.board.Board;
 import book.modules.board.BoardRepository;
-import book.modules.board.form.BoardMessageType;
 import book.modules.menu.form.MenuForm;
 import book.modules.menu.form.MenuMessageForm;
+import book.modules.simple.SimpleMessageType;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -84,7 +86,7 @@ public class MenuService {
 		
 		if (getMenu == null) {
 			form.setMessage("메뉴가 존재하지 않습니다.");
-			form.setType(BoardMessageType.FAIL);
+			form.setType(SimpleMessageType.FAIL);
 			
 			return objectMapper.writeValueAsString(form);
 		}
@@ -93,7 +95,7 @@ public class MenuService {
 		if (!getMenu.getSubMenus().isEmpty()) {
 			
 			form.setMessage("하위메뉴가 있는 메뉴는 삭제할수 없습니다.");
-			form.setType(BoardMessageType.FAIL);
+			form.setType(SimpleMessageType.FAIL);
 			
 			return objectMapper.writeValueAsString(form);
 		}
@@ -106,8 +108,12 @@ public class MenuService {
 		menuRepository.delete(getMenu);
 		
 		form.setMessage("메뉴가 성공적으로 삭제되었습니다.");
-		form.setType(BoardMessageType.SUCCESS);
+		form.setType(SimpleMessageType.SUCCESS);
 		
 		return objectMapper.writeValueAsString(form);
+	}
+	
+	public List<Menu> getMenuWithSubmenu(Account account) {
+		return menuRepository.findAllByRole(new SimpleGrantedAuthority(account.getRole()));
 	}
 }

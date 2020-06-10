@@ -1,0 +1,22 @@
+package book.modules.advice;
+
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import book.modules.account.Account;
+import book.modules.account.CurrentAccount;
+import book.modules.menu.MenuService;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@ControllerAdvice
+public class ControllerMenuAdvice {
+
+	private final MenuService menuService;
+	
+	@ModelAttribute
+	public void addAttributes(@CurrentAccount Account account, Model model) {
+		model.addAttribute("menus" , menuService.getMenuWithSubmenu(account));
+	}
+}

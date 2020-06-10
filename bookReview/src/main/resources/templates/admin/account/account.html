@@ -223,6 +223,7 @@
 	                        </td>
 	                        <td class="text-center">
 	                          <a th:href="@{'/admin/account/update/' + ${item.id}}" class="btn btn-primary">수정</a>
+	                          <button th:attr="data-account-id=${item.id}" class="btn btn-primary delete-account">삭제</a>
 	                        </td>
                       	</tr>                                
                     </tbody>
@@ -333,6 +334,39 @@
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
+        
+		$('.delete-account').click(function () {
+			
+			var result = confirm("계정을 삭제하시겠습니까 ? ");
+			
+			if (result) {
+				const accountId = $(this).data('account-id');
+
+				
+				$.ajax({
+					type: 'POST',
+					url: '/admin/account/delete',
+					data: {'accountId' : accountId},
+					dataType : "json",
+					success: function (response) {
+						console.log(response);
+						if (response.messageType !== undefined && response.messageType !== 'FAIL') {
+							alert (response.message);
+							location.href = '/admin/account/';
+						} else {
+							alert (response.message);
+						}
+					},
+					error: function (request, status ,error) {
+						console.log(request);
+						console.log(status);
+						console.log(error);
+						//alert("로그인이 필요합니다. ")
+					},
+				});
+			}
+		});
+		
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {
             if (event.stopPropagation) {

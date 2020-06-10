@@ -3,6 +3,7 @@ package book.modules.account;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
@@ -24,15 +25,19 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.media.sound.InvalidDataException;
 
 import book.config.AppProperties;
 import book.mail.Email;
 import book.mail.EmailService;
 import book.modules.account.form.AccountForm;
+import book.modules.account.form.AccountMessageForm;
 import book.modules.account.form.NicknameForm;
 import book.modules.account.form.PasswordForm;
 import book.modules.account.form.ProfileForm;
+import book.modules.simple.SimpleMessageType;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +54,7 @@ public class AccountService implements UserDetailsService {
 	private final ModelMapper modelMapper;
 	private final AppProperties appProperties;
 	private final TemplateEngine templateEngine;
-	private final EntityManager em;
+	private final ObjectMapper objectMapper;
 	
 	public Account accountCreate(AccountForm form) {
 
@@ -205,6 +210,28 @@ public class AccountService implements UserDetailsService {
 	public Account getAccount(Long id) throws NotFoundException {
 		// TODO Auto-generated method stub
 		return accountRepository.findById(id).orElseThrow(() -> new NotFoundException("아이디가 존재하지 않습니다."));
+	}
+
+	public String deleteAccountWithId(Long accountId) throws JsonProcessingException {
+		// TODO Auto-generated method stub
+		AccountMessageForm form = new AccountMessageForm();
+		
+		Account account = null;
+		
+		try {
+			account = getAccount(accountId);
+		} catch (NotFoundException e) {
+
+			form.setMessage(e.toString());
+			form.setType(SimpleMessageType.FAIL);
+			return objectMapper.writeValueAsString(form);
+		}
+		
+		account.updateDeleted();
+		form.setMessage("성공적으로 삭제되었습니다.");
+		form.setType(SimpleMessageType.SUCCESS);
+		
+		return objectMapper.writeValueAsString(form);
 	}
 	
 	

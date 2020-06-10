@@ -62,7 +62,7 @@ public class AdminMenuController {
 		
 		
 		List<Board> allBoards = adminService.getAllBoards();
-		List<Menu> allMenus = adminService.getAllMenus();
+		List<Menu> allMenus = adminService.getAllMenusWihoutSubMenus();
 		model.addAttribute(new MenuForm());
 		model.addAttribute("allBoardList", allBoards);
 		model.addAttribute("allMenuList", allMenus);

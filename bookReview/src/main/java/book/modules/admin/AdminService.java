@@ -106,10 +106,16 @@ public class AdminService {
 		// TODO Auto-generated method stub
 		return accountRepository.findAllAccount(pageable);
 	}
-
+	
 	public List<Menu> getAllMenus() {
 		// TODO Auto-generated method stub
 		return menuRespository.findAll();
+	}
+	
+
+	public List<Menu> getAllMenusWihoutSubMenus() {
+		// TODO Auto-generated method stub
+		return menuRespository.findMenuWithoutSubMenus();
 	}
 
 	public List<Board> getAllBoards() {

@@ -13,6 +13,7 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
+    open-in-view: false
   datasource:
     url: jdbc:postgresql://localhost:5432/testbook
     username: testuser

@@ -21,12 +21,12 @@ import book.modules.account.Account;
 import book.modules.account.AccountRepository;
 import book.modules.board.form.BoardForm;
 import book.modules.board.form.BoardMessageForm;
-import book.modules.board.form.BoardMessageType;
 import book.modules.board.manager.BoardManager;
 import book.modules.board.manager.BoardManagerRepository;
 import book.modules.post.Post;
 import book.modules.post.PostRepository;
 import book.modules.post.form.PostListForm;
+import book.modules.simple.SimpleMessageType;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -127,7 +127,7 @@ public class BoardService {
 		if (getBoard == null) {
 			
 			form.setMessage("게시판이 존재하지 않습니다.");
-			form.setMessageType(BoardMessageType.FAIL);
+			form.setMessageType(SimpleMessageType.FAIL);
 			return objectMapper.writeValueAsString(form);
 		}
 
@@ -136,7 +136,7 @@ public class BoardService {
 		if (getAccount == null) {
 			
 			form.setMessage("아이디가 존재하지 않습니다.");
-			form.setMessageType(BoardMessageType.FAIL);
+			form.setMessageType(SimpleMessageType.FAIL);
 			return objectMapper.writeValueAsString(form);
 			
 		}
@@ -146,7 +146,7 @@ public class BoardService {
 		if (getBoardManager != null) {
 			
 			form.setMessage("이미 등록된 관리자입니다.");
-			form.setMessageType(BoardMessageType.FAIL);
+			form.setMessageType(SimpleMessageType.FAIL);
 			return objectMapper.writeValueAsString(form);
 		}
 		
@@ -158,7 +158,7 @@ public class BoardService {
 		
 		
 		form.setMessage("성공적으로 추가했습니다.");
-		form.setMessageType(BoardMessageType.SUCCESS);
+		form.setMessageType(SimpleMessageType.SUCCESS);
 		return objectMapper.writeValueAsString(form);
 	}
 
@@ -171,7 +171,7 @@ BoardMessageForm form = new BoardMessageForm();
 		if (getBoard == null) {
 			
 			form.setMessage("게시판이 존재하지 않습니다.");
-			form.setMessageType(BoardMessageType.FAIL);
+			form.setMessageType(SimpleMessageType.FAIL);
 			return objectMapper.writeValueAsString(form);
 		}
 
@@ -180,7 +180,7 @@ BoardMessageForm form = new BoardMessageForm();
 		if (getAccount == null) {
 			
 			form.setMessage("아이디가 존재하지 않습니다.");
-			form.setMessageType(BoardMessageType.FAIL);
+			form.setMessageType(SimpleMessageType.FAIL);
 			return objectMapper.writeValueAsString(form);
 			
 		}
@@ -190,7 +190,7 @@ BoardMessageForm form = new BoardMessageForm();
 		if (getBoardManager == null) {
 			
 			form.setMessage("관리자로 등록되지 않은 회원입니다.");
-			form.setMessageType(BoardMessageType.FAIL);
+			form.setMessageType(SimpleMessageType.FAIL);
 			return objectMapper.writeValueAsString(form);
 		}
 		
@@ -201,7 +201,7 @@ BoardMessageForm form = new BoardMessageForm();
 		
 		
 		form.setMessage("성공적으로 해제했습니다.");
-		form.setMessageType(BoardMessageType.SUCCESS);
+		form.setMessageType(SimpleMessageType.SUCCESS);
 		return objectMapper.writeValueAsString(form);
 	}
 
@@ -213,7 +213,7 @@ BoardMessageForm form = new BoardMessageForm();
 		
 		if (board == null) {
 			form.setMessage("게시판이 존재하지 않습니다.");
-			form.setMessageType(BoardMessageType.FAIL);
+			form.setMessageType(SimpleMessageType.FAIL);
 			return objectMapper.writeValueAsString(form);
 		}
 			
@@ -234,7 +234,7 @@ BoardMessageForm form = new BoardMessageForm();
 		boardRepository.delete(board);
 		
 		form.setMessage("성공적으로 삭제되었습니다.");
-		form.setMessageType(BoardMessageType.SUCCESS);
+		form.setMessageType(SimpleMessageType.SUCCESS);
 		
 		return objectMapper.writeValueAsString(form);
 	}
