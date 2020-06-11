@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import book.modules.comment.Comment;
@@ -35,7 +36,7 @@ public class AdminCommentController {
 	private final ModelMapper modelMapper;
 	
 	@GetMapping("/comment")
-	public String adminCommentManagement(Model model, @PageableDefault(page = 0, size = 10, sort = "createdAt" , direction = Sort.Direction.DESC) Pageable pageable, String keyword) {
+	public String adminCommentManagement(Model model, @PageableDefault(page = 0, size = 10, sort = "createdAt" , direction = Sort.Direction.DESC) Pageable pageable, @RequestParam (defaultValue = "") String keyword) {
 	
 		if (keyword == null) {
 			keyword = "";

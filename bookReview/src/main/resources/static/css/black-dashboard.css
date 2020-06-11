@@ -15747,6 +15747,25 @@ img {
   max-width: 650px;
 }
 
+
+.searchform {
+	padding-top: 5%;
+}
+.searchform input {
+	border-radius: 0px;
+	border: 1px;
+	width:70%;
+	height:35px;
+}
+
+.searchform button {
+	margin-left:1%;
+}
+
+.searchform .input:active, .input:focus  {
+	border-color: #e14eca;
+}
+
 .modal-search .modal-dialog input {
   border: none;
   font-size: 17px;

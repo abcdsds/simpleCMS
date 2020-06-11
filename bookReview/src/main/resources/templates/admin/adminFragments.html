@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
-
-
-<head>
+<head th:fragment="head">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon.png">
@@ -13,6 +9,7 @@
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
   <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <link href="/node_modules/datatables.net-dt/css/jquery.dataTables.min.css" ref="stylesheet"/>
   <!-- Nucleo Icons -->
   <link href="/css/nucleo-icons.css" rel="stylesheet" />
   <!-- CSS Files -->
@@ -21,9 +18,7 @@
   <link href="/css/demo.css" rel="stylesheet" />
 </head>
 
-<body class="">
-  <div class="wrapper">
-    <div class="sidebar">
+<div class="sidebar" th:fragment="sidebar">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
     -->
@@ -93,10 +88,10 @@
           </li>
         </ul>
       </div>
-    </div>
-    <div class="main-panel">
-      <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+</div>
+
+
+<nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent" th:fragment="navbar">
         <div class="container-fluid">
           <div class="navbar-wrapper">
             <div class="navbar-toggle d-inline">
@@ -115,11 +110,6 @@
           </button>
           <div class="collapse navbar-collapse" id="navigation">
             <ul class="navbar-nav ml-auto">
-              <li class="search-bar input-group">
-                <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal"><i class="tim-icons icon-zoom-split" ></i>
-                  <span class="d-lg-none d-md-block">Search</span>
-                </button>
-              </li>
               <li class="dropdown nav-item">
                 <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
                   <div class="notification d-none d-lg-block d-xl-block"></div>
@@ -157,93 +147,17 @@
             </ul>
           </div>
         </div>
-      </nav>
-      <div class="modal modal-search fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <i class="tim-icons icon-simple-remove"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- End Navbar -->
-    	<div class="content">
-        <div class="row">
-          <div class="col-lg-12 col-md-12">
-            <div class="card card-all">
-              <div class="card-header">
-                <h2 class="card-title"> Simple Table</h4>
-              </div>
-              <div class="card-body">
-                <h1>삭제된 데이터</h1>
-                <div> 유저 : 0 건</div>
-                <div> 게시판 : 0건</div>
-                <div> 게시글 : 0건</div>
-                <div> 총 데이터 : 0 건</div>
-              	<div class="btn btn-primary"> 디비에서 모두 삭제 </div>
-              	<div> 디비에서 삭제시 하위데이터까지 모두 삭제됩니다. </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="fixed-plugin">
-    <div class="dropdown show-dropdown">
-      <a href="#" data-toggle="dropdown">
-        <i class="fa fa-cog fa-2x"> </i>
-      </a>
-      <ul class="dropdown-menu">
-        <li class="header-title"> Sidebar Background</li>
-        <li class="adjustments-line">
-          <a href="javascript:void(0)" class="switch-trigger background-color">
-            <div class="badge-colors text-center">
-              <span class="badge filter badge-primary active" data-color="primary"></span>
-              <span class="badge filter badge-info" data-color="blue"></span>
-              <span class="badge filter badge-success" data-color="green"></span>
-            </div>
-            <div class="clearfix"></div>
-          </a>
-        </li>
-        <li class="adjustments-line text-center color-change">
-          <span class="color-label">LIGHT MODE</span>
-          <span class="badge light-badge mr-2"></span>
-          <span class="badge dark-badge ml-2"></span>
-          <span class="color-label">DARK MODE</span>
-        </li>
-        <li class="button-container">
-          <a href="https://www.creative-tim.com/product/black-dashboard" target="_blank" class="btn btn-primary btn-block btn-round">Download Now</a>
-          <a href="https://demos.creative-tim.com/black-dashboard/docs/1.0/getting-started/introduction.html" target="_blank" class="btn btn-default btn-block btn-round">
-            Documentation
-          </a>
-        </li>
-        <li class="header-title">Thank you for 95 shares!</li>
-        <li class="button-container text-center">
-          <button id="twitter" class="btn btn-round btn-info"><i class="fab fa-twitter"></i> &middot; 45</button>
-          <button id="facebook" class="btn btn-round btn-info"><i class="fab fa-facebook-f"></i> &middot; 50</button>
-          <br>
-          <br>
-          <a class="github-button" href="https://github.com/creativetimofficial/black-dashboard" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ntkme/github-buttons on GitHub">Star</a>
-        </li>
-      </ul>
-    </div>
-    <div id="accountStatistics" th:text="${accountStatistics}" hidden></div>
-    <div id="postStatistics" th:text="${postStatistics}" hidden></div>
-    <div id="commentStatistics" th:text="${commentStatistics}" hidden></div>
-  </div>
+</nav>
+<div th:fragment="main-script">
   <!--   Core JS Files   -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js"></script>
+  <script src="/node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/node_modules/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
   <!--  Google Maps Plugin    -->
   <!-- Place this tag in your head or just before your close body tag. -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
   <!-- Chart JS -->
   <script src="/node_modules/chart.js/dist/Chart.min.js"></script>
   <!--  Notifications Plugin    -->
@@ -252,10 +166,8 @@
   <script src="/js/black-dashboard.min.js?v=1.0.0"></script>
   <!-- Black Dashboard DEMO methods, don't include it in your project! -->
   <script src="/js/demo.js"></script>
-  <script th:replace="fragments.html :: ajax-csrf-header"></script>
   <script>
-    $(document).ready(function() {
-      $().ready(function() {
+  $(function () {
         $sidebar = $('.sidebar');
         $navbar = $('.navbar');
         $main_panel = $('.main-panel');
@@ -270,39 +182,8 @@
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
-        
-		$('.delete-account').click(function () {
-			
-			var result = confirm("계정을 삭제하시겠습니까 ? ");
-			
-			if (result) {
-				const accountId = $(this).data('account-id');
 
-				
-				$.ajax({
-					type: 'POST',
-					url: '/admin/account/delete',
-					data: {'accountId' : accountId},
-					dataType : "json",
-					success: function (response) {
-						console.log(response);
-						if (response.messageType !== undefined && response.messageType !== 'FAIL') {
-							alert (response.message);
-							location.href = '/admin/account/';
-						} else {
-							alert (response.message);
-						}
-					},
-					error: function (request, status ,error) {
-						console.log(request);
-						console.log(status);
-						console.log(error);
-						//alert("로그인이 필요합니다. ")
-					},
-				});
-			}
-		});
-		
+
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {
             if (event.stopPropagation) {
@@ -393,7 +274,6 @@
           $('body').removeClass('white-content');
         });
       });
-    });
   </script>
   <script>
     $(document).ready(function() {
@@ -402,15 +282,4 @@
 
     });
   </script>
-  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
-  <script>
-    window.TrackJS &&
-      TrackJS.install({
-        token: "ee6fab19c5a04ac1a32a645abde4613a",
-        application: "black-dashboard-free"
-      });
-  </script>
-</body>
-
-
-</html>
+</div>

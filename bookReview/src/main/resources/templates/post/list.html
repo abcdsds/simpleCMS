@@ -11,15 +11,6 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
-				    <form class="search-form">
-				        <div class="input-group">
-				            <input id="input-1" class="form-control" type="text" aria-describedby="search-btn">
-				            <label for="input-1" class="sr-only">Search</label>
-				            <div class="input-group-append">
-				                <button id="search-btn" class="btn btn-primary">Search</button>
-				            </div>
-				        </div>
-				    </form>
 				    <h1 class="board_title" th:text="${board.name}"></h1>
 				    <ul class="topics-table">
 				        <li class="topics-header">
@@ -46,6 +37,34 @@
 
 				        </li>
 				    </ul>
+				    
+				    <div class="searchform text-center">
+                      <form th:action="@{'/board/' + ${board.path}}" method="get" class="search-form">
+	                      <input type="text" name="keyword" class="input" placeholder="Search" aria-label="Search">
+		                  <button type="submit" class="btn btn-primary">검색</button>
+                      </form>
+                  </div>
+                  
+                  <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${!postList.hasPrevious()}? disabled">
+                            <a th:href="@{/board/' + ${board.path} + '?keyword=' + ${keyword} + '&sort=createdAt,desc&page=' + ${postList.getNumber() - 1}}"
+                               class="page-link" tabindex="-1" aria-disabled="true">
+                                Previous
+                            </a>
+                        </li>
+                        <li class="page-item" th:classappend="${i == postList.getNumber()}? active"
+                            th:each="i: ${#numbers.sequence(0, postList.getTotalPages()-1)}">
+                            
+ 							 <a th:href="@{'/board/' + ${board.path} + '?keyword=' + ${keyword} + '&sort=createdAt,desc&page=' + ${i}}"
+                               class="page-link" href="#" th:text="${i + 1}">1</a>
+                        </li>
+                        <li class="page-item" th:classappend="${!postList.hasNext()}? disabled">
+                            <a th:href="@{'/board/' + ${board.path} + '?keyword=' + ${keyword} + '&sort=createdAt,desc&page=' + ${postList.getNumber() + 1}}"
+                               class="page-link">
+                                Next
+                            </a>
+                        </li>
+                    </ul>
 				</div>
 			</div>
 	    </div>

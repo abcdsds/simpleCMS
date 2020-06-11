@@ -59,6 +59,7 @@ public class AdminAccountController {
 		Page<AccountListForm> accountPaging = adminService.getAccountPaging(keyword , pageable);
 		
 		model.addAttribute("resultList", accountPaging);
+		model.addAttribute("keyword", keyword);
 		
 		return "admin/account/account";
 	}
