@@ -165,7 +165,7 @@
   <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="/js/black-dashboard.min.js?v=1.0.0"></script>
   <!-- Black Dashboard DEMO methods, don't include it in your project! -->
-  <script src="/js/demo.js"></script>
+  <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
   <script>
   $(function () {
         $sidebar = $('.sidebar');
@@ -182,6 +182,10 @@
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
 
+        moment.locale('ko');
+        $(".date").text(function(index, dateTime) {
+            return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LLL');
+        });
 
 
         $('.fixed-plugin a').click(function(event) {

@@ -124,7 +124,15 @@ public class AccountService implements UserDetailsService {
 		// TODO Auto-generated method stub
 		account.changePassword(passwordEncoder.encode(form.getNewPassword()));
 		accountRepository.save(account);
+	}
+	
+	public void updatepassword(PasswordForm form) throws NotFoundException {
+		// TODO Auto-generated method stub
 		
+		Account account = accountRepository.findById(form.getId()).orElseThrow(() -> new NotFoundException("아이디가 존재하지 않습니다."));
+		
+		account.changePassword(passwordEncoder.encode(form.getNewPassword()));
+		accountRepository.save(account);
 	}
 
 	public void updateNickname(Account account, NicknameForm form) {

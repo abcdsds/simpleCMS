@@ -32,6 +32,7 @@ import book.modules.account.Account;
 import book.modules.account.AccountService;
 import book.modules.account.form.AccountAdminForm;
 import book.modules.account.form.AccountListForm;
+import book.modules.account.form.PasswordForm;
 import book.modules.account.validator.AccountAdminFormValidator;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -95,6 +96,27 @@ public class AdminAccountController {
 		redirect.addFlashAttribute("message", "성공적으로 변경되었습니다.");
 		log.info("========================성공");
 		return "redirect:/admin/account/update/" + accountAdminForm.getId();
+	}
+	
+	@GetMapping("/account/password/{id}")
+	public String adminAccountManagePasswordUpdateForm(Model model) {
+		
+		model.addAttribute(new PasswordForm());
+		return "admin/account/password";
+	}
+	
+	@PostMapping("/account/password/")
+	public String adminAccountManagePasswordUpdateForm(Model model, @Valid PasswordForm passwordForm , Errors errors , RedirectAttributes redirect) throws NotFoundException {
+		
+		if (errors.hasErrors()) {
+			return "admin/account/password";
+		}
+
+		
+		accountService.updatepassword(passwordForm);
+
+		redirect.addFlashAttribute("message", "성공적으로 변경되었습니다.");
+		return "redirect:/admin/account/password";
 	}
 	
 	@PostMapping("/account/delete")
