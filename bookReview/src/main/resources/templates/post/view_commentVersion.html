@@ -88,7 +88,7 @@
 		  						댓글
 		  					<span th:text="${commentTotalCount}">0</span>
 		  				</div>
-		  				<div class="comment-item" th:each="item: ${post.comments}">
+		  				<div class="comment-item" th:each="item: ${commentList}">
 		  					<div class="comment" th:id="'comment-' + ${item.id}">
 		  						<div class="text">
 		  							<div class="comment-item-section" th:if="${!item.deleted}">

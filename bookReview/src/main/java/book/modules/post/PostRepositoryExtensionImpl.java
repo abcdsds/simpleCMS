@@ -60,18 +60,18 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 		QPost postSecondSub = new QPost("postSecondSub");
 		
 		//query dsl subquery 에서 limit를 지원하지않음 그래서 폐기
-//		PostPrevNextForm fetchOne = (PostPrevNextForm) queryFactory.select(
-//						ExpressionUtils.as(
-//								JPAExpressions.select(postSub.id)
-//												.from(postSub)
-//												.where(postSub.id.gt(id))
-//							    , "nextPostId") ,
-//						ExpressionUtils.as(
-//								JPAExpressions.select(postSecondSub.id)
-//												.from(postSecondSub)
-//												.where(postSecondSub.id.lt(id))
-//							    , "prevPostId")
-//					).from(post).limit(1).fetchOne();
+		//		PostPrevNextForm fetchOne = (PostPrevNextForm) queryFactory.select(
+		//						ExpressionUtils.as(
+		//								JPAExpressions.select(postSub.id)
+		//												.from(postSub)
+		//												.where(postSub.id.gt(id))
+		//							    , "nextPostId") ,
+		//						ExpressionUtils.as(
+		//								JPAExpressions.select(postSecondSub.id)
+		//												.from(postSecondSub)
+		//												.where(postSecondSub.id.lt(id))
+		//							    , "prevPostId")
+		//					).from(post).limit(1).fetchOne();
 		
 		PostPrevNextForm fetchOne = queryFactory.select(
 								Projections.fields(PostPrevNextForm.class,postSub.id.as("prevPostId") , postSecondSub.id.as("nextPostId")))
@@ -228,6 +228,33 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 					);
 		
 		return PageableExecutionUtils.getPage(content, pageable, count::fetchCount);
+	}
+
+	@Override
+	public Optional<Post> findPostDataById(Long id, boolean deleted) {
+		// TODO Auto-generated method stub
+		QPost post = QPost.post;
+		QComment comment = QComment.comment;
+		QComment commentChild = new QComment("commentChild");
+		QAccount account = QAccount.account;
+		QAccount commentAccount = new QAccount("commentAccount");
+		QAccount commentChildAccount = new QAccount("commentChildAccount");
+		QBoard board = QBoard.board;
+		
+		Post content = queryFactory.select(post)
+					.from(post)
+					.innerJoin(post.board, board).fetchJoin()
+					.innerJoin(post.createdBy, account).fetchJoin()
+					.innerJoin(post.comments, comment).fetchJoin()
+					.innerJoin(comment.createdBy, commentAccount).fetchJoin()
+					.innerJoin(comment.childList, commentChild).fetchJoin()
+					.innerJoin(commentChild.createdBy, commentChildAccount).fetchJoin()
+					.where(post.id.eq(id).and(post.deleted.eq(deleted)))
+					.orderBy(comment.id.asc())
+					.distinct()
+					.fetchOne();
+					
+		return Optional.ofNullable(content);
 	}
 
 }

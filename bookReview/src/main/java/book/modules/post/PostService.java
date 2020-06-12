@@ -85,6 +85,51 @@ public class PostService {
 		
 		Post post = postRepository.findPostAndCommentByIdAndDeleted(id, false).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
 		
+		
+		//Post post = postRepository.findPostAndCommentAndPrevNextPostByIdAndDeleted(id, false).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
+		
+		//Post post = postRepository.findByIdAndDeleted(id, false).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
+		
+		Cookie[] cookies = request.getCookies();
+		
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals("postViews")) {
+				if (cookie.getValue().contains(id.toString())) {
+					return post;
+				}
+			}
+		}
+		
+		Optional<Cookie> findFirst = Arrays.stream(cookies).filter(c -> c.getName().equals("postViews")).findFirst();
+		boolean anyMatchValue = Arrays.stream(cookies).anyMatch(c -> c.getName().equals("postViews") && c.getValue().indexOf("|"+id.toString()+'|') != -1);
+		
+		if (!findFirst.isPresent()) {
+			
+			Cookie myCookie = new Cookie("postViews" , "|" + id.toString() + "|");
+			myCookie.setMaxAge(24 * 60 * 60 * 7); //쿠키 유효기간 7일
+			post.increaseView();
+			response.addCookie(myCookie);
+		}
+		
+		if (findFirst.isPresent() && !anyMatchValue) {
+			Cookie newCookie = findFirst.get();
+			newCookie.setValue(findFirst.get().getValue() + id.toString() + "|");
+			newCookie.setMaxAge(24 * 60 * 60 * 7); //쿠키 유효기간 7일
+			post.increaseView();
+			response.addCookie(newCookie);
+		} 
+		
+		return post;
+	}
+	
+	public Post getPost2(Long id,HttpServletResponse response,HttpServletRequest request) throws NotFoundException {
+		// TODO Auto-generated method stub
+				
+		
+		//Post post = postRepository.findPostAndCommentByIdAndDeleted(id, false).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
+		
+		Post post = postRepository.findPostDataById(id, false).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
+		
 		//Post post = postRepository.findPostAndCommentAndPrevNextPostByIdAndDeleted(id, false).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));
 		
 		//Post post = postRepository.findByIdAndDeleted(id, false).orElseThrow(() -> new NotFoundException("포스트를 찾을수 없습니다."));

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,7 @@ public class CommentService {
 	private final CommentRepository commentRepository;
 	private final PostVoteRepository postVoteRepository; 
 	private final ObjectMapper objectMapper;
+	private final ApplicationEventPublisher eventPublisher;
 	
 	public void addComment(Account account, CommentForm form) throws NotFoundException {
 		// TODO Auto-generated method stub
@@ -54,11 +56,14 @@ public class CommentService {
 		
 		if (form.getDepth() > 0) {
 			Optional<Comment> findComment = commentRepository.findById(form.getParentCommentId());
-			Comment orElseComment = findComment.orElseThrow(() -> new NotFoundException("댓글이 존재하지 않습니다."));
+			Comment parentComment = findComment.orElseThrow(() -> new NotFoundException("댓글이 존재하지 않습니다."));
 			
-			comment.updateParent(orElseComment);
-			orElseComment.updateChild(comment);
-			comment.updateGroup(orElseComment.getGroup());
+			comment.updateParent(parentComment);
+			parentComment.updateChild(comment);
+			comment.updateGroup(parentComment.getGroup());
+			
+			eventPublisher.publishEvent(new CommentEvent(parentComment));
+			
 		} else {
 			comment.updateGroup(comment);
 		}

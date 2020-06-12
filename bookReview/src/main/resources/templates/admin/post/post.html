@@ -49,8 +49,11 @@
                     <tbody>
                       
                         <tr th:each="item : ${postList}">
-	                        <td th:text="${item.board}">
+	                        <td th:if="${item.board != null}" th:text="${item.board}">
 	                          	게시판
+	                        </td>
+	                        <td th:if="${item.board == null}">
+	                        	삭제된 게시판
 	                        </td>
 	                        <td th:text="${item.id}">
 	                          	글번호

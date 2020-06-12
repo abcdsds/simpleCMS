@@ -41,11 +41,7 @@ public class AdminPostController {
 	
 	@GetMapping("/post")
 	public String adminPostManagement(Model model, @PageableDefault(page = 0, size = 10, sort = "createdAt" , direction = Sort.Direction.DESC) Pageable pageable, @RequestParam (defaultValue = "") String keyword) {
-	
-		if (keyword == null) {
-			keyword = "";
-		}
-		
+
 		Page<PostListForm> postPaging = adminService.getPostPaging(keyword, pageable);
 				
 		model.addAttribute("keyword", keyword);

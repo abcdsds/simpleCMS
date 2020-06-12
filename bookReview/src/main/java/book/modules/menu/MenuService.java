@@ -114,6 +114,11 @@ public class MenuService {
 	}
 	
 	public List<Menu> getMenuWithSubmenu(Account account) {
+		
+		if (account == null) {
+			return menuRepository.findAllByRole(new SimpleGrantedAuthority("ROLE_USER"));
+		}
+		
 		return menuRepository.findAllByRole(new SimpleGrantedAuthority(account.getRole()));
 	}
 }

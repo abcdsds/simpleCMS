@@ -3,6 +3,7 @@ package book.modules.post;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -78,9 +79,9 @@ public class Post extends BaseEntity {
 
 	
 	//@Where(clause = "depth = 0")
-	//@OrderBy("id")
+	@OrderBy("id")
 	@OneToMany(mappedBy = "post")
-	private Set<Comment> comments = new HashSet<Comment>();
+	private Set<Comment> comments = new LinkedHashSet<Comment>();
 	
 	@OneToMany(mappedBy = "post")
 	private List<PostVote> voteList = new ArrayList<PostVote>();

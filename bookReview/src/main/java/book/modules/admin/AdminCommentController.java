@@ -37,11 +37,7 @@ public class AdminCommentController {
 	
 	@GetMapping("/comment")
 	public String adminCommentManagement(Model model, @PageableDefault(page = 0, size = 10, sort = "createdAt" , direction = Sort.Direction.DESC) Pageable pageable, @RequestParam (defaultValue = "") String keyword) {
-	
-		if (keyword == null) {
-			keyword = "";
-		}
-		
+			
 		Page<CommentListForm> commentPaging = adminService.getCommentPaging(keyword, pageable);
 				
 		model.addAttribute("keyword", keyword);

@@ -29,4 +29,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> , Commen
 	Comment findTopByOrderByIdDesc();
 	
 	List<Comment> findTop10ByOrderByIdDesc();
+
+	@EntityGraph(attributePaths = "createdBy")
+	Comment findCommentById(Long id);
 }

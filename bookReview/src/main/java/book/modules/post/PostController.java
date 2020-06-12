@@ -74,22 +74,38 @@ public class PostController {
 		return "redirect:/post/list";
 	}
 	
+// 	comment 에서 댓글목록 따로 출력
+//	@GetMapping("/view/{id}")
+//	public String view(@CurrentAccount Account account, Model model, @PathVariable Long id, HttpServletResponse response,HttpServletRequest request) throws NotFoundException {
+//	
+//		Post post = postService.getPost(id,response,request);
+//		PostPrevNextForm prevNextId = postService.getPrevNextId(id);
+//		List<Comment> commentList = commentService.getCommentList(post);
+//		//System.out.println(commentList.size());
+//		System.out.println("===========SIZE=========");
+//		// commentList.sort((a,b) -> a.getId().compareTo(b.getId())); //정렬 오름차순
+//		
+//		
+//		model.addAttribute("post" , post);
+//		model.addAttribute(new CommentForm());
+//		model.addAttribute(prevNextId);
+//		model.addAttribute("commentList", commentList);
+//		model.addAttribute("commentTotalCount" , commentService.getTotalCount(post));
+//		model.addAttribute(account);
+//		
+//		return "post/view_CommentVersion";
+//	}
+	
 	
 	@GetMapping("/view/{id}")
 	public String view(@CurrentAccount Account account, Model model, @PathVariable Long id, HttpServletResponse response,HttpServletRequest request) throws NotFoundException {
 	
-		Post post = postService.getPost(id,response,request);
+		Post post = postService.getPost2(id,response,request);
 		PostPrevNextForm prevNextId = postService.getPrevNextId(id);
-		List<Comment> commentList = commentService.getCommentList(post);
-		//System.out.println(commentList.size());
-		System.out.println("===========SIZE=========");
-		// commentList.sort((a,b) -> a.getId().compareTo(b.getId())); //정렬 오름차순
-		
 		
 		model.addAttribute("post" , post);
 		model.addAttribute(new CommentForm());
 		model.addAttribute(prevNextId);
-		model.addAttribute("commentList", commentList);
 		model.addAttribute("commentTotalCount" , commentService.getTotalCount(post));
 		model.addAttribute(account);
 		
