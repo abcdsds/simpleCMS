@@ -4,7 +4,7 @@
 <head th:replace="admin/adminFragments.html :: head"></head>
 <body class="">
   <div class="wrapper">
-    <div th:replace="admin/adminFragments.html :: sidebar"></div>
+    <div th:replace="admin/adminFragments.html :: sidebar(currentMenu='board')"></div>
     <div class="main-panel">
       <!-- Navbar -->
       <div th:replace="admin/adminFragments.html :: navbar"></div>
@@ -15,7 +15,7 @@
             <div class="card card-all">
               <div class="card-header">
               	<a th:href="@{/admin/board/add}" class="btn btn-primary float-right">추가</a>
-                <h2 class="card-title"> Simple Table</h4>
+                <h2 class="card-title"> 게시판 목록</h4>
               </div>
               <div class="card-body">
                 <div class="table-responsive">

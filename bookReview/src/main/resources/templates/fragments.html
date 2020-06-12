@@ -43,31 +43,31 @@
 				  
 				  <div class="collapse navbar-collapse" id="navbar">
 				    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-				      <li class="nav-item">
-				        <a class="nav-link" th:href="@{/notifications}"><i class="bb bb-icon-messages-f" style="font-size: 1.5em;"></i></a>
+				      <li class="nav-link">
+				        <a class="nav-item" th:href="@{/notifications}"><i class="bb bb-icon-messages-f" style="font-size: 1.5em;"></i></a>
 				      </li>
-				      <li class="nav-item" sec:authorize="isAuthenticated()">
-				        <a class="nav-link" th:href="@{/settings}"><i class="bb bb-icon-gear" style="font-size: 1.5em;"></i></a>
+				      <li class="nav-link" sec:authorize="isAuthenticated()">
+				        <a class="nav-item" th:href="@{/settings}"><i class="bb bb-icon-gear" style="font-size: 1.5em;"></i></a>
 				      </li>
-				      <li class="nav-item">
-				        <a class="nav-link" th:href="@{/search}"><i class="bb bb-icon-search" style="font-size: 1.5em;"></i></a>
+				      <li class="nav-link">
+				        <a class="nav-item" th:href="@{/search}"><i class="bb bb-icon-search" style="font-size: 1.5em;"></i></a>
 				      </li>
-				      <li class="nav-item" sec:authorize="!isAuthenticated()">
-				        <a class="nav-link" th:href="@{/login}"><i class="fa fa-sign-in" style="font-size: 1.5em;"></i></a>
+				      <li class="nav-link" sec:authorize="!isAuthenticated()">
+				        <a class="nav-item" th:href="@{/login}"><i class="fa fa-sign-in" style="font-size: 1.5em;"></i></a>
 				      </li>
-				      <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-				      	<a class="nav-link dropdown-toggle" th:href="@{/profile}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				      <li class="nav-link dropdown" sec:authorize="isAuthenticated()">
+				      	<a class="nav-item dropdown-toggle" th:href="@{/profile}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				          <i class="fa fa-user" style="font-size: 1.5em;"></i>
 				        </a>
 					    <div class="pop">
 						    <ul>
-						     <li class="nav-item profile"><a class="btn btn-primary" th:href="@{/account/profile}" role="button">내 정보</a></li>
-						     <li class="nav-item notification"><a class="btn btn-primary" href="#" role="button">알림</a></li>
-						     <li class="nav-item post"><a class="btn btn-primary" th:href="@{/account/profile}" role="button">내 글</a></li>
-						     <li class="nav-item comment"><a class="btn btn-primary" href="#" role="button">내 댓글</a></li>
-						     <li class="nav-item logout">
-						     	<form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
-			                        <button class="btn btn-primary" type="submit">로그아웃</button>
+						     <li class="nav-link myprofile text-center"><a class="nav-item btn btn-primary" th:href="@{/account/profile}" role="button">내 정보</a></li>
+						     <li class="nav-link mynotification text-center"><a class="nav-item btn btn-primary" href="#" role="button">알림</a></li>
+						     <li class="nav-link mypost text-center"><a class="nav-item btn btn-primary" th:href="@{/account/profile}" role="button">내 글</a></li>
+						     <li class="nav-link mycomment text-center"><a class="nav-item btn btn-primary" href="#" role="button">내 댓글</a></li>
+						     <li class="nav-link logout">
+						     	<form class="form-inline my-2 my-lg-0 justify-content-center" action="#" th:action="@{/logout}" method="post">
+			                        <button class="nav-item btn btn-primary" type="submit">로그아웃</button>
 			                    </form>
 						     </li>
 						    </ul>

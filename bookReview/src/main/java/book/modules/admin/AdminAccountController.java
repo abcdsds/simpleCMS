@@ -99,9 +99,12 @@ public class AdminAccountController {
 	}
 	
 	@GetMapping("/account/password/{id}")
-	public String adminAccountManagePasswordUpdateForm(Model model) {
+	public String adminAccountManagePasswordUpdateForm(Model model, @PathVariable Long id) {
 		
-		model.addAttribute(new PasswordForm());
+		PasswordForm form = new PasswordForm();
+		form.setId(id);
+		
+		model.addAttribute(form);
 		return "admin/account/password";
 	}
 	

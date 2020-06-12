@@ -4,7 +4,7 @@
 <head th:replace="admin/adminFragments.html :: head"></head>
 <body class="">
   <div class="wrapper">
-    <div th:replace="admin/adminFragments.html :: sidebar"></div>
+    <div th:replace="admin/adminFragments.html :: sidebar(currentMenu='menu')"></div>
     <div class="main-panel">
       <!-- Navbar -->
       <div th:replace="admin/adminFragments.html :: navbar"></div>

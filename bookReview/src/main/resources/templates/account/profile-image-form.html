@@ -7,15 +7,14 @@
 	<body>
 	
 		<div th:replace="fragments.html :: main-nav"></div>
-		<div th:replace="fragments.html :: profile-nav"></div>
 		
 		<div class="container">
 			<div class="row mt-5 justify-content-center">
 				<div class="col-2">
-                	<div th:replace="fragments.html :: settings-menu(currentMenu='account')"></div>
+                	<div th:replace="fragments.html :: settings-menu(currentMenu='profileimage')"></div>
             	</div>
             	
-            	<div class="col-10">
+            	<div class="col-8">
 	                <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
 	                    <span th:text="${message}">완료</span>
 	                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -26,7 +25,7 @@
 	                    <h2 class="col-12">프로필 이미지 변경</h2>
 	                </div>
 	                <div class="row" >
-	                    <div class="card text-center center-block" style="width: 50rem;">
+	                    <div class="card text-center" style="width: 50rem;">
 	                            <div class="card-header">
 	                              	  프로필 이미지
 	                            </div>

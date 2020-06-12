@@ -5,7 +5,7 @@
 
 <body class="">
   <div class="wrapper">
-   <div th:replace="admin/adminFragments.html :: sidebar"></div>
+   <div th:replace="admin/adminFragments.html :: sidebar(currentMenu='menu')"></div>
     <div class="main-panel">
       <!-- Navbar -->
       <div th:replace="admin/adminFragments.html :: navbar"></div>
@@ -96,7 +96,9 @@
     	$('#menuList_wrapper').css('height' , '100%');
     	$('#menuList_filter').css('float' , 'right')
     	$('#menuList_filter .search').css('padding-left' , '20px');
-
+    	$('.paginate_button').css('padding-top' , '30px');
+    	$('.paginate_button').css('padding-right' , '30px');
+    	
         $('.fixed-plugin a').click(function(event) {
           if ($(this).hasClass('switch-trigger')) {
             if (event.stopPropagation) {

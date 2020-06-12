@@ -1,4 +1,4 @@
-.container {
+			.container {
 	            max-width: 100%;
 	        }
 	        
@@ -230,7 +230,7 @@
 			.pop {
 			  display: none;
 			  position: absolute;
-			  top: 45px;
+			  top: 40px;
 			  right:3px;
 			  min-width: 160px;
 			  background-color: #343a40;
