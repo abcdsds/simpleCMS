@@ -92,7 +92,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navigation">
             <ul class="navbar-nav ml-auto">
-              <li class="dropdown nav-item">
+              <li class="dropdown nav-item" th:if="${#lists.size(notificationList) > 0}">
                 <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
                   <div class="notification d-none d-lg-block d-xl-block"></div>
                   <i class="tim-icons icon-sound-wave"></i>
@@ -100,12 +100,8 @@
                     Notifications
                   </p>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
-                  <li class="nav-link"><a href="#" class="nav-item dropdown-item">Mike John responded to your email</a></li>
-                  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">You have 5 more tasks</a></li>
-                  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Your friend Michael is in town</a></li>
-                  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Another notification</a></li>
-                  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Another one</a></li>
+                <ul class="dropdown-menu dropdown-menu-right dropdown-navbar" th:if="${#lists.size(notificationList) > 0}">
+                  <li class="nav-link" th:each="item : ${notificationList}"><a th:href="@{${item.link} + '?id=' + ${item.id}}" class="nav-item dropdown-item" th:text="${item.message}"></a></li>
                 </ul>
               </li>
               <li class="dropdown nav-item">
@@ -119,10 +115,13 @@
                   </p>
                 </a>
                 <ul class="dropdown-menu dropdown-navbar">
-                  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Profile</a></li>
-                  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Settings</a></li>
+                  <li class="nav-link"><a th:href="@{/account/profile}" class="nav-item dropdown-item">Profile</a></li>
                   <li class="dropdown-divider"></li>
-                  <li class="nav-link"><a href="javascript:void(0)" class="nav-item dropdown-item">Log out</a></li>
+                  <li class="nav-link">
+                  	<form class="form-inline my-0 my-lg-0 justify-content-center" action="#" th:action="@{/logout}" method="post">
+			                        <button class="nav-item btn btn-primary btn-sm" type="submit">로그아웃</button>
+			         </form>
+                  </li>
                 </ul>
               </li>
               <li class="separator d-lg-none"></li>

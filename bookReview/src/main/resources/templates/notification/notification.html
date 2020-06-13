@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+	<head th:replace="fragments.html :: head"></head>
+	
+	<body>
+	
+		<div th:replace="fragments.html :: main-nav"></div>
+		
+		<div class="container">
+			<div class="row mt-5 justify-content-center">
+				<div class="col-2">
+                	<div th:replace="fragments.html :: notification-menu(currentMenu='${readcheck}')"></div>
+            	</div>
+            	
+            	<div class="col-8">
+	                <div class="row">
+	                    <h2 class="col-12">회원 탈퇴</h2>
+	                </div>
+	                <div class="row">
+	                		<div class="col-12 allread" th:if="${readcheck == 'unread' && #lists.size(notifications) > 0}">
+								<a class="btn btn-primary" th:href="@{/notification/allread}">모두 읽음 처리</a>
+	                		</div>
+	                		
+						    <a href="#" th:href="@{${noti.link} + '?id=' + ${noti.id}}" th:each="noti: ${notifications}"
+						       class="list-group-item list-group-item-action">
+						        <div class="d-flex w-100 justify-content-between">
+						            <small class="text-muted" th:text="${noti.message}">Noti title</small>
+						            <small class="fromNow text-muted" th:text="${noti.createdDateTime}">3 days ago</small>
+						        </div>
+						    </a>
+						    <div class="none-read" th:if="${#lists.size(notifications) < 1}">
+						    	<h3>메세지가 없습니다.</h3>
+						    </div>
+	                </div>
+	            </div>
+			</div>
+	    </div>
+	    <div th:replace="fragments.html :: date-time"></div>
+	
+	
+	</body>
+
+</html>

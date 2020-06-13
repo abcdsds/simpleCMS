@@ -1,5 +1,6 @@
 package book.modules.comment;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.context.event.EventListener;
@@ -44,9 +45,11 @@ public class CommentEventListener {
 			
 			Notification notification = Notification.builder()
 											.message("댓글이 달렸습니다.")
-											.link("/post/view/" + parentComment.getPost().getId())
+											.link("/notification/post/view/" + parentComment.getPost().getId())
 											.type(NotificationType.COMMENT_REPLY)
 											.account(account)
+											.createdDateTime(LocalDateTime.now())
+											.checked(false)
 											.build();
 			
 			notificationRepository.save(notification);

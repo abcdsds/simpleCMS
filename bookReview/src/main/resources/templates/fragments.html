@@ -5,7 +5,7 @@
 		
 	<head th:fragment="head">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" media="all">
-		<link rel="stylesheet" href="./css/font-onesocial/css/onesocial.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/css/font-onesocial/css/onesocial.css" type="text/css" media="all">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://demos.buddyboss.com/onesocial/wp-content/mu-plugins/buddyboss-demo-toolbar/assets/css/font.css" type="text/css" media="all" >
 		<link rel="stylesheet" href="https://demos.buddyboss.com/onesocial/wp-includes/css/dashicons.min.css?ver=5.4.1" type="text/css" media="all" >
@@ -43,14 +43,17 @@
 				  
 				  <div class="collapse navbar-collapse" id="navbar">
 				    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-				      <li class="nav-link">
-				        <a class="nav-item" th:href="@{/notifications}"><i class="bb bb-icon-messages-f" style="font-size: 1.5em;"></i></a>
+				      <li class="nav-link dropdown" sec:authorize="isAuthenticated()">
+				        <a class="nav-item notification" th:href="@{/notification/unread}"><span class="count" th:if="${#lists.size(notificationList) > 0}"><b th:text="${#lists.size(notificationList)}"></b></span><i class="bb bb-icon-messages-f" style="font-size: 1.5em;"></i></a>
+				      	<div class="pop message" th:if="${#lists.size(notificationList) > 0}">
+					      	<ul>
+			                  <li class="nav-link" th:each="item : ${notificationList}"><a th:href="@{${item.link} + '?id=' + ${item.id}}" class="nav-item dropdown-item" th:text="${item.message}"></a></li>
+			                </ul>
+		                </div>
+		                
 				      </li>
 				      <li class="nav-link" sec:authorize="isAuthenticated()">
 				        <a class="nav-item" th:href="@{/settings}"><i class="bb bb-icon-gear" style="font-size: 1.5em;"></i></a>
-				      </li>
-				      <li class="nav-link">
-				        <a class="nav-item" th:href="@{/search}"><i class="bb bb-icon-search" style="font-size: 1.5em;"></i></a>
 				      </li>
 				      <li class="nav-link" sec:authorize="!isAuthenticated()">
 				        <a class="nav-item" th:href="@{/login}"><i class="fa fa-sign-in" style="font-size: 1.5em;"></i></a>
@@ -59,7 +62,7 @@
 				      	<a class="nav-item dropdown-toggle" th:href="@{/profile}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				          <i class="fa fa-user" style="font-size: 1.5em;"></i>
 				        </a>
-					    <div class="pop">
+					    <div class="pop profile">
 						    <ul>
 						     <li class="nav-link myprofile text-center"><a class="nav-item btn btn-primary" th:href="@{/account/profile}" role="button">내 정보</a></li>
 						     <li class="nav-link mynotification text-center"><a class="nav-item btn btn-primary" href="#" role="button">알림</a></li>
@@ -150,6 +153,11 @@
 	    <a class="list-group-item list-group-item-action list-group-item-danger" th:classappend="${currentMenu == 'account'}? active" href="#" th:href="@{/account/leave}">회원탈퇴</a>
 	</div>
 	
+	<div th:fragment="notification-menu (currentMenu)" class="list-group">
+	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'unread'}? active" href="#" th:href="@{/notification/unread}">안 읽은 메세지</a>
+	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'read'}? active" href="#" th:href="@{/notification/read}">읽은 메세지</a>
+	</div>
+	
 	<div th:fragment="editor-script">
 	    <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
 	    <script type="application/javascript">
@@ -175,6 +183,10 @@
 	            
 	            $(".date").text(function(index, dateTime) {
 	                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LLL');
+	            });
+	            
+	            $(".fromNow").text(function(index, dateTime) {
+	                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").fromNow();
 	            });
 	        })
 	    </script>

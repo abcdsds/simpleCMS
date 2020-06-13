@@ -47,5 +47,12 @@ public class Notification {
     private Account account;
 
     private LocalDateTime createdDateTime;
+    
+    private boolean checked;
+
+	public void updateChecked(boolean checked) {
+		// TODO Auto-generated method stub
+		this.checked = checked;
+	}
 	
 }

@@ -100,7 +100,7 @@ public class PostController {
 	@GetMapping("/view/{id}")
 	public String view(@CurrentAccount Account account, Model model, @PathVariable Long id, HttpServletResponse response,HttpServletRequest request) throws NotFoundException {
 	
-		Post post = postService.getPost2(id,response,request);
+		Post post = postService.getPost(id,response,request);
 		PostPrevNextForm prevNextId = postService.getPrevNextId(id);
 		
 		model.addAttribute("post" , post);

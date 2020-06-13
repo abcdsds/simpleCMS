@@ -25,5 +25,6 @@ public interface PostRepositoryExtension {
 	Page<PostListForm> findAllPost(String keyword, Pageable pageable);
 	
 	Optional<Post> findPostDataById(Long id, boolean deleted);
+
 	
 }

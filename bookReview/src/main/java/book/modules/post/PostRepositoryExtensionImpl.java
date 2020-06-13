@@ -233,6 +233,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 	@Override
 	public Optional<Post> findPostDataById(Long id, boolean deleted) {
 		// TODO Auto-generated method stub
+		
 		QPost post = QPost.post;
 		QComment comment = QComment.comment;
 		QComment commentChild = new QComment("commentChild");
@@ -243,15 +244,13 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 		
 		Post content = queryFactory.select(post)
 					.from(post)
-					.innerJoin(post.board, board).fetchJoin()
-					.innerJoin(post.createdBy, account).fetchJoin()
-					.innerJoin(post.comments, comment).fetchJoin()
-					.innerJoin(comment.createdBy, commentAccount).fetchJoin()
-					.innerJoin(comment.childList, commentChild).fetchJoin()
-					.innerJoin(commentChild.createdBy, commentChildAccount).fetchJoin()
+					.leftJoin(post.board, board).fetchJoin()
+					.leftJoin(post.createdBy, account).fetchJoin()
+					.leftJoin(post.comments, comment).fetchJoin()
+					.leftJoin(comment.createdBy, commentAccount).fetchJoin()
+					.leftJoin(comment.childList, commentChild).fetchJoin()
+					.leftJoin(commentChild.createdBy, commentChildAccount).fetchJoin()
 					.where(post.id.eq(id).and(post.deleted.eq(deleted)))
-					.orderBy(comment.id.asc())
-					.distinct()
 					.fetchOne();
 					
 		return Optional.ofNullable(content);
