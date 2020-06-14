@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+	<head th:replace="fragments.html :: head"></head>
+	
+	<body>
+	
+		<div th:replace="fragments.html :: main-nav"></div>
+		
+		<div class="container">
+			<div class="row mt-5 justify-content-center">
+				<div class="col-2">
+                	<div th:replace="fragments.html :: my-menu(currentMenu='${readcheck}')"></div>
+            	</div>
+            	
+            	<div class="col-8">
+	                <div class="row">
+	                    <h2 class="col-12">내글 목록</h2>
+	                </div>
+	                <div class="row">
+	                		
+	                	<table id="myDataList" class="table tablesorter">
+			                    <thead class=" text-primary">
+			                      <tr>
+			                         <th>
+			                          	번호
+			                        </th>
+			                        <th>
+			                          	제목
+			                        </th>
+			                        <th>
+			                          	날짜
+			                        </th>
+			                        <th class="text-center">
+			                        	이동
+			                        </th>
+			                      </tr>
+			                    </thead>
+			                    <tbody>
+		                      
+		                        <tr th:each="item : ${myDataList}">
+			                        <td th:text="${item.id}">
+			                          	번호
+			                        </td>
+			                        <td th:text="${item.title}">
+			                          	제목
+			                        </td>
+			                        <td class="fromNow" th:text="${item.createdAt}">
+			                          	날짜
+			                        </td>
+			                        <td class="text-center">
+			                          <a th:href="@{'/admin/board/update/' + ${item.id}}" class="btn btn-primary">이동</a>
+			                        </td>
+		                      	</tr>                                
+		                    </tbody>
+		                  </table>
+	                </div>
+	            </div>
+			</div>
+	    </div>
+	    <div th:replace="fragments.html :: date-time"></div>
+	    <div th:replace="fragments.html :: datatables"></div>
+	
+	
+	</body>
+
+</html>

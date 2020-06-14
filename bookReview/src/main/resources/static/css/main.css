@@ -52,6 +52,10 @@
 	        	
 	        }
 	        
+	        .nav-item:hover .dropdown-menu {
+	        	display:block;
+	        }
+	        
 	        .comment-text-parent-nickname{
 	        	opacity:0.5;
 	        }

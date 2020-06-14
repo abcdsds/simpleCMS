@@ -2,6 +2,7 @@ package book.modules.post;
 
 import java.nio.file.AccessDeniedException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.Cookie;
@@ -222,6 +223,11 @@ public class PostService {
 	public PostPrevNextForm getPrevNextId(Long id) {
 		// TODO Auto-generated method stub
 		return postRepository.findPrevNextPostById(id, false);
+	}
+
+	public List<Post> myPost(Account account) {
+		// TODO Auto-generated method stub
+		return postRepository.findAllByCreatedByAndDeleted(account, false);
 	}
 	
 	

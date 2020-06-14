@@ -1,10 +1,13 @@
 package book.modules.account;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,10 @@ import book.modules.account.form.PasswordForm;
 import book.modules.account.form.ProfileForm;
 import book.modules.account.validator.AccountFormValidator;
 import book.modules.account.validator.PasswordFormValidator;
+import book.modules.comment.Comment;
+import book.modules.comment.CommentService;
+import book.modules.post.Post;
+import book.modules.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,11 +39,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AccountController {
 
+	
 	private final AccountService accountService;
+	private final PostService postService;
+	private final CommentService commentService;
 	private final ModelMapper modelMapper;
 	private final AccountFormValidator accountFormValidator;
 	private final PasswordFormValidator passwordFormValidator;
-	
+		
 	@InitBinder("accountForm")
 	public void initBinderAccountForm (WebDataBinder webDataBinder) {
 		webDataBinder.addValidators(accountFormValidator);
@@ -234,6 +244,26 @@ public class AccountController {
 		accountService.changePasswordWithToken(token,email,form);
 		
 		return "redirect:/login";
+	}
+	
+	@GetMapping("/account/myPost")
+	public String accountPost(@CurrentAccount Account account , Model model) {
+		
+		List<Post> myPost = postService.myPost(account);
+		
+		model.addAttribute("myDataList", myPost);
+		
+		return "account/mypost";
+	}
+	
+	@GetMapping("/account/myComment")
+	public String accountComment(@CurrentAccount Account account , Model model) {
+		
+		List<Comment> myComment = commentService.myComment(account);
+		
+		model.addAttribute("myDataList", myComment);
+		
+		return "account/mycomment";
 	}
 	
 }

@@ -10,10 +10,13 @@
 		<link rel="stylesheet" href="https://demos.buddyboss.com/onesocial/wp-content/mu-plugins/buddyboss-demo-toolbar/assets/css/font.css" type="text/css" media="all" >
 		<link rel="stylesheet" href="https://demos.buddyboss.com/onesocial/wp-includes/css/dashicons.min.css?ver=5.4.1" type="text/css" media="all" >
 		<link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
+		<link ref="stylesheet" href="/node_modules/datatables.net-dt/css/jquery.dataTables.min.css" >
 		<link rel="stylesheet" href="/css/main.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		<script src="/node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
+  		<script src="/node_modules/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
 	</head>
 	
 
@@ -29,8 +32,9 @@
 				  <div class="collapse navbar-collapse" id="navbarTop">
 				    <ul class="navbar-nav mr-auto">
 				      <li class="nav-item" th:each="item, iStat : ${menus}">
-				      	<a class="nav-link dropdown-toggle" href="#about" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${item.name}">이름</a> 
-				      	<div class="dropdown-menu dropdown-submenu" th:if="${item.subMenus != null}" th:style="'left : ' + ${iStat.count} + '%'">
+				      	<a class="nav-link dropdown-toggle" th:with="baseUrl=(${item.type == T(book.modules.menu.MenuType).BOARD ? '/board/' : item.type == T(book.modules.menu.MenuType).PAGE ? 'page' : ''})" 
+						        			th:href="@{${baseUrl} + ${item.path}}" th:text="${item.name}">이름</a> 
+				      	<div class="dropdown-menu dropdown-submenu" th:if="${#lists.size(item.subMenus) > 0}" th:style="'left : ' + ${iStat.count} * 10 + '%'">
 						        <a class="dropdown-item" th:each="subItem : ${item.subMenus}" th:with="baseUrl=(${subItem.type == T(book.modules.menu.MenuType).BOARD ? '/board/' : subItem.type == T(book.modules.menu.MenuType).PAGE ? 'page' : ''})" 
 						        			th:href="@{${baseUrl} + ${subItem.path}}">
 						        <span th:text="${subItem.name}"></span>			
@@ -66,8 +70,8 @@
 						    <ul>
 						     <li class="nav-link myprofile text-center"><a class="nav-item btn btn-primary" th:href="@{/account/profile}" role="button">내 정보</a></li>
 						     <li class="nav-link mynotification text-center"><a class="nav-item btn btn-primary" href="#" role="button">알림</a></li>
-						     <li class="nav-link mypost text-center"><a class="nav-item btn btn-primary" th:href="@{/account/profile}" role="button">내 글</a></li>
-						     <li class="nav-link mycomment text-center"><a class="nav-item btn btn-primary" href="#" role="button">내 댓글</a></li>
+						     <li class="nav-link mypost text-center"><a class="nav-item btn btn-primary" th:href="@{/account/myPost}" role="button">내 글</a></li>
+						     <li class="nav-link mycomment text-center"><a class="nav-item btn btn-primary" th:href="@{/account/myComment}" role="button">내 댓글</a></li>
 						     <li class="nav-link logout">
 						     	<form class="form-inline my-2 my-lg-0 justify-content-center" action="#" th:action="@{/logout}" method="post">
 			                        <button class="nav-item btn btn-primary" type="submit">로그아웃</button>
@@ -121,30 +125,6 @@
 		</div>
 	</header>
 	
-	<header th:fragment="profile-nav">
-		<div class="header-inner">
-			<div class="container">
-				<div class="menu-center" id="mainMenu">
-					<div class="container">
-						<nav>
-							<ul>
-								<li class="menuItem">
-									<a href="/series/top/30/">내 정보</a>
-								</li>
-								<li class="menuItem">
-									<a href="/series/comments/">내 글</a>
-								</li>
-								<li class="menuItem">
-									<a href="/recommendations/series/">내 댓글</a>
-								</li>
-							</ul>
-						</nav>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
-	
 	<div th:fragment="settings-menu (currentMenu)" class="list-group">
 	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{/account/profile}">정보 변경</a>
 	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" href="#" th:href="@{/account/password}">패스워드 변경</a>
@@ -156,6 +136,11 @@
 	<div th:fragment="notification-menu (currentMenu)" class="list-group">
 	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'unread'}? active" href="#" th:href="@{/notification/unread}">안 읽은 메세지</a>
 	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'read'}? active" href="#" th:href="@{/notification/read}">읽은 메세지</a>
+	</div>
+	
+	<div th:fragment="my-menu (currentMenu)" class="list-group">
+	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'mypost'}? active" href="#" th:href="@{/account/mypost}">내 글</a>
+	    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'mycomment'}? active" href="#" th:href="@{/account/myComment}">내 댓글</a>
 	</div>
 	
 	<div th:fragment="editor-script">
@@ -191,6 +176,22 @@
 	        })
 	    </script>
 	</div>
+	
+	<div th:fragment="datatables">
+		<script type="application/javascript">
+		$(function () {
+			$("#myDataList").DataTable();	    	
+	    	$('#myDataList_wrapper').css("width" , '100%');
+	    	$('#myDataList_wrapper').css('height' , '100%');
+	    	$('#myDataList_filter').css('float' , 'right')
+	    	$('#myDataList_filter .search').css('padding-left' , '20px');
+	    	$('.paginate_button').css('padding-top' , '30px');
+	    	$('.paginate_button').css('padding-right' , '30px');
+			
+		});
+		</script>
+	</div>
+	
 	<script type="application/javascript" th:inline="javascript" th:fragment="ajax-csrf-header">
 	    $(function() {
 	        var csrfToken = /*[[${_csrf.token}]]*/ null;

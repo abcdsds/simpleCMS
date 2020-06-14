@@ -41,6 +41,8 @@ public interface PostRepository extends JpaRepository<Post, Long> , PostReposito
 	@EntityGraph(attributePaths = {"createdBy" , "board"})
 	Optional<Post> findPostAndBoardAndAccountById(Long id);
 
+	List<Post> findAllByCreatedByAndDeleted(Account account, boolean b);
+
 	
 
 }

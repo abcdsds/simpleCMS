@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import book.modules.account.Account;
 import book.modules.post.Post;
 
 @Transactional(readOnly = true)
@@ -32,4 +33,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> , Commen
 
 	@EntityGraph(attributePaths = "createdBy")
 	Comment findCommentById(Long id);
+
+	@EntityGraph(attributePaths = "post")
+	List<Comment> findAllByCreatedByAndDeleted(Account account, boolean b);
 }

@@ -186,5 +186,10 @@ public class CommentService {
 		return findById.orElseThrow(() -> new NotFoundException("댓글이 존재하지 않습니다."));
 	}
 
+	public List<Comment> myComment(Account account) {
+		// TODO Auto-generated method stub
+		return commentRepository.findAllByCreatedByAndDeleted(account, false);
+	}
+
 
 }
