@@ -116,9 +116,11 @@ public class Account extends BaseTimeEntity{
 		// TODO Auto-generated method stub
 		String beforeLoginId = this.loginId;
 		String beforeEmail = this.email;
+		String beforeNickname = this.nickname;
 		
 		this.loginId = "deleted-" + LocalDateTime.now() + "-" + beforeLoginId;
 		this.email = "deleted-" + LocalDateTime.now() + "-" + beforeEmail;
+		this.nickname = "deleted-" + LocalDateTime.now() + "-" + beforeNickname;
 	}
 
 	

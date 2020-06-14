@@ -75,6 +75,7 @@ public class AdminAccountController {
 		return "admin/account/update";
 	}
 	
+	
 	@PostMapping("/account/update")
 	public String adminAccountManageUpdateSubmit(Model model , @Valid AccountAdminForm accountAdminForm, Errors errors , RedirectAttributes redirect) throws NotFoundException {
 		

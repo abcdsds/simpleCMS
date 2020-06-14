@@ -24,7 +24,11 @@ public class WithAccountSecurityContextFactory implements WithSecurityContextFac
 		// TODO Auto-generated method stub
 
 		String loginId = withAccount.value();
+		String role = "ROLE_USER";
 		
+		if (loginId.contains("admin")) {
+			role = "ROLE_ADMIN";
+		}
 		
 		AccountForm form = new AccountForm();
 		form.setLoginId(loginId);
@@ -36,7 +40,7 @@ public class WithAccountSecurityContextFactory implements WithSecurityContextFac
 		form.setAccountGender(AccountGender.male);
 		
 		
-		accountService.accountCreate(form);
+		accountService.accountCreate(form, role);
 		
 		
 		UserDetails principal = accountService.loadUserByUsername(loginId);

@@ -46,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 class CommentControllerTest {
 
-@Autowired private MockMvc mockMvc;
+	@Autowired private MockMvc mockMvc;
 	
 	@Autowired private PostRepository postRepository;
 	

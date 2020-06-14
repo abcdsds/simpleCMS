@@ -65,6 +65,16 @@ public class AccountService implements UserDetailsService {
 
 		return accountRepository.save(account);
 	}
+	
+	public Account accountCreate(AccountForm form , String role) {
+
+		Account account = Account.builder().accountGender(form.getAccountGender()).accountType(AccountType.none)
+				.ban(false).birthYear(form.getBirthYear()).email(form.getEmail()).loginId(form.getLoginId())
+				.nickname(form.getNickname()).password(passwordEncoder.encode(form.getPassword())).role(role)
+				.build();
+
+		return accountRepository.save(account);
+	}
 
 	public void login(Account account) {
 		// TODO Auto-generated method stub
