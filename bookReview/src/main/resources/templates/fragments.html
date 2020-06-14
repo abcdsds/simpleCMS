@@ -34,7 +34,7 @@
 				      <li class="nav-item" th:each="item, iStat : ${menus}">
 				      	<a class="nav-link dropdown-toggle" th:with="baseUrl=(${item.type == T(book.modules.menu.MenuType).BOARD ? '/board/' : item.type == T(book.modules.menu.MenuType).PAGE ? 'page' : ''})" 
 						        			th:href="@{${baseUrl} + ${item.path}}" th:text="${item.name}">이름</a> 
-				      	<div class="dropdown-menu dropdown-submenu" th:if="${#lists.size(item.subMenus) > 0}" th:style="'left : ' + ${iStat.count} * 10 + '%'">
+				      	<div class="dropdown-menu dropdown-submenu" th:if="${#lists.size(item.subMenus) > 0}">
 						        <a class="dropdown-item" th:each="subItem : ${item.subMenus}" th:with="baseUrl=(${subItem.type == T(book.modules.menu.MenuType).BOARD ? '/board/' : subItem.type == T(book.modules.menu.MenuType).PAGE ? 'page' : ''})" 
 						        			th:href="@{${baseUrl} + ${subItem.path}}">
 						        <span th:text="${subItem.name}"></span>			
@@ -56,9 +56,12 @@
 		                </div>
 		                
 				      </li>
-				      <li class="nav-link" sec:authorize="isAuthenticated()">
-				        <a class="nav-item" th:href="@{/settings}"><i class="bb bb-icon-gear" style="font-size: 1.5em;"></i></a>
+				     
+				      
+				      <li class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')">
+				        <a class="nav-item" th:href="@{/admin}"><i class="bb bb-icon-gear" style="font-size: 1.5em;"></i></a>
 				      </li>
+				      
 				      <li class="nav-link" sec:authorize="!isAuthenticated()">
 				        <a class="nav-item" th:href="@{/login}"><i class="fa fa-sign-in" style="font-size: 1.5em;"></i></a>
 				      </li>

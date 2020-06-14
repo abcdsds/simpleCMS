@@ -389,7 +389,8 @@
 			}
 			
 			.dropdown-submenu {
-				left: 8.5%;
+				left: auto;
+				right: 1;
 			}
 			
 			.searchform {

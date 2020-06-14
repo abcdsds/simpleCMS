@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// TODO Auto-generated method stub
 		http.authorizeRequests()
 				.mvcMatchers("/" , "/login" ,"/register", "/find-password" , "/search" , "/error" , "/change-password" , "/check-email-token" ).permitAll()
+				.mvcMatchers("/admin/**" , "/admin").hasRole("ADMIN")
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
@@ -60,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring()
 				.mvcMatchers("/css/**")
 				.mvcMatchers("/img/**")
+				.mvcMatchers("/node_modules/**")
 				.requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 	}
 }
