@@ -15,14 +15,13 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import book.MockMvcTest;
 import book.modules.WithAccount;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Rollback(value = true)
-@Transactional
-@AutoConfigureMockMvc
-@SpringBootTest
+@MockMvcTest
 class AdminControllerTest {
 
 	@Autowired private MockMvc mockMvc;

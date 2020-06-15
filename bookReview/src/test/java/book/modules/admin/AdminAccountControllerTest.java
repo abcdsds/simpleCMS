@@ -21,6 +21,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import book.MockMvcTest;
 import book.modules.WithAccount;
 import book.modules.account.Account;
 import book.modules.account.AccountGender;
@@ -31,9 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Rollback(value = true)
-@Transactional
-@AutoConfigureMockMvc
-@SpringBootTest
+@MockMvcTest
 class AdminAccountControllerTest {
 
 	@Autowired private MockMvc mockMvc;
