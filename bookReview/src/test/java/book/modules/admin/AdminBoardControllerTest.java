@@ -105,4 +105,5 @@ class AdminBoardControllerTest {
 //		.andExpect(model().attributeExists("boardForm"))
 //		.andExpect(view().name("admin/board/add"));
 //	}
+	
 }
