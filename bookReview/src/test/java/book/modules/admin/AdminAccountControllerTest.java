@@ -75,6 +75,7 @@ class AdminAccountControllerTest {
 	@Test
 	void adminAccountUpdateForm() throws Exception {
 		
+		
 		mockMvc.perform(get("/admin/account/update/" + account.getId()))
 				.andExpect(status().isOk())
 				.andExpect(model().attributeExists("accountAdminForm"))
