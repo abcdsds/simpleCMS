@@ -75,6 +75,7 @@ public class Account extends BaseTimeEntity{
 	@OneToMany(mappedBy = "createdBy")
 	private List<Comment> comments = new ArrayList<Comment>();
 	
+	@Builder.Default
 	@OneToMany(mappedBy = "managedBy")
 	private List<BoardManager> managers = new ArrayList<BoardManager>(); 
 	
