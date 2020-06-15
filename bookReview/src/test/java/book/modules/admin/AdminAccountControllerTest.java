@@ -189,9 +189,7 @@ class AdminAccountControllerTest {
 		
 		assertThat(account.getPassword().toString()).isNotEqualTo(password);
 
-		
 	}
-	
 	
 	@WithAccount("admintest01")
 	@DisplayName("회원관리 페이지 - 회원 삭제처리 - 성공")
