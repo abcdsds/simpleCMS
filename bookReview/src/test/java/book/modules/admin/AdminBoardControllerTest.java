@@ -55,7 +55,6 @@ class AdminBoardControllerTest {
 		form.setPassword("12312344");
 		form.setAccountGender(AccountGender.male);
 		
-		
 		account = accountService.accountCreate(form);
 		
 		BoardForm boardform = new BoardForm();
