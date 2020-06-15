@@ -89,18 +89,20 @@ class AdminBoardControllerTest {
 		.andExpect(view().name("admin/board/add"));
 	}
 	
-	@WithAccount("admintest01")
-	@DisplayName("어드민 페이지 게시판 관리 - 추가 submit")
-	@Test
-	void adminBoardAddSubmit() throws Exception {
-		
-		mockMvc.perform(
-					post("/admin/board/add")
-					.param("", "")
-				
-				)
-		.andExpect(status().isOk())
-		.andExpect(model().attributeExists("boardForm"))
-		.andExpect(view().name("admin/board/add"));
-	}
+//	@WithAccount("admintest01")
+//	@DisplayName("어드민 페이지 게시판 관리 - 추가 submit")
+//	@Test
+//	void adminBoardAddSubmit() throws Exception {
+//		
+//		mockMvc.perform(
+//					post("/admin/board/add")
+//					.param("", "")
+//					.param("", "")
+//					.param("", "")
+//				
+//				)
+//		.andExpect(status().isOk())
+//		.andExpect(model().attributeExists("boardForm"))
+//		.andExpect(view().name("admin/board/add"));
+//	}
 }
