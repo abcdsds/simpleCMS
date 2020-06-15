@@ -300,7 +300,6 @@ class PostControllerTest {
 				.andExpect(model().attributeExists("account"))
 				.andExpect(model().attributeExists("post"))
 				.andExpect(model().attributeExists("postPrevNextForm"))
-				.andExpect(model().attributeExists("commentList"))
 				.andExpect(model().attributeExists("commentTotalCount"))
 				.andExpect(view().name("post/view"));
 		
@@ -325,7 +324,6 @@ class PostControllerTest {
 				.andExpect(model().attributeExists("account"))
 				.andExpect(model().attributeExists("post"))
 				.andExpect(model().attributeExists("postPrevNextForm"))
-				.andExpect(model().attributeExists("commentList"))
 				.andExpect(model().attributeExists("commentTotalCount"))
 				.andExpect(view().name("post/view"));
 		

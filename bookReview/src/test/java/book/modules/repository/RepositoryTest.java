@@ -45,16 +45,16 @@ public class RepositoryTest {
 	@Autowired
 	ObjectMapper objectMapper;
 	
-	@Test
-	void test() {
-		int[] array2 = IntStream.range(1, 13).toArray();	
-		int[] c = Arrays.copyOfRange(array2, 1, 3);
-		
-		System.out.println(c[0]);
-		System.out.println(c[1]);
-		System.out.println(c[2]);
-		
-	}
+//	@Test
+//	void test() {
+//		int[] array2 = IntStream.range(1, 13).toArray();	
+//		int[] c = Arrays.copyOfRange(array2, 1, 3);
+//		
+//		System.out.println(c[0]);
+//		System.out.println(c[1]);
+//		System.out.println(c[2]);
+//		
+//	}
 	
 	@Test
 	void accountTest() throws JsonProcessingException {
@@ -82,7 +82,7 @@ public class RepositoryTest {
 	@Test
 	void boardTest() {
 
-		Board findByRole = boardRepository.findByRole(new SimpleGrantedAuthority("ROLE_USER"));
+		List<Board> findByRole = boardRepository.findByRole(new SimpleGrantedAuthority("ROLE_USER"));
 
 		assertThat(findByRole).isNotNull();
 		

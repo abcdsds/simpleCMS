@@ -28,6 +28,6 @@ public class modelmapperTest {
 		
 		modelMapper.map(form, board);
 		
-		System.out.println(board.getName());
+		//System.out.println(board.getName());
 	}
 }

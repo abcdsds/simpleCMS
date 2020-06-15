@@ -17,7 +17,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> , BoardRepos
 	@EntityGraph(attributePaths = {"postList"})
 	Optional<Board> findByPathAndRole(String boardPath, SimpleGrantedAuthority simpleGrantedAuthority);
 
-	Board findByRole(SimpleGrantedAuthority simpleGrantedAuthority);
+	List<Board> findByRole(SimpleGrantedAuthority simpleGrantedAuthority);
 
 	List<Board> findTop10ByOrderByIdDesc();
 

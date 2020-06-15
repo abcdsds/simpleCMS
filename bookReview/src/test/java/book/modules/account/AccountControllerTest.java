@@ -90,7 +90,7 @@ class AccountControllerTest {
 						.param("newPasswordConfirm", "1111111")
 						.with(csrf())
 						)
-		.andExpect(status().is3xxRedirection());
+		.andExpect(status().isOk());
 		
 		assertFalse(passwordEncoder.matches("1111111", beforeAccount.getPassword()));
 		
@@ -155,7 +155,7 @@ class AccountControllerTest {
 							.param("token", account.getToken())
 							.param("email", "aakksios")
 						)
-		.andExpect(status().is3xxRedirection());
+		.andExpect(status().isOk());
 	}
 	
 	@DisplayName("토큰 인증 성공 후 비밀번호 수정 폼 - 성공")
@@ -502,7 +502,7 @@ class AccountControllerTest {
 					post("/register")
 					.param("loginId", "ididid")
 					.param("email", "aksdkasdl@naver.com")
-					.param("nickname" , "닉네임")
+					.param("nickname" , "ngh547r798")
 					.param("password", "100200")
 					.param("birthYear", "2000")
 					.param("accountGender", "male")

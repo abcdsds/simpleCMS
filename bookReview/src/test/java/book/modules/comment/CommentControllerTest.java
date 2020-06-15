@@ -240,7 +240,7 @@ class CommentControllerTest {
 		
 		mockMvc.perform(post("/comment/update/"+testPost.getId()+"/"+testComment.getId())
 						.param("postId", testPost.getId().toString())
-						.param("parentCommentId", testComment.getId().toString())
+						.param("id", testComment.getId().toString())
 						.param("depth", "0")
 						.param("content", "댓글내용sub댓글내용sub댓글내용sub댓글내용sub댓글내용sub댓글내용sub댓글내용sub댓글내용sub댓글내용sub댓글내용sub댓글내용sub")
 						.with(csrf())
@@ -261,7 +261,7 @@ class CommentControllerTest {
 		
 		mockMvc.perform(post("/comment/update/"+testPost.getId()+"/"+testComment.getId())
 						.param("postId", testPost.getId().toString())
-						.param("parentCommentId", testComment.getId().toString())
+						.param("id", testComment.getId().toString())
 						.param("depth", "0")
 						.param("content", "댓글내용sub")
 						.with(csrf())
