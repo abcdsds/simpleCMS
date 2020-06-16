@@ -1,8 +1,6 @@
 package book.modules.notification;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,13 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import book.modules.account.Account;
-import book.modules.board.Board;
-import book.modules.menu.Menu;
-import book.modules.menu.MenuType;
-import book.modules.menu.Menu.MenuBuilder;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

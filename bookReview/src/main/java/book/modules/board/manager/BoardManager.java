@@ -11,20 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import book.modules.account.Account;
-import book.modules.base.BaseEntity;
 import book.modules.board.Board;
-import book.modules.comment.Comment;
-import book.modules.post.Post;
-import book.modules.post.vote.PostVote;
-import book.modules.post.vote.VoteType;
-import book.modules.post.vote.PostVote.PostVoteBuilder;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @EqualsAndHashCode(of = "id")
 @Builder @Getter

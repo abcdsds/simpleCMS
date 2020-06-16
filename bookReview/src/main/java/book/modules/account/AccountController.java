@@ -18,9 +18,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.sun.media.sound.InvalidDataException;
-
 import book.modules.account.form.AccountForm;
 import book.modules.account.form.NicknameForm;
 import book.modules.account.form.PasswordForm;
@@ -31,6 +28,7 @@ import book.modules.comment.Comment;
 import book.modules.comment.CommentService;
 import book.modules.post.Post;
 import book.modules.post.PostService;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -224,7 +222,7 @@ public class AccountController {
 	}
 	
 	@GetMapping("/check-email-token")
-	public String checkEmailToken(Model model ,@RequestParam(name = "token") String token , @RequestParam(name="email") String email) throws InvalidDataException {
+	public String checkEmailToken(Model model ,@RequestParam(name = "token") String token , @RequestParam(name="email") String email) throws NotFoundException {
 		
 		accountService.validToken(email, token);
 		model.addAttribute("token" , token);
@@ -235,7 +233,7 @@ public class AccountController {
 	
 	@PostMapping("/change-password")
 	public String changePasswordWithToken(Model model,@RequestParam(name = "token") String token , @RequestParam(name="email") String email, @Valid PasswordForm form , Errors errors,
-			 							  RedirectAttributes redirectAttributes) throws InvalidDataException {
+			 							  RedirectAttributes redirectAttributes) throws NotFoundException {
 		if (errors.hasErrors()) {
 			model.addAttribute("message" , "수정에 실패했습니다.");
 			return "mail/changePassword";

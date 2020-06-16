@@ -27,7 +27,6 @@ import org.thymeleaf.context.Context;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.media.sound.InvalidDataException;
 
 import book.config.AppProperties;
 import book.mail.Email;
@@ -201,7 +200,7 @@ public class AccountService implements UserDetailsService {
 		accountRepository.save(account);
 	}
 
-	public Account validToken(String email, String token) throws InvalidDataException {
+	public Account validToken(String email, String token) throws NotFoundException  {
 		// TODO Auto-generated method stub
 		Account account = accountRepository.findByEmail(email);
 		
@@ -211,13 +210,13 @@ public class AccountService implements UserDetailsService {
 		
 		
 		if (!account.getToken().equals(token)) {
-			throw new InvalidDataException("토큰이 일치하지 않습니다.");
+			throw new NotFoundException("토큰이 일치하지 않습니다.");
 		}
 		
 		return account;
 	}
 
-	public void changePasswordWithToken(String token, String email, PasswordForm form) throws InvalidDataException {
+	public void changePasswordWithToken(String token, String email, PasswordForm form) throws NotFoundException  {
 		// TODO Auto-generated method stub
 		Account account = validToken(email,token);
 		account.changePassword(passwordEncoder.encode(form.getNewPassword()));
