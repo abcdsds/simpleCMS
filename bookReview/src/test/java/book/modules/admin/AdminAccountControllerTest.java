@@ -188,7 +188,6 @@ class AdminAccountControllerTest {
 				.andExpect(status().is3xxRedirection());
 		
 		assertThat(account.getPassword().toString()).isNotEqualTo(password);
-
 	}
 	
 	@WithAccount("admintest01")
