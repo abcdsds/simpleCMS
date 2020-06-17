@@ -71,7 +71,7 @@ public class PostController {
 		
 		postService.add(account, form);
 		
-		return "redirect:/post/list";
+		return "redirect:/board/"+ form.getBoardName();
 	}
 	
 // 	comment 에서 댓글목록 따로 출력

@@ -365,6 +365,11 @@
 				padding-top: 50px;
 				text-align:center;
 			}
+			
+			.writebtn{
+				margin-top: 50px;
+			}
+			
 			.header-titles li, ul[class^='topic-item-'] li {
 			    width: 10%;
 			    float: left;
@@ -389,6 +394,7 @@
 			}
 			
 			.dropdown-submenu {
+				top: 50px;
 				left: auto;
 				right: 1;
 			}

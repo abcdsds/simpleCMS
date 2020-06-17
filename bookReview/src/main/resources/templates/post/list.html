@@ -11,7 +11,10 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
+				
+				    <a class="btn btn-primary float-right writebtn" th:href="@{'/post/' + ${board.path} + '/add' }">글 작성</a>
 				    <h1 class="board_title" th:text="${board.name}"></h1>
+				    
 				    <ul class="topics-table">
 				        <li class="topics-header">
 				           <ul class="header-titles">
