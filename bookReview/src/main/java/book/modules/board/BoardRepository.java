@@ -29,4 +29,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> , BoardRepos
 
 	@EntityGraph(value = "Board.withPostListAndManagersAndManagersAccount")
 	Board findBoardAndPostById(Long boardId);
+
+	Board findTop1ByOrderByIdDesc();
 }

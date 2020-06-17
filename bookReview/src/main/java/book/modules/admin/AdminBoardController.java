@@ -141,7 +141,7 @@ public class AdminBoardController {
 	
 	@PostMapping("/board/delete")
 	@ResponseBody
-	public ResponseEntity<String> adminMenuManagerDeleteSutmit(Long accountId , Long boardId) throws JsonProcessingException {
+	public ResponseEntity<String> adminMenuManagerDeleteSutmit(Long boardId) throws JsonProcessingException {
 
 		String message = boardService.deleteBoard(boardId);
 		

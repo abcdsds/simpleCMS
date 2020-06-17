@@ -32,7 +32,7 @@ public class MenuService {
 	private final ModelMapper modelMapper;
 	private final ObjectMapper objectMapper;
 	
-	public void addMenu(MenuForm menuForm) throws NotFoundException {
+	public Menu addMenu(MenuForm menuForm) throws NotFoundException {
 		
 		Menu menu = Menu.builder().name(menuForm.getName()).type(menuForm.getType()).build();
 		
@@ -52,8 +52,7 @@ public class MenuService {
 			
 		}
 		
-		menuRepository.save(menu);
-		
+		return menuRepository.save(menu);
 	}
 
 	public void updateMenu(Long id, MenuForm menuForm) throws NotFoundException {

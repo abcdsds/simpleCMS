@@ -20,8 +20,6 @@ public class MenuFormValidator implements Validator{
 		// TODO Auto-generated method stub
 		MenuForm form = (MenuForm)target;
 		
-		System.out.println("===========================");
-		System.out.println(form.getType().equals(MenuType.BOARD));
 		
 		if (!form.getType().equals(MenuType.BOARD)) {
 			

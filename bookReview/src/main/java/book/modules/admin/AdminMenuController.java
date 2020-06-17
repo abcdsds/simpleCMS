@@ -87,7 +87,7 @@ public class AdminMenuController {
 		
 		
 		List<Board> allBoards = adminService.getAllBoards();
-		List<Menu> allMenus = adminService.getAllMenusWithOutId(id);
+		//List<Menu> allMenus = adminService.getAllMenusWithOutId(id);
 		Menu menu = adminService.getMenu(id);
 		MenuForm menuForm = modelMapper.map(menu, MenuForm.class);
 		
@@ -117,7 +117,7 @@ public class AdminMenuController {
 	
 	@PostMapping("/menu/delete")
 	@ResponseBody
-	public ResponseEntity<String> adminMenuManagerDeleteSutmit(Long accountId , Long menuId) throws JsonProcessingException {
+	public ResponseEntity<String> adminMenuManagerDeleteSutmit(Long menuId) throws JsonProcessingException {
 
 		String message = menuService.deleteMenu(menuId);
 		
