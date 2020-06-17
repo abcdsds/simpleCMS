@@ -12,6 +12,10 @@ http://3.34.177.89:9765/
 test 계정 : ice3152 
 test pass : 12341234
 
+게시판에 대한 설명은 위키에서 보실수 있습니다.
+
+https://github.com/abcdsds/book/wiki
+
 기술 및 환경
 ---
 ___
