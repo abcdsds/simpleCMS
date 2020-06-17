@@ -50,17 +50,11 @@ class CommentControllerTest {
 	
 	@Autowired private PostRepository postRepository;
 	
-	@Autowired private PostService postService;
-	
-	@Autowired private BoardService boardService;
-	
 	@Autowired private AccountRepository accountRepository;
 	
 	@Autowired private BoardRepository boardRepository;
 	
 	@Autowired private BoardManagerRepository boardManagerRepository;
-	
-	@Autowired private ObjectMapper objectMapper;
 	
 	@Autowired private CommentRepository commentRepository;
 	
@@ -268,9 +262,7 @@ class CommentControllerTest {
 				)
 				.andExpect(status().is3xxRedirection());
 		
-		Optional<Comment> findById = commentRepository.findById(testComment.getId());
-		assertTrue(findById.isPresent());
-		assertThat(findById.get().getContent()).isEqualTo("댓글내용sub");
+		assertThat(testComment.getContent()).isEqualTo("댓글내용sub");
 		
 	}
 	

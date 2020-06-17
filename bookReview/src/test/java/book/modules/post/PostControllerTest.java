@@ -57,16 +57,11 @@ class PostControllerTest {
 	
 	@Autowired private PostService postService;
 	
-	@Autowired private BoardService boardService;
-	
 	@Autowired private AccountRepository accountRepository;
 	
 	@Autowired private BoardRepository boardRepository;
 	
 	@Autowired private BoardManagerRepository boardManagerRepository;
-	
-	@Autowired private ObjectMapper objectMapper;
-	
 	
 	private Board testBoard;
 	
