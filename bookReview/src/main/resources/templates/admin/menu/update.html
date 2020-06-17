@@ -191,6 +191,20 @@
 			}
 		});
         
+		if ($('#type option:selected').val() === 'LINK' ) {
+			
+			$('#menuPath').removeClass('d-none');
+    		$('#menuRole').removeClass('d-none');
+    		$('#menuBoard').addClass('d-none');
+		}
+		
+		if ($('#type option:selected').val() === 'PAGE' ) {
+			
+			$('#menuPath').removeClass('d-none');
+    		$('#menuRole').removeClass('d-none');
+    		$('#menuBoard').addClass('d-none');
+		}
+		
         $('#type').change(function () {
         	let selectedValue = $(this).val();
         	console.log(selectedValue);

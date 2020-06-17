@@ -20463,6 +20463,12 @@ Copyright (c) 2015 Daniel Eden
 	color: #fff;
 }
 
+#type option {
+	background: rgba(0, 0, 0, 0.3);
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+	color: #fff;
+}
+
 .card-tasks .table-full-width {
   max-height: 410px;
   position: relative;

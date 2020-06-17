@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import book.MockMvcTest;
 import book.modules.WithAccount;
 import book.modules.account.Account;
 import book.modules.account.AccountRepository;
@@ -47,9 +48,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Rollback(value = true)
-@Transactional
-@AutoConfigureMockMvc
-@SpringBootTest
+@MockMvcTest
 class PostControllerTest {
 
 	@Autowired private MockMvc mockMvc;
