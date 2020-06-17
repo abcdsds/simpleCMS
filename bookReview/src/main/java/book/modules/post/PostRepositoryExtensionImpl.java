@@ -250,7 +250,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 					.leftJoin(comment.createdBy, commentAccount).fetchJoin()
 					.leftJoin(comment.childList, commentChild).fetchJoin()
 					.leftJoin(commentChild.createdBy, commentChildAccount).fetchJoin()
-					.where(post.id.eq(id).and(post.deleted.eq(deleted)))
+					.where(post.id.eq(id).and(post.deleted.eq(deleted)).and(comment.parent.isNull()))
 					.fetchOne();
 					
 		return Optional.ofNullable(content);
