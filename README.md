@@ -16,6 +16,7 @@ test pass : 12341234
 
 https://github.com/abcdsds/book/wiki
 
+---
 기술 및 환경
 ---
 ___
@@ -33,6 +34,7 @@ ___
 * Jquery
 * Junit 5
 
+---
 CI
 ---
 ___
@@ -41,6 +43,7 @@ ___
 * 서버는 aws2 를 사용
 * git에 푸쉬할때마다 jenkins에서 자동으로 test와 build를 진행
 
+---
 CD
 ---
 ___
@@ -50,6 +53,7 @@ ___
   컨테이너 종료후 삭제 및 docker-compose로 컨테이너 다시 생성하는 방식으로 배포
   
 
+---
 서버 & DB
 ---
 ___
@@ -57,6 +61,7 @@ ___
 boot app 서버와 postgresql 서버, CI서버 모두 docker 사용
 
 
+---
 구조
 ---
 ___
@@ -64,6 +69,7 @@ ___
 <img src="https://user-images.githubusercontent.com/50533198/84874937-453c2380-b0c0-11ea-9087-eed697dbf2a7.png" alt="구조도" style="max-width:100%;">
 
 
+---
 화면
 ---
 ___
@@ -73,6 +79,7 @@ ___
 ![사이트2](https://user-images.githubusercontent.com/50533198/84889823-7e7e8e80-b0d4-11ea-9ae8-e17b80180888.png)
 ![사이트 4](https://user-images.githubusercontent.com/50533198/84895580-7c6cfd80-b0dd-11ea-9a1b-a44cb07b0e90.png)
 
+---
 DB스키마
 ---
 ___
