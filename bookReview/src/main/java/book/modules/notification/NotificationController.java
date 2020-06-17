@@ -53,6 +53,7 @@ public class NotificationController {
 	public String notificationAllRead(@CurrentAccount Account account , Model model) {
 		
 		notificationService.allRead(account);
+		model.addAttribute("readcheck", "unread");
 		
 		return "redirect:/notification/unread";
 	}
