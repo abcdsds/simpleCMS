@@ -63,7 +63,16 @@ public class BoardService {
 
 	public Board getBoard(Account account, String boardPath) throws AccessDeniedException {
 		// TODO Auto-generated method stub
-		Optional<Board> findByIdAndRole = boardRepository.findByPathAndRole(boardPath,new SimpleGrantedAuthority(account.getRole()));
+		
+		Optional<Board> findByIdAndRole = null;
+		
+		if (account.getRole().equals("ROLE_ADMIN")) {
+			
+			findByIdAndRole = boardRepository.findAdminByPath(boardPath);
+		} else {
+			findByIdAndRole = boardRepository.findByPathAndRole(boardPath,new SimpleGrantedAuthority(account.getRole()));
+		}
+		
 		Board orElseThrow = findByIdAndRole.orElseThrow(() -> new AccessDeniedException("접근할수 없는 게시판입니다."));
 		
 		return orElseThrow;
