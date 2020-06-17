@@ -104,8 +104,8 @@ public class Comment extends BaseEntity {
 	}
 	
 	public boolean isCreatedBy(UserAccount userAccount) {
-		
-		return super.getCreatedBy().getId() == userAccount.getAccount().getId();
+				
+		return super.getCreatedBy().getId().equals(userAccount.getAccount().getId());
 	}
 
 	public void updateContent(String content) {

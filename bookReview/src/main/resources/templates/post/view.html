@@ -98,7 +98,7 @@
 				  						<span class="comment-date" th:text="${item.updatedAt}">date</span>
 				  						<span class="comment-reply" th:attr="data-comment-id=${item.id}">댓글</span>
 				  						<span class="comment-delete" th:attr="data-comment-id=${item.id}" th:if="${item.isCreatedBy(#authentication.principal)}">삭제</span>
-				  						<span class="comment-update" th:if="${item.isCreatedBy(#authentication.principal)}">수정</span>
+				  						<span class="comment-update" th:attr="data-comment-id=${item.id}" th:if="${item.isCreatedBy(#authentication.principal)}">수정</span>
 				  						<span class="vote-down" th:attr="data-comment-id=${item.id}"><i class="fa fa-thumbs-down"></i>
 				  							<span class="vote-down-count" th:id="${'vote-down-count-' + item.id}" th:text="${item.down}">1</span>
 				  						</span>
@@ -138,8 +138,8 @@
 				  						   	  </h5> 
 				  						   	  <span class="comment-date" th:text="${child.updatedAt}">date</span>
 					  						  <span class="comment-reply" th:attr="data-comment-id=${child.id}">댓글</span>
-					  						  <span class="comment-delete" th:attr="data-comment-id=${child.id}" th:if="${item.isCreatedBy(#authentication.principal)}">삭제</span>
-				  							  <span class="comment-update" th:attr="data-comment-id=${child.id}" th:if="${item.isCreatedBy(#authentication.principal)}">수정</span>
+					  						  <span class="comment-delete" th:attr="data-comment-id=${child.id}" th:if="${child.isCreatedBy(#authentication.principal)}">삭제</span>
+				  							  <span class="comment-update" th:attr="data-comment-id=${child.id}" th:if="${child.isCreatedBy(#authentication.principal)}">수정</span>
 					  						  <span class="vote-down" th:attr="data-comment-id=${child.id}"><i class="fa fa-thumbs-down"></i>
 					  							<span class="vote-down-count" th:id="${'vote-down-count-' + child.id}" th:text="${child.down}">1</span>
 					  						  </span>
