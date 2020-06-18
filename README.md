@@ -33,7 +33,7 @@ ___
 * Bootstrap 4
 * Jquery
 * Junit 5
-* 
+* thymeleaf
 
 ---
 CI
