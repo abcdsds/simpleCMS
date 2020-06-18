@@ -14,7 +14,7 @@ test pass : 12341234
 
 게시판에 대한 설명은 위키에서 보실수 있습니다.
 
-https://github.com/abcdsds/book/wiki
+https://github.com/abcdsds/book/wiki/wiki
 
 ---
 기술 및 환경
