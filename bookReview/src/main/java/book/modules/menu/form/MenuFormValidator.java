@@ -27,13 +27,13 @@ public class MenuFormValidator implements Validator{
 			System.out.println(form.getPath());
 			
 			if (form.getPath() == null || form.getPath().equals("")) {
-				errors.rejectValue("path", "path-null " , "경로를 입력해주세요.");
+				errors.rejectValue("path", "empty " , "경로를 입력해주세요.");
 			}
 		} else {
 			
 			
 			if (form.getBoardId() == null) {
-				errors.rejectValue("boardId", "boardId-null " , "게시판을 정해주세요.");
+				errors.rejectValue("boardId", "empty " , "게시판을 정해주세요.");
 			}
 		}
 		
